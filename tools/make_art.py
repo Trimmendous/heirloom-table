@@ -18,8 +18,8 @@ BUILD = os.path.join(ROOT, "tools", ".build")
 BIN = os.path.join(ROOT, "tools", ".bin", "render")
 L = json.load(open(os.path.join(ROOT, "data", "layout.json")))
 
-GARNISHES = ["lemon", "berries", "chili", "herbs", "apple", "wheat", "spice", "scallion", "lime", "olive", "mango"]
-PHOTOS = ["villa", "farmhouse", "cottage", "bazaar", "teahouse", "hacienda"]
+GARNISHES = ["lemon", "berries", "chili", "herbs", "apple", "wheat", "spice", "scallion", "lime", "olive", "mango", "peanut", "cucumber", "mint", "pepper"]
+PHOTOS = ["villa", "farmhouse", "cottage", "bazaar", "teahouse", "hacienda", "village"]
 DISH_W, DISH_H = L["recipe"]["dish"]["w"], L["recipe"]["dish"]["h"]
 TABLE = "#160f0a"
 GS = L["recipe"]["garnish"]["s"]  # garnish art is drawn on a 256 grid and rendered at its largest on-screen size  # colour the dish images fade into; baked under the dish slot too
@@ -500,6 +500,20 @@ def garnish_svg(name):
     elif name == "mango":
         b = (leaf(70, 120, 120, 24, -56, "#3f6a26", "#22451a", "#8fb070") + leaf(186, 100, 110, 22, 48, "#3f6a26", "#22451a", "#8fb070") +
              mango(112, 108, 1.1, -18) + mango_slice(140, 176, 110, -14, 28) + mango_slice(132, 198, 100, -4, 24) + sesame(206, 214, 22, 16, 12, rnd))
+    elif name == "peanut":
+        b = (leaf(70, 110, 96, 24, -50, "#3f6e26", "#24481a") + leaf(190, 92, 84, 22, 46, "#3f6e26", "#24481a") +
+             peanut(110, 120, -30, 1.7) + peanut(160, 150, 24, 1.6) + peanut(196, 196, -60, 1.4) +
+             chili(132, 70, 96, 18, "#e0681a") + peanut(200, 120, 10, 1.3, True) + peanut(214, 140, 70, 1.3, True) + peanut(186, 226, 30, 1.2, True))
+    elif name == "cucumber":
+        b = (leaf(178, 64, 76, 26, 40, "#3f7a22", "#24501a") + cucumber(128, 118, 190, -32, 44) +
+             cucumber_slice(176, 178, 40, 10) + cucumber_slice(210, 132, 34, -20) + chili(96, 172, 92, -12) +
+             sesame(196, 214, 30, 16, 14, rnd))
+    elif name == "mint":
+        b = (mint_sprig(118, 220, 170, -18, 1.1) + mint_sprig(152, 228, 150, 22, 1.0) + mint_sprig(96, 190, 110, -48, .8) +
+             sugar_cube(196, 196, 30, 14) + sugar_cube(222, 168, 26, -10))
+    elif name == "pepper":
+        b = (cilantro(196, 236, 110, -20, 1.0) + bell_pepper(124, 118, 1.25, -14) + bell_pepper(194, 150, .85, 22, ("#ffd86a", "#f0a01a", "#8a4a08")) +
+             pepper_strip(150, 196, 70, -8) + pepper_strip(176, 214, 60, 10, "#f0a01a"))
     else:
         raise KeyError(name)
     k = GS / S
@@ -556,6 +570,14 @@ def photo_svg(name):
               + f'<path d="M150 104 V64 Q150 58 154 58 Q158 58 158 64 V104Z" fill="{D}"/>'
               + f'<path d="M150 84 H144 Q142 84 142 80 V72 Q142 68 145 68 Q147 68 147 72 V78 H150Z M158 80 H163 Q165 80 165 76 V68 Q165 64 162 64 Q160 64 160 68 V74 H158Z" fill="{D}"/>'
               + "".join(f'<circle cx="{x}" cy="{108+rnd.randint(0,10)}" r="{rnd.uniform(1.5,3):.1f}" fill="{D}" opacity=".6"/>' for x in range(4, 170, 11)))
+    elif name == "village":
+        sc = (f'<path d="M0 78 Q50 62 100 72 T170 66 V128 H0Z" fill="{Lt}"/><rect x="0" y="100" width="170" height="28" fill="#c9a876"/>'
+              + "".join(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#b7976a"/><path d="M{x-8} {y+2} L{x+w/2} {y-h*.9:.0f} L{x+w+8} {y+2}Z" fill="{D}"/>'
+                        f'<rect x="{x+w/2-4}" y="{y+h-14}" width="8" height="14" fill="{D}"/>' for x, y, w, h in ((18, 76, 34, 26), (70, 70, 40, 30), (124, 80, 30, 22)))
+              + f'<path d="M160 104 V40" stroke="{D}" stroke-width="4"/>'
+              + "".join(f'<path d="M160 42 q{dx} {dy} {dx*1.6:.0f} {dy+14}" stroke="{D}" stroke-width="3" fill="none"/>' for dx, dy in ((-22, -6), (22, -6), (-18, 4), (18, 4), (0, -12)))
+              + f'<circle cx="40" cy="30" r="14" fill="#f2e2b8" opacity=".8"/>'
+              + "".join(f'<ellipse cx="{x}" cy="{112+rnd.randint(0,8)}" rx="{rnd.randint(4,8)}" ry="3" fill="{M}" opacity=".7"/>' for x in range(6, 170, 17)))
     else:
         raise KeyError(name)
     body = f"""
@@ -856,6 +878,189 @@ def dish_mango(rnd):
     return b
 
 
+# ------------------------------------------------------------------ growth run 2 ingredients
+def peanut(cx, cy, ang, s=1.0, shelled=False):
+    """A peanut in its shell (two lobes, waist, criss-cross texture) or a shelled half."""
+    g = uid("pn")
+    if shelled:
+        return (f'<radialGradient id="{g}" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#f2d39a"/><stop offset=".7" stop-color="#d9a85c"/><stop offset="1" stop-color="#a8702e"/></radialGradient>'
+                f'<g transform="translate({cx} {cy}) rotate({ang}) scale({s})"><ellipse rx="9" ry="6.5" fill="url(#{g})" stroke="#8a5a24" stroke-width=".8"/>'
+                f'<path d="M-6 0 Q0 -2 6 0" stroke="#8a5a24" stroke-width=".7" fill="none" opacity=".6"/></g>')
+    tex = "".join(f'<path d="M{x} -12 L{x+6} 12" stroke="#a8803e" stroke-width=".8" opacity=".5"/>' for x in range(-30, 30, 7))
+    return (f'<radialGradient id="{g}" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#ecd2a0"/><stop offset=".7" stop-color="#cfa766"/><stop offset="1" stop-color="#9a7238"/></radialGradient>'
+            f'<g transform="translate({cx} {cy}) rotate({ang}) scale({s})">'
+            f'<path d="M-30 0 C-30 -16 -12 -17 -6 -9 Q0 -5 6 -9 C12 -17 30 -16 30 0 C30 16 12 17 6 9 Q0 5 -6 9 C-12 17 -30 16 -30 0Z" fill="url(#{g})" stroke="#8a6230" stroke-width="1.2"/>'
+            f'{tex}<ellipse cx="-16" cy="-6" rx="8" ry="3" fill="#fff" opacity=".3"/></g>')
+
+
+def cucumber_slice(cx, cy, r, ang=0, ry=None):
+    ry = ry or r
+    seeds = "".join(f'<ellipse cx="{r*.32*math.cos(a):.1f}" cy="{ry*.32*math.sin(a):.1f}" rx="{r*.08:.1f}" ry="{r*.045:.1f}" '
+                    f'transform="rotate({math.degrees(a):.0f} {r*.32*math.cos(a):.1f} {ry*.32*math.sin(a):.1f})" fill="#f4f8dc" opacity=".9"/>'
+                    for a in [k * math.tau / 7 for k in range(7)])
+    return (f'<g transform="translate({cx} {cy}) rotate({ang})"><ellipse rx="{r}" ry="{ry}" fill="#2f5a1a"/><ellipse rx="{r*.9:.1f}" ry="{ry*.9:.1f}" fill="#9fc55a"/>'
+            f'<ellipse rx="{r*.8:.1f}" ry="{ry*.8:.1f}" fill="#d4e8a0"/><ellipse rx="{r*.45:.1f}" ry="{ry*.45:.1f}" fill="#bcd884"/>{seeds}'
+            f'<ellipse cx="{-r*.3:.1f}" cy="{-ry*.35:.1f}" rx="{r*.25:.1f}" ry="{ry*.12:.1f}" fill="#fff" opacity=".35"/></g>')
+
+
+def cucumber(cx, cy, ln, ang, wd=34):
+    g = uid("cu")
+    bumps = "".join(f'<circle cx="{x}" cy="{(-1)**i * wd*.25:.1f}" r="1.6" fill="#c8e090" opacity=".7"/>' for i, x in enumerate(range(int(-ln/2) + 14, int(ln/2) - 10, 11)))
+    return (f'<linearGradient id="{g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5e9a34"/><stop offset=".45" stop-color="#2f6a1c"/><stop offset="1" stop-color="#173d0c"/></linearGradient>'
+            f'<g transform="translate({cx} {cy}) rotate({ang})"><rect x="{-ln/2}" y="{-wd/2}" width="{ln}" height="{wd}" rx="{wd/2}" fill="url(#{g})"/>'
+            f'<path d="M{-ln/2+14} {-wd*.22:.1f} L{ln/2-14} {-wd*.22:.1f}" stroke="#b8d888" stroke-width="3" opacity=".35" stroke-linecap="round"/>{bumps}'
+            f'<ellipse cx="{ln/2-3}" cy="0" rx="5" ry="{wd*.32:.1f}" fill="#c8a85a"/></g>')
+
+
+def mint_sprig(x, y, ln, ang, k=1.0):
+    out = [f'<path d="M0 0 Q{ln*.08} {-ln*.5} 0 {-ln}" stroke="#4a6a2a" stroke-width="{2.6*k:.1f}" fill="none"/>']
+    for i, t in enumerate((.35, .55, .75, .92)):
+        s = (1.15 - t * .55) * k
+        for side in (-1, 1):
+            g = uid("mt")
+            out.append(f'<linearGradient id="{g}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7ac25a"/><stop offset="1" stop-color="#2f7a32"/></linearGradient>'
+                       f'<g transform="translate(0 {-ln*t:.1f}) rotate({side*(62 - i*8)}) scale({s:.2f})">'
+                       f'<path d="M0 0 C12 -6 16 -26 0 -40 C-16 -26 -12 -6 0 0Z" fill="url(#{g})" stroke="#24602a" stroke-width="1"/>'
+                       f'<path d="M0 -2 L0 -36" stroke="#b8e0a0" stroke-width="1" opacity=".7"/>'
+                       + "".join(f'<path d="M0 {-v} l{6*sd} -5" stroke="#b8e0a0" stroke-width=".7" opacity=".6"/>' for v in (10, 18, 26) for sd in (-1, 1))
+                       + '</g>')
+    out.append(f'<g transform="translate(0 {-ln})"><path d="M0 0 C9 -5 11 -20 0 -30 C-11 -20 -9 -5 0 0Z" fill="#6ab04a" stroke="#24602a" stroke-width="1" transform="scale({k:.2f})"/></g>')
+    return f'<g transform="translate({x} {y}) rotate({ang})">' + "".join(out) + "</g>"
+
+
+def sugar_cube(cx, cy, s, ang):
+    return (f'<g transform="translate({cx} {cy}) rotate({ang})"><rect x="{-s/2}" y="{-s/2}" width="{s}" height="{s}" rx="2" fill="#fbf8f0" stroke="#d8d0bc" stroke-width="1"/>'
+            f'<path d="M{-s/2} {-s/2} l{s*.25} {-s*.2} h{s} l{-s*.25} {s*.2}Z" fill="#ffffff" stroke="#d8d0bc" stroke-width=".8"/>'
+            f'<path d="M{s/2} {-s/2} l{s*.25} {-s*.2} v{s} l{-s*.25} {s*.2}Z" fill="#e8e2d0" stroke="#d8d0bc" stroke-width=".8"/></g>')
+
+
+def bell_pepper(cx, cy, s, ang, c=("#ff7a5a", "#d8281a", "#7a0c08")):
+    g = uid("bp")
+    return (f'<radialGradient id="{g}" cx=".35" cy=".35" r=".8"><stop offset="0" stop-color="{c[0]}"/><stop offset=".5" stop-color="{c[1]}"/><stop offset="1" stop-color="{c[2]}"/></radialGradient>'
+            f'<g transform="translate({cx} {cy}) rotate({ang}) scale({s})">'
+            f'<path d="M-44 -30 C-58 0 -50 44 -24 52 C-12 56 -4 48 0 44 C4 48 12 56 24 52 C50 44 58 0 44 -30 C34 -46 12 -44 0 -38 C-12 -44 -34 -46 -44 -30Z" fill="url(#{g})" stroke="#6a0c08" stroke-width="1.5"/>'
+            f'<path d="M0 -36 C-4 0 -4 30 0 44" stroke="#7a0c08" stroke-width="2" opacity=".45" fill="none"/>'
+            f'<ellipse cx="-24" cy="-12" rx="7" ry="22" fill="#fff" opacity=".3" transform="rotate(8 -24 -12)"/>'
+            f'<path d="M-16 -40 Q0 -50 16 -40 Q8 -34 0 -36 Q-8 -34 -16 -40Z" fill="#3f6a1e"/>'
+            f'<path d="M0 -40 Q2 -56 12 -64" stroke="#4f7a22" stroke-width="7" fill="none" stroke-linecap="round"/></g>')
+
+
+def pepper_strip(x, y, ln, ang, c="#d8281a"):
+    return (f'<g transform="translate({x} {y}) rotate({ang})"><path d="M0 0 Q{ln*.5} -10 {ln} 0 Q{ln*.5} -2 0 8Z" fill="{c}" stroke="#7a0c08" stroke-width="1"/>'
+            f'<path d="M{ln*.15} 1 Q{ln*.5} -6 {ln*.85} 0" stroke="#fff" stroke-width="1.5" opacity=".35" fill="none"/></g>')
+
+
+def empanada(cx, cy, ang, s, rnd):
+    g = uid("em")
+    rope = "".join(f'<ellipse cx="{82*math.cos(a):.1f}" cy="{6 + 50*math.sin(a):.1f}" rx="9" ry="5.5" transform="rotate({math.degrees(a)+60:.0f} {82*math.cos(a):.1f} {6 + 50*math.sin(a):.1f})" fill="#c9852e" stroke="#8a4e14" stroke-width="1"/>'
+                   for a in [math.pi + k * math.pi / 13 for k in range(14)])
+    return (f'<radialGradient id="{g}" cx=".45" cy=".3" r=".85"><stop offset="0" stop-color="#f6c66e"/><stop offset=".55" stop-color="#d9913a"/><stop offset="1" stop-color="#9a5818"/></radialGradient>'
+            f'<g transform="translate({cx} {cy}) rotate({ang}) scale({s})" filter="url(#shadow)">'
+            f'<path d="M-82 6 A82 62 0 0 1 82 6 Q0 20 -82 6Z" fill="url(#{g})" stroke="#8a4e14" stroke-width="1.5"/>'
+            f'<path d="M-82 6 A82 62 0 0 1 82 6" fill="none" stroke="#7a4210" stroke-width="1" opacity=".5" filter="url(#crust)"/>{rope}'
+            + flecks(0, -24, 52, 18, 14, rnd, ("#fbe0a0", "#e8b060"), (1.5, 3.5)).replace("/>", ' opacity=".6"/>')
+            + f'<ellipse cx="-20" cy="-30" rx="30" ry="9" fill="#fff6d0" opacity=".35"/></g>')
+
+
+def tea_glass(cx, cy, s, tint="#c8862a"):
+    g = uid("tg")
+    pattern = "".join(f'<path d="M{x} -10 q5 8 0 16 q-5 8 0 16" stroke="#e8c060" stroke-width="2" fill="none" opacity=".8"/>' for x in (-22, -8, 6, 20))
+    return (f'<linearGradient id="{g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8c06a" stop-opacity=".9"/><stop offset=".25" stop-color="{tint}"/><stop offset="1" stop-color="#6a3a0c"/></linearGradient>'
+            f'<g transform="translate({cx} {cy}) scale({s})">'
+            f'<ellipse cx="4" cy="44" rx="36" ry="12" fill="#000" opacity=".45" filter="url(#soft)"/>'
+            f'<path d="M-30 -40 L30 -40 L24 40 Q0 48 -24 40Z" fill="url(#{g})" stroke="#f4e8c8" stroke-width="2" opacity=".95"/>'
+            f'<ellipse cx="0" cy="-34" rx="29" ry="6" fill="#f6ecd0" opacity=".85"/>{pattern}'
+            f'<path d="M-24 -36 L-19 36" stroke="#fff" stroke-width="4" opacity=".35"/><ellipse cx="0" cy="-40" rx="30" ry="6" fill="none" stroke="#f4e8c8" stroke-width="2"/></g>')
+
+
+def dish_peanut_soup(rnd):
+    b = (f'<ellipse cx="300" cy="216" rx="176" ry="176" fill="#000" opacity=".6" filter="url(#soft)"/>'
+         f'<circle cx="294" cy="202" r="172" fill="#8a4a22" stroke="#4a2410" stroke-width="3"/><circle cx="294" cy="202" r="172" filter="url(#crust)" opacity=".5"/>'
+         f'<circle cx="294" cy="202" r="150" fill="#e4d2b0" stroke="#6a3a1a" stroke-width="2"/>')
+    b += ('<radialGradient id="pns"><stop offset="0" stop-color="#e09a4a"/><stop offset=".75" stop-color="#c46a26"/><stop offset="1" stop-color="#8e4414"/></radialGradient>'
+          '<circle cx="294" cy="202" r="136" fill="url(#pns)"/><circle cx="294" cy="202" r="134" filter="url(#crust)" opacity=".3"/>')
+    for _ in range(9):  # sweet potato cubes
+        x, y = 294 + rnd.uniform(-90, 90), 202 + rnd.uniform(-90, 90)
+        if (x - 294) ** 2 + (y - 202) ** 2 < 100 ** 2:
+            b += f'<rect x="{x:.0f}" y="{y:.0f}" width="22" height="20" rx="4" transform="rotate({rnd.uniform(0,90):.0f} {x:.0f} {y:.0f})" fill="#f09a3a" stroke="#b0581a" stroke-width="1"/>'
+    for _ in range(16):  # kale
+        x, y = 294 + rnd.uniform(-100, 100), 202 + rnd.uniform(-100, 100)
+        if (x - 294) ** 2 + (y - 202) ** 2 < 110 ** 2:
+            b += f'<path d="{blob(x, y, rnd.uniform(9, 15), rnd, .35, 9)}" fill="{rnd.choice(("#2f5a1e", "#3f6e26", "#24481a"))}" opacity=".9"/>'
+    b += '<path d="M220 150 q40 -20 80 0 q40 20 80 -4" stroke="#f0c890" stroke-width="5" fill="none" opacity=".45" stroke-linecap="round"/>'
+    for _ in range(26):
+        a, d = rnd.uniform(0, math.tau), 60 * math.sqrt(rnd.random())
+        b += peanut(294 + d * math.cos(a) - 10, 196 + d * math.sin(a) * .7, rnd.uniform(0, 180), .9, shelled=True)
+    for (x, y, a) in ((250, 190, -30), (330, 220, 40), (300, 160, 0)):
+        b += cilantro(x, y, 30, a, .5)
+    b += flecks(294, 202, 120, 120, 24, rnd, ("#a8240f", "#c43a1a"), (1.2, 2.4))
+    b += peanut(500, 320, -30, 1.4) + peanut(530, 280, 20, 1.2) + peanut(470, 356, 60, 1.1)
+    b += chili(470, 70, 90, 20, "#e0681a") + leaf(80, 350, 60, 22, -30, "#3f6e26") + leaf(104, 372, 50, 18, 20, "#2f5a1e")
+    return b
+
+
+def dish_cucumber(rnd):
+    b = (f'<ellipse cx="300" cy="220" rx="190" ry="160" fill="#000" opacity=".6" filter="url(#soft)"/>'
+         f'<ellipse cx="294" cy="206" rx="188" ry="156" fill="#d8d4c8" stroke="#6a7a8a" stroke-width="3"/>'
+         f'<ellipse cx="294" cy="206" rx="168" ry="138" fill="#eef0ea" stroke="#b8c0c4" stroke-width="2"/>'
+         f'<ellipse cx="294" cy="206" rx="178" ry="146" fill="none" stroke="#3a5a7a" stroke-width="2" opacity=".6"/>')
+    sl = []
+    for _ in range(30):
+        a, d = rnd.uniform(0, math.tau), math.sqrt(rnd.random())
+        sl.append((294 + 120 * d * math.cos(a), 206 + 96 * d * math.sin(a)))
+    sl.sort(key=lambda p: p[1])
+    for (x, y) in sl:
+        b += cucumber_slice(x, y, rnd.uniform(22, 28), rnd.uniform(0, 180), rnd.uniform(17, 22))
+    b += flecks(294, 206, 130, 104, 120, rnd, ("#c8281a", "#e0401a", "#9a1a0a"), (1, 2.4))
+    b += sesame(294, 206, 120, 96, 40, rnd)
+    for _ in range(14):
+        x, y = 294 + rnd.uniform(-110, 110), 206 + rnd.uniform(-80, 80)
+        b += f'<circle cx="{x:.0f}" cy="{y:.0f}" r="5" fill="none" stroke="#5aa03a" stroke-width="2.4"/>'
+    b += '<ellipse cx="240" cy="150" rx="60" ry="18" fill="#fff" opacity=".18" transform="rotate(-20 240 150)"/>'
+    b += cucumber(470, 340, 170, -20) + cucumber_slice(80, 80, 30, 0) + cucumber_slice(110, 120, 26, 40, 20)
+    b += (f'<ellipse cx="540" cy="90" rx="46" ry="46" fill="#000" opacity=".5" filter="url(#soft)"/><circle cx="534" cy="84" r="42" fill="#efe6d4" stroke="#6a7a8a" stroke-width="3"/>'
+          f'<circle cx="534" cy="84" r="34" fill="#b8281a"/>') + flecks(534, 84, 30, 30, 60, rnd, ("#e0401a", "#7a1a0a", "#f06a3a"), (1, 2.2))
+    return b
+
+
+def dish_mint_tea(rnd):
+    b = ('<ellipse cx="300" cy="222" rx="236" ry="164" fill="#000" opacity=".6" filter="url(#soft)"/>'
+         '<radialGradient id="tray" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#f4dc98"/><stop offset=".6" stop-color="#c9a048"/><stop offset="1" stop-color="#7a5418"/></radialGradient>'
+         '<ellipse cx="294" cy="208" rx="232" ry="160" fill="url(#tray)" stroke="#6a4810" stroke-width="3"/>'
+         '<ellipse cx="294" cy="208" rx="212" ry="142" fill="none" stroke="#8a6420" stroke-width="2"/>')
+    b += "".join(f'<path d="M{294+186*math.cos(a):.1f} {208+124*math.sin(a):.1f} l{6*math.cos(a+1):.1f} {6*math.sin(a+1):.1f}" stroke="#7a5418" stroke-width="2"/>' for a in [i * math.tau / 48 for i in range(48)])
+    # teapot
+    b += ('<g transform="translate(300 170)" filter="url(#shadow)">'
+          '<radialGradient id="pot" cx=".35" cy=".35" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset=".4" stop-color="#d8dade"/><stop offset="1" stop-color="#7a7c82"/></radialGradient>'
+          '<path d="M60 10 C110 0 130 -40 150 -70 L156 -66 C140 -30 120 20 64 34Z" fill="url(#pot)" stroke="#5a5c62" stroke-width="1.5"/>'
+          '<path d="M-62 -4 C-110 -10 -110 50 -66 46" stroke="#8a8c92" stroke-width="10" fill="none"/>'
+          '<ellipse cx="0" cy="12" rx="74" ry="56" fill="url(#pot)" stroke="#5a5c62" stroke-width="2"/>'
+          '<ellipse cx="0" cy="56" rx="46" ry="10" fill="#9a9ca2"/>'
+          '<path d="M-44 -30 Q0 -52 44 -30 L36 -40 Q0 -58 -36 -40Z" fill="#b8bac0" stroke="#5a5c62" stroke-width="1.5"/>'
+          '<path d="M-24 -50 Q0 -90 24 -50Z" fill="url(#pot)" stroke="#5a5c62" stroke-width="1.5"/><circle cx="0" cy="-86" r="8" fill="#d8dade" stroke="#5a5c62"/>'
+          + "".join(f'<path d="M{x} -10 q10 20 0 40" stroke="#8a6420" stroke-width="2" fill="none" opacity=".55"/>' for x in (-40, -14, 12, 38))
+          + '<ellipse cx="-30" cy="-6" rx="14" ry="26" fill="#fff" opacity=".55" transform="rotate(20 -30 -6)"/></g>')
+    b += tea_glass(140, 270, 1.0) + tea_glass(420, 300, 1.0) + tea_glass(220, 330, .9, "#b8781e")
+    b += mint_sprig(142, 236, 46, -10, .5) + mint_sprig(420, 266, 46, 12, .5)
+    b += mint_sprig(470, 170, 110, 30, .8) + mint_sprig(500, 190, 100, 52, .7)
+    for (x, y, a) in ((90, 90, 10), (120, 70, -14), (104, 118, 30)):
+        b += sugar_cube(x, y, 22, a)
+    b += ('<path d="M300 90 q-12 -26 4 -46 q14 -18 0 -40" stroke="#fff" stroke-width="8" fill="none" opacity=".18" stroke-linecap="round" filter="url(#soft)"/>')
+    return b
+
+
+def dish_empanadas(rnd):
+    b = (f'<ellipse cx="300" cy="216" rx="250" ry="174" fill="#000" opacity=".6" filter="url(#soft)"/>'
+         f'<rect x="56" y="34" width="480" height="340" rx="22" fill="#a8743e"/><rect x="56" y="34" width="480" height="340" rx="22" filter="url(#wood)" opacity=".85"/>'
+         f'<rect x="56" y="34" width="480" height="340" rx="22" fill="none" stroke="#5a3616" stroke-width="4"/>'
+         f'<path d="M80 60 L520 60 L520 350 L80 350Z" fill="#efe2c4" opacity=".85" transform="rotate(-3 300 204)"/>')
+    b += empanada(200, 140, -12, .95, rnd) + empanada(380, 120, 10, .95, rnd) + empanada(190, 280, 8, 1.0, rnd) + empanada(386, 268, -6, 1.0, rnd)
+    b += (f'<ellipse cx="540" cy="340" rx="50" ry="50" fill="#000" opacity=".5" filter="url(#soft)"/><circle cx="534" cy="334" r="46" fill="#efe6d4" stroke="#8c6a44" stroke-width="3"/>'
+          f'<circle cx="534" cy="334" r="38" fill="#4f6a1e"/>') + flecks(534, 334, 34, 34, 80, rnd, ("#7aa02a", "#2f4a12", "#c43a1a", "#a8c050"), (1.2, 3))
+    b += bell_pepper(500, 96, .7, 20) + pepper_strip(446, 52, 50, 30) + cilantro(60, 380, 90, 20, .8) + olive(40, 110, 12, 17, 20, False)
+    return b
+
+
 DISHES = {
     "tuscan-lemon-chicken-piccata": dish_piccata,
     "blueberry-buttermilk-pancakes": dish_pancakes,
@@ -868,6 +1073,10 @@ DISHES = {
     "huevos-rancheros": dish_huevos,
     "zaatar-manakish": dish_manakish,
     "mango-sticky-rice": dish_mango,
+    "west-african-peanut-soup": dish_peanut_soup,
+    "korean-cucumber-salad": dish_cucumber,
+    "moroccan-mint-tea": dish_mint_tea,
+    "argentine-beef-empanadas": dish_empanadas,
 }
 
 
@@ -971,6 +1180,19 @@ def parch_px(x, y, S=120, m=6):
     return c + [int(a * 255)]
 
 
+def fade_job():
+    """Home: soft fade over the peeking off-screen card, so the row reads as 'more this way'."""
+    # drawn at its exact on-screen size (Posters default to scaleToFit, which would letterbox a stretched strip)
+    w, h = L["home"]["peek"]["fadeW"], L["home"]["card"]["h"] + 16
+    r, g, b = 0x14, 0x0d, 0x09
+    px = []
+    for y in range(h):
+        for x in range(w):
+            t = x / (w - 1)
+            px += [r, g, b, int(255 * min(1.0, .25 + .72 * t ** .8))]
+    write_png(os.path.join(IMG, "ui", "fade_r.png"), w, h, px)
+
+
 def ninepatch_jobs():
     os.makedirs(os.path.join(IMG, "ui"), exist_ok=True)
     ninepatch("focus", 72, 24, focus_px)
@@ -1032,6 +1254,9 @@ def main():
     if want("channel"):
         jobs += channel_jobs()
     run(jobs, force)
+    if want("ui") and (force or not os.path.exists(os.path.join(IMG, "ui", "fade_r.png"))):
+        fade_job()
+        print("  art ui/fade_r.png")
     if want("ninepatch") and (force or not os.path.exists(os.path.join(IMG, "ui", "focus.9.png"))):
         ninepatch_jobs()
         print("  art ui/focus.9.png, ui/parchment.9.png")

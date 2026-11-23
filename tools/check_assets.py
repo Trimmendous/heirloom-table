@@ -57,6 +57,7 @@ def check_assets():
                 sz = image_size(p)
                 if sz != (layout["recipe"]["dish"]["w"], layout["recipe"]["dish"]["h"]):
                     err("%s: dish image is %s, expected %dx%d" % (r["id"], sz, layout["recipe"]["dish"]["w"], layout["recipe"]["dish"]["h"]))
+    check_ref(layout["home"]["peek"]["fade"], "layout home.peek.fade")
     for sec in ("home", "recipe", "cook"):
         p = check_ref(layout[sec]["bg"], "layout %s.bg" % sec)
         if p and image_size(p) != (1920, 1080):

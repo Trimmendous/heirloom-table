@@ -24,10 +24,10 @@ The fonts are bundled unmodified. `web/assets/fonts/` is a byte-identical copy.
 |---|---|
 | `roku/images/ui/*_bg.jpg`: textured backgrounds, gold filigree frame, deckled parchment panels | `tools/make_art.py` (SVG), rasterised by `tools/render.swift` (WebKit) |
 | `roku/images/ui/icon_*.png`, `check_*.png`, `ring*.png`, `chev_*.png`, `dot_*.png` | `tools/make_art.py` |
-| `roku/images/ui/focus.9.png`, `parchment.9.png` (and their `images/web/` twins) | drawn pixel-by-pixel in pure Python in `tools/make_art.py` |
+| `roku/images/ui/focus.9.png`, `parchment.9.png` (and their `images/web/` twins), `fade_r.png` (Home row fade) | drawn pixel-by-pixel in pure Python in `tools/make_art.py` |
 | `roku/images/dishes/*.jpg`: dish illustrations, one per recipe | `tools/make_art.py` (`DISHES`) |
-| `roku/images/garnish/*.png`: lemon, berries, chili, herbs, apple, wheat, spice, scallion, lime, olive, mango | `tools/make_art.py` (`garnish_svg`) |
-| `roku/images/photos/*.png`: vintage-style "snapshots" (villa, farmhouse, cottage, bazaar, teahouse, hacienda) | `tools/make_art.py` (`photo_svg`) |
+| `roku/images/garnish/*.png`: lemon, berries, chili, herbs, apple, wheat, spice, scallion, lime, olive, mango, peanut, cucumber, mint, pepper | `tools/make_art.py` (`garnish_svg`) |
+| `roku/images/photos/*.png`: vintage-style "snapshots" (villa, farmhouse, cottage, bazaar, teahouse, hacienda, village) | `tools/make_art.py` (`photo_svg`) |
 | `roku/images/channel/*`: channel icons and splash | `tools/make_art.py`, using the bundled Pinyon Script |
 | `docs/screens/*.jpg`: screenshots of the web clone | `tools/screenshot.py` |
 

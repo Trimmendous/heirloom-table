@@ -32,6 +32,18 @@ SGNode.prototype = {
   get width() { return this._w || 0; },
   set height(h) { this._h = h; this.el.style.height = h + 'px'; this.restyle && this.restyle(); },
   get height() { return this._h || 0; },
+  // Group.clippingRect [x, y, w, h] in local coordinates -> CSS clip-path (applies to all descendants)
+  set clippingRect(r) {
+    this._clip = r;
+    var x1 = r[0] + 'px', y1 = r[1] + 'px', x2 = (r[0] + r[2]) + 'px', y2 = (r[1] + r[3]) + 'px';
+    this.el.style.clipPath = 'polygon(' + x1 + ' ' + y1 + ', ' + x2 + ' ' + y1 + ', ' + x2 + ' ' + y2 + ', ' + x1 + ' ' + y2 + ')';
+  },
+  get clippingRect() { return this._clip || [0, 0, 0, 0]; },
+  // scale + scaleRotateCenter -> CSS transform around that point
+  set scale(s) { this._scale = [s[0], s[1]]; this.el.style.transform = 'scale(' + s[0] + ',' + s[1] + ')'; },
+  get scale() { return this._scale || [1, 1]; },
+  set scaleRotateCenter(c) { this._src = [c[0], c[1]]; this.el.style.transformOrigin = c[0] + 'px ' + c[1] + 'px'; },
+  get scaleRotateCenter() { return this._src || [0, 0]; },
   setFields: function (o) { for (var k in o) this[k] = o[k]; },
   createChild: function (type) { return new TYPES[type](type, this); },
   getChildCount: function () { return this.kids.length; },
@@ -49,20 +61,68 @@ Object.defineProperty(Rectangle.prototype, 'color', { set: function (c) { this.e
 
 function Poster(t, p) { SGNode.call(this, t, p); this.loadDisplayMode = 'scaleToFit'; }
 Poster.prototype = Object.create(SGNode.prototype);
+/* 9-patch posters are painted onto a <canvas> (one bitmap, so no hairline seams when the stage or a
+ * focused card is scaled; CSS border-image shows seams between slices at fractional scales in WebKit).
+ * Without canvas support (the headless test's fake DOM) they fall back to CSS border-image. */
+var NINE_CANVAS = (function () {
+  try { return typeof document.createElement('canvas').getContext === 'function' && typeof Image === 'function'; } catch (e) { return false; }
+})();
+var NINE_IMG = {};
+function nineImage(name, cb) {
+  var e = NINE_IMG[name];
+  if (!e) {
+    e = NINE_IMG[name] = { img: new Image(), ready: false, waiting: [] };
+    e.img.onload = function () { e.ready = true; e.waiting.forEach(function (f) { f(); }); e.waiting = []; };
+    e.img.src = 'assets/images/web/' + name + '.png';
+  }
+  if (e.ready) cb(e.img); else e.waiting.push(function () { cb(e.img); });
+}
+Poster.prototype.restyle = function () { if (this._nine && NINE_CANVAS) this.drawNine(); };
+Poster.prototype.drawNine = function () {
+  var self = this, name = this._nine, c = NINE[name];
+  var w = Math.round(this._w || 0), h = Math.round(this._h || 0);
+  if (w <= 0 || h <= 0) return;
+  nineImage(name, function (img) {
+    if (self._nine !== name) return;
+    var cv = self._cv;
+    if (!cv) {
+      cv = self._cv = document.createElement('canvas');
+      cv.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%';
+      self.el.appendChild(cv);
+    }
+    var k = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(w * k); cv.height = Math.round(h * k);
+    var g = cv.getContext('2d');
+    g.setTransform(k, 0, 0, k, 0, 0);
+    g.clearRect(0, 0, w, h);
+    var iw = img.naturalWidth, ih = img.naturalHeight;
+    var cx = Math.min(c, Math.floor(w / 2)), cy = Math.min(c, Math.floor(h / 2));
+    var sx = [[0, c], [c, iw - 2 * c], [iw - c, c]], dx = [[0, cx], [cx, w - 2 * cx], [w - cx, cx]];
+    var sy = [[0, c], [c, ih - 2 * c], [ih - c, c]], dy = [[0, cy], [cy, h - 2 * cy], [h - cy, cy]];
+    for (var i = 0; i < 3; i++) {
+      for (var j = 0; j < 3; j++) {
+        if (dx[i][1] > 0 && dy[j][1] > 0) g.drawImage(img, sx[i][0], sy[j][0], sx[i][1], sy[j][1], dx[i][0], dy[j][0], dx[i][1], dy[j][1]);
+      }
+    }
+  });
+};
 Object.defineProperty(Poster.prototype, 'uri', {
   get: function () { return this._uri || ''; },
   set: function (u) {
     this._uri = u;
     var s = this.el.style, m9 = /images\/ui\/(\w+)\.9\.png$/.exec(u || '');
-    if (m9) {      // 9-patch: same art without the marker border, drawn with CSS border-image
+    this._nine = m9 ? m9[1] : null;
+    if (this._cv && !(m9 && NINE_CANVAS)) { this._cv.remove(); this._cv = null; }
+    s.borderImage = 'none'; s.borderWidth = '0'; s.backgroundImage = 'none';
+    if (m9 && NINE_CANVAS) {
+      this.drawNine();
+    } else if (m9) {      // fallback: same art without the marker border, drawn with CSS border-image
       var c = NINE[m9[1]];
-      s.backgroundImage = 'none';
       s.borderStyle = 'solid';
       s.borderWidth = c + 'px';
       s.boxSizing = 'border-box';
       s.borderImage = 'url("assets/images/web/' + m9[1] + '.png") ' + c + ' fill / ' + c + 'px stretch';
     } else {
-      s.borderImage = 'none'; s.borderWidth = '0';
       s.backgroundImage = u ? 'url("' + assetUrl(u) + '")' : 'none';
     }
   }

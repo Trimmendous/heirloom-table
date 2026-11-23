@@ -119,6 +119,7 @@ function applyQuery() {
     if (q.get('timer')) { cookKey('OK'); m.toast.visible = false; }
   }
   if (q.get('row')) { m.hs.row = +q.get('row'); homeRender(); }
+  if (q.get('col')) { m.hs.cols[m.hs.row] = +q.get('col'); homeRender(); }
   if (q.get('menu')) menuShow();
   if (q.get('remote') === '0') document.body.classList.add('no-remote');
   fitStage();

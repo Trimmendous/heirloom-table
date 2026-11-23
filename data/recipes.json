@@ -573,6 +573,265 @@
         "coconut",
         "summer"
       ]
+    },
+    {
+      "id": "west-african-peanut-soup",
+      "title": "West African Peanut Soup",
+      "category": "Soups",
+      "cuisine": "West African",
+      "description": "A silky, gently spiced soup of sweet potato, tomato and peanut, finished with tender greens. Hearty, warming and naturally vegan.",
+      "prepMin": 15,
+      "cookMin": 40,
+      "serves": 6,
+      "difficulty": "Easy",
+      "ingredients": [
+        "2 Tbsp peanut or vegetable oil",
+        "1 large onion, diced",
+        "3 garlic cloves, minced",
+        "1 Tbsp freshly grated ginger",
+        "1 small Scotch bonnet or jalapeño, seeded and minced",
+        "2 Tbsp tomato paste",
+        "1 tsp ground coriander",
+        "1 large sweet potato (about 1 lb), peeled and cut in ¾-inch cubes",
+        "1 can (14½ oz) diced tomatoes",
+        "5 cups (1.2 L) vegetable broth (gluten-free if needed)",
+        "1 tsp salt, plus more to taste",
+        "½ cup (130 g) natural unsweetened peanut butter",
+        "4 cups chopped kale or spinach (about 3 oz)",
+        "¼ cup roasted peanuts, chopped, and fresh cilantro, to serve"
+      ],
+      "steps": [
+        {
+          "lead": "Soften the aromatics.",
+          "text": "Heat the oil in a large pot over medium heat. Cook the onion for 5–6 minutes, until soft and golden at the edges, then stir in the garlic, ginger and chili for 1 minute more."
+        },
+        {
+          "lead": "Toast the paste.",
+          "text": "Stir in the tomato paste and coriander and cook for 2 minutes, stirring, until the paste darkens to a deep brick red."
+        },
+        {
+          "lead": "Simmer the soup.",
+          "text": "Add the sweet potato, tomatoes, broth and salt. Bring to a boil, then cover, lower the heat and simmer for 15–20 minutes, until the sweet potato is tender."
+        },
+        {
+          "lead": "Stir in the peanut butter.",
+          "text": "Whisk the peanut butter with a ladle of the hot broth until smooth, then stir it into the pot. Mash a few chunks of sweet potato against the side of the pot to thicken the soup."
+        },
+        {
+          "lead": "Wilt the greens.",
+          "text": "Add the kale and simmer for 5 minutes, until tender and bright. Taste, and add more salt or a little more chili if you like."
+        },
+        {
+          "lead": "Serve.",
+          "text": "Ladle into warm bowls and scatter with the chopped peanuts and cilantro. Lovely with rice or crusty bread on the side."
+        }
+      ],
+      "kitchenNote": "Use a peanut butter made with nothing but peanuts and salt. The soup thickens as it stands, so loosen leftovers with a splash of broth when you warm them.",
+      "accent": {
+        "garnish": "peanut",
+        "color": "#B5651D"
+      },
+      "image": "images/dishes/west-african-peanut-soup.jpg",
+      "photo": "images/photos/village.png",
+      "tags": [
+        "vegan",
+        "gluten-free",
+        "one-pot",
+        "budget"
+      ]
+    },
+    {
+      "id": "korean-cucumber-salad",
+      "title": "Korean Cucumber Salad",
+      "category": "Sides",
+      "cuisine": "Korean",
+      "description": "Oi muchim: crisp salted cucumbers tossed with garlic, chili flakes, sesame and a splash of vinegar. Ready in minutes, no stove needed.",
+      "prepMin": 25,
+      "cookMin": 0,
+      "serves": 4,
+      "difficulty": "Easy",
+      "ingredients": [
+        "2 English cucumbers or 6 Persian cucumbers (about 1½ lb)",
+        "1 tsp kosher salt",
+        "2 scallions, thinly sliced",
+        "2 garlic cloves, finely grated",
+        "1–2 tsp gochugaru (Korean chili flakes)",
+        "1 Tbsp rice vinegar",
+        "2 tsp tamari (or soy sauce if gluten isn't a concern)",
+        "1 tsp sugar",
+        "1 tsp toasted sesame oil",
+        "1 tsp toasted sesame seeds"
+      ],
+      "steps": [
+        {
+          "lead": "Slice the cucumbers.",
+          "text": "Trim the ends. Halve any wide cucumbers lengthwise, then slice them about ¼ inch thick on a slight diagonal."
+        },
+        {
+          "lead": "Salt and drain.",
+          "text": "Toss the slices with the salt in a bowl and set aside for 15 minutes. Squeeze them gently by the handful and pour off the liquid; this keeps the salad crisp."
+        },
+        {
+          "lead": "Mix the dressing.",
+          "text": "In a large bowl, stir together the garlic, gochugaru, vinegar, tamari, sugar and sesame oil until the sugar dissolves."
+        },
+        {
+          "lead": "Toss and serve.",
+          "text": "Add the cucumbers and scallions and toss with your hands so every slice is coated. Sprinkle with sesame seeds and serve within the hour, cold or at room temperature."
+        }
+      ],
+      "kitchenNote": "Gochugaru is fruity more than fiery, so taste and add another pinch if you like. Eat it the day it's made, while the cucumbers still snap.",
+      "accent": {
+        "garnish": "cucumber",
+        "color": "#4E8A3A"
+      },
+      "image": "images/dishes/korean-cucumber-salad.jpg",
+      "photo": "images/photos/teahouse.png",
+      "tags": [
+        "vegan",
+        "gluten-free",
+        "no-cook",
+        "quick"
+      ]
+    },
+    {
+      "id": "moroccan-mint-tea",
+      "title": "Moroccan Mint Tea",
+      "category": "Drinks",
+      "cuisine": "Moroccan",
+      "description": "Green tea steeped with a fistful of fresh spearmint and sweetened generously, then poured from a height so every glass wears a little foam.",
+      "prepMin": 5,
+      "cookMin": 10,
+      "serves": 4,
+      "difficulty": "Easy",
+      "ingredients": [
+        "1 Tbsp Chinese gunpowder green tea",
+        "4 cups (1 L) boiling water, divided",
+        "1 large bunch fresh spearmint (about 1 oz)",
+        "3–4 Tbsp sugar, to taste"
+      ],
+      "steps": [
+        {
+          "lead": "Warm the pot.",
+          "text": "Swirl a splash of boiling water around a heatproof teapot to warm it, then pour it out."
+        },
+        {
+          "lead": "Save the spirit.",
+          "text": "Add the tea and 1 cup of the boiling water. Steep for 1 minute, then pour this first glass off and set it aside; it holds the tea's best flavour."
+        },
+        {
+          "lead": "Wash the leaves.",
+          "text": "Pour ½ cup boiling water over the leaves, swirl for a few seconds and discard it. This rinse tames the bitterness."
+        },
+        {
+          "lead": "Add the mint and sugar.",
+          "text": "Push the mint into the pot, add the sugar and the reserved first glass, then fill with the remaining 2½ cups boiling water. Steep for 3–4 minutes."
+        },
+        {
+          "lead": "Mix by pouring.",
+          "text": "Pour out a glass and tip it back into the pot two or three times to dissolve the sugar. Taste, and add more sugar if you like it sweeter."
+        },
+        {
+          "lead": "Pour from a height.",
+          "text": "Lift the pot as you pour into small glasses so each one gets a crown of foam. Serve straight away, with a sprig of mint."
+        }
+      ],
+      "kitchenNote": "Spearmint is the one to use, not peppermint. Practise the high pour over the sink: start low, then lift slowly as the glass fills.",
+      "accent": {
+        "garnish": "mint",
+        "color": "#3E8E5A"
+      },
+      "image": "images/dishes/moroccan-mint-tea.jpg",
+      "photo": "images/photos/bazaar.png",
+      "tags": [
+        "vegan",
+        "gluten-free",
+        "tea",
+        "hospitality"
+      ]
+    },
+    {
+      "id": "argentine-beef-empanadas",
+      "title": "Argentine Beef Empanadas",
+      "category": "Mains",
+      "cuisine": "Argentine",
+      "description": "Flaky hand pies filled with cumin-spiced beef, sweet pepper, egg and olives, crimped by hand and baked until deep golden. Makes 12.",
+      "prepMin": 120,
+      "cookMin": 45,
+      "serves": 6,
+      "difficulty": "Hard",
+      "ingredients": [
+        {
+          "group": "Dough",
+          "items": [
+            "3 cups (375 g) all-purpose flour, plus more for rolling",
+            "1 tsp salt",
+            "½ cup (113 g) cold unsalted butter or lard, cubed",
+            "1 large egg",
+            "½ cup (120 ml) cold water, plus 1–2 Tbsp as needed"
+          ]
+        },
+        {
+          "group": "Filling",
+          "items": [
+            "1 Tbsp olive oil",
+            "1 large onion, finely diced",
+            "1 red bell pepper, finely diced",
+            "1 lb (450 g) ground beef (85% lean)",
+            "2 tsp sweet paprika",
+            "2 tsp ground cumin",
+            "½ tsp crushed red pepper flakes",
+            "1 tsp salt",
+            "4 scallions, thinly sliced",
+            "2 hard-boiled eggs, chopped",
+            "¼ cup pitted green olives, chopped",
+            "1 egg, beaten, for brushing"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "lead": "Make the dough.",
+          "text": "Whisk the flour and salt, then rub in the butter with your fingertips until it looks like coarse crumbs. Beat the egg with the water, stir it in, and add more water a spoonful at a time until the dough holds. Wrap and chill for 1 hour."
+        },
+        {
+          "lead": "Soften the vegetables.",
+          "text": "Heat the oil in a large skillet over medium heat. Cook the onion and red pepper for 8–10 minutes, stirring now and then, until very soft and sweet."
+        },
+        {
+          "lead": "Brown the beef.",
+          "text": "Raise the heat to medium-high, add the beef and cook for 6–8 minutes, breaking it up, until browned with no pink left (160°F). Stir in the paprika, cumin, pepper flakes and salt and cook for 1 minute."
+        },
+        {
+          "lead": "Cool the filling.",
+          "text": "Stir in the scallions, spread the filling on a plate and chill for 30 minutes, until cold. Warm filling melts the dough and makes the empanadas leak."
+        },
+        {
+          "lead": "Roll and cut.",
+          "text": "Heat the oven to 400°F and line two baking sheets with parchment. Roll the dough out thin, about 3 mm (1/8 inch), and cut 12 rounds about 5 inches across, rerolling the scraps once."
+        },
+        {
+          "lead": "Fill and crimp.",
+          "text": "Spoon 2 heaping Tbsp of filling onto each round and top with a little egg and olive. Brush the edge with water, fold into a half-moon and press to seal, then twist the edge into a rope or crimp it with a fork."
+        },
+        {
+          "lead": "Bake.",
+          "text": "Set the empanadas on the sheets, brush with beaten egg and bake for 20–25 minutes, until deep golden. Rest for 5 minutes before serving; the filling is very hot."
+        }
+      ],
+      "kitchenNote": "The twisted rope edge is called the repulgue and takes a few tries; a fork crimp seals just as well. Unbaked empanadas freeze beautifully. Bake from frozen, adding 5 minutes.",
+      "accent": {
+        "garnish": "pepper",
+        "color": "#C0392B"
+      },
+      "image": "images/dishes/argentine-beef-empanadas.jpg",
+      "photo": "images/photos/hacienda.png",
+      "tags": [
+        "beef",
+        "baking",
+        "party",
+        "freezer-friendly"
+      ]
     }
   ]
 }

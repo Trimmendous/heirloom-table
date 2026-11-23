@@ -20,8 +20,9 @@
     "bg": "images/ui/home_bg.jpg",
     "title": {"x": 160, "y": 48, "w": 1600, "size": 118},
     "tagline": {"x": 160, "y": 188, "w": 1600, "size": 28},
-    "rows": {"x": 150, "y": 270, "h": 756, "rowH": 378, "labelSize": 54, "labelH": 64},
-    "card": {"w": 360, "h": 300, "gap": 48, "thumbH": 184, "visible": 4, "titleSize": 28, "metaSize": 26}
+    "rows": {"x": 120, "y": 270, "h": 756, "rowH": 378, "labelSize": 54, "labelH": 64},
+    "card": {"w": 360, "h": 300, "gap": 40, "thumbH": 184, "visible": 4, "titleSize": 28, "metaSize": 26, "focusScale": 1.05},
+    "peek": {"fade": "images/ui/fade_r.png", "fadeX": -10, "fadeW": 114}
   },
   "recipe": {
     "bg": "images/ui/recipe_bg.jpg",

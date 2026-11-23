@@ -47,19 +47,23 @@ The scheduled build job reads this first and updates it last. Roadmap is from `S
   - The repeating `Timer` node (`repeat = true`, 1 s) firing `cookTick` while cook mode is open.
   - The width of an auto-sized `Label` from `boundingRect()`, used to centre the clock icon and text. There is an estimate fallback.
 
+- Home peek and focus scale (added 2026-11-23, run 2):
+  - `Group.clippingRect` on the Home rows group (clips the peeking card at the right title-safe edge).
+  - `Group.scale` + `scaleRotateCenter` on the focused card (1.05). Check that the scaled card's text stays crisp.
+
 ## Growth roadmap (pick one improvement per run)
 
 ### Content
 - [ ] Recipes: fill the thinnest areas first (ongoing, 4 per run).
-  - Soups, Sides and Drinks still have only 1 recipe each; fill them next.
-  - Only 1 Hard recipe (the dumplings).
-  - No Middle Eastern or Latin American *main* yet; no Japanese, Korean or West African dishes at all.
-  - Gluten-free is 5 of 11.
+  - Every category now has 2 (Mains 3). Next: a third Soup, Side, Breakfast, Bread, Dessert and Drink.
+  - 2 Hard recipes (dumplings, empanadas); a Hard dessert or bread would balance it.
+  - Still no Japanese, Middle Eastern *main*, or Caribbean dishes; only 3 recipes contain meat (12 of 15 are vegetarian/vegan).
+  - Gluten-free is 8 of 15.
 
 ### Visual fidelity to the reference
 - [ ] Richer dish illustrations: the piccata asparagus reads as a flat block, and plates could use rim highlights and steam.
 - [ ] Leafy vine decoration down the right edge, plus a small gold house crest above the title, as in the reference.
-- [ ] Home: show that more cards exist off-screen (a peeking 5th card or a fade), and a gentle focus scale.
+- [x] Home: show that more cards exist off-screen (a peeking 5th card or a fade), and a gentle focus scale. (2026-11-23, run 2)
 
 ### Remote and focus
 - [ ] Animate row and list scrolling (Roku `Animation` nodes and CSS transitions in lockstep).
@@ -74,7 +78,7 @@ The scheduled build job reads this first and updates it last. Roadmap is from `S
 ### Performance
 - [ ] Reuse Home card nodes instead of rebuilding them on each key.
 - [ ] Keep the package budget in check.
-  - It is 2.42 MB of 4 MB now (11 recipes). Each new recipe adds a dish JPG of about 50 KB, plus about 45 KB if it needs a new garnish, plus about 60 KB for a new vintage photo.
+  - It is 2.80 MB of 4 MB now (15 recipes). Each new recipe adds a dish JPG of about 50 KB, plus about 45 KB if it needs a new garnish, plus about 60 KB for a new vintage photo.
   - If it gets tight, swap Kalam (427 KB) for a lighter handwriting face, or shrink the dish JPGs.
 
 ### Accessibility
@@ -83,6 +87,7 @@ The scheduled build job reads this first and updates it last. Roadmap is from `S
 - [ ] Check contrast of the gold-on-espresso small text.
 
 ### Web
+- [x] Hairline seams in 9-patch parchment/focus art whenever the stage is scaled (any window that isn't exactly 1920×1080). Web 9-patches are now painted on a `<canvas>`; CSS `border-image` stays as the fallback. (2026-11-23, run 2)
 - [ ] Verify in Chrome and Firefox from `file://`. Only WebKit has been exercised so far, and Firefox's strict file-origin policy may matter for fonts.
 
 ## Log
@@ -125,3 +130,21 @@ The scheduled build job reads this first and updates it last. Roadmap is from `S
     - WebKit screenshots of the 4 new recipe cards and the cook timer were checked by eye: no text overlap, and each garnish and dish looks distinct
   - **Not** verified on a Roku device.
   - Next: add recipes for Soups, Sides and Drinks (e.g. a Japanese or Korean soup, a Latin American side, a Middle Eastern drink). Then make the Home card nodes reusable, or add the leafy vine and crest decoration from the reference.
+- 2026-11-23: **Growth run 2.**
+  - Added 4 recipes, each with its own dish illustration and new garnish:
+    - West African Peanut Soup (Soups, West African, vegan, gluten-free; `peanut` garnish, new `village` photo)
+    - Korean Cucumber Salad / oi muchim (Sides, Korean, vegan, gluten-free with tamari, no-cook; `cucumber` garnish)
+    - Moroccan Mint Tea (Drinks, Moroccan, vegan, gluten-free; `mint` garnish)
+    - Argentine Beef Empanadas (Mains, Argentine, **Hard**, grouped Dough/Filling ingredients, beef to 160°F; `pepper` garnish)
+  - Improvement: **Home rows show there is more.** Same on Roku and web.
+    - Rows moved to x 120 with a 40px gap, so the card after the last visible one peeks in (104px) at the right title-safe edge, clipped by `clippingRect` and softened by a generated fade (`ui/fade_r.png`). The peek and fade disappear at the end of a row and on short rows.
+    - The focused card scales up 5% around its centre.
+    - Web shim gained `clippingRect`, `scale` and `scaleRotateCenter`; `?col=` deep link for screenshots.
+  - Fixed (web): 9-patch seams. The new focus scale exposed hairline seams that WebKit draws in CSS `border-image` at any fractional scale, which also affected every parchment panel in windows that aren't 1920×1080. 9-patches are now drawn on a canvas.
+  - Data: a 0-minute cook time now shows "None"; manifest bumped to 1.2.1.
+  - Verified:
+    - `scripts/check.sh` passes, including 2,102 headless web assertions (13 new Home peek/scale checks)
+    - the package is 2.80 MB of 4 MB
+    - WebKit screenshots of Home, Home scrolled to card 6, the 4 new recipe cards and a 1366×768 window were checked by eye: peek and fade read correctly, no seams, no text overlap
+  - **Not** verified on a Roku device (see the new on-device risks for `clippingRect` and `scale`).
+  - Next: a third recipe in the thinner categories (e.g. a Japanese soup, a Caribbean side, a Hard bread). Then reuse Home card nodes instead of rebuilding them, or add the leafy vine and crest from the reference.

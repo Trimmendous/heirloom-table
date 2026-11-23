@@ -245,7 +245,7 @@ def normalise(doc):
             sec, label = step_timer(st["text"])
             n["steps"].append({"lead": st["lead"], "text": st["text"], "timer": sec, "timerText": label})
         n["prepText"] = fmt_minutes(r["prepMin"])
-        n["cookText"] = fmt_minutes(r["cookMin"])
+        n["cookText"] = fmt_minutes(r["cookMin"]) if r["cookMin"] else "None"
         n["totalText"] = fmt_minutes(r["prepMin"] + r["cookMin"])
         n["garnish"] = "images/garnish/%s.png" % r["accent"]["garnish"]
         n["thumb"] = r["image"]

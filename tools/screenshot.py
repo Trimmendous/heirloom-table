@@ -21,6 +21,11 @@ SHOTS = [
     ("recipe-huevos", "remote=0&screen=recipe&id=huevos-rancheros"),
     ("recipe-manakish", "remote=0&screen=recipe&id=zaatar-manakish"),
     ("recipe-mango", "remote=0&screen=recipe&id=mango-sticky-rice"),
+    ("home-scrolled", "remote=0&col=5"),
+    ("recipe-peanut-soup", "remote=0&screen=recipe&id=west-african-peanut-soup"),
+    ("recipe-cucumber", "remote=0&screen=recipe&id=korean-cucumber-salad"),
+    ("recipe-mint-tea", "remote=0&screen=recipe&id=moroccan-mint-tea"),
+    ("recipe-empanadas", "remote=0&screen=recipe&id=argentine-beef-empanadas&zone=steps&step=2"),
     ("cook-timer", "remote=0&screen=cook&id=pork-and-chive-dumplings&step=5&timer=1"),
 ]
 

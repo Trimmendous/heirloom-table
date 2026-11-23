@@ -211,6 +211,37 @@ for (let r = 0; r < n; r++) {
 for (const k of ['down', 'down', 'down', 'right', 'right', 'down', 'down', 'down', 'down', 'down', 'up', 'up', 'left', 'up', 'up', 'up', 'up', 'up', 'fastforward', 'rewind']) {
   press(k); focusVisible('home ' + k);
 }
+// home rows: the next card peeks in under a fade, clipped at the title-safe edge; focused card is scaled
+{
+  const L = M().L, hl = L.home;
+  const rowCards = (r) => M().homeRows.kids.filter((k) => k.type === 'Group' && k.translation[1] === (r - M().hs.top) * hl.rows.rowH + hl.rows.labelH);
+  const fades = () => M().homeRows.kids.filter((k) => k.type === 'Poster' && k.uri === 'pkg:/' + hl.peek.fade);
+  run('m.hs.row = 0; m.hs.top = 0; m.hs.cols[0] = 0; m.hs.lefts[0] = 0; homeRender()');
+  const clip = M().homeRows.clippingRect;
+  ok(hl.rows.x + clip[0] + clip[2] === L.screen.safe[2], 'home rows clip at the right title-safe edge');
+  ok(hl.rows.x + clip[0] >= 0 && hl.rows.y + clip[1] + clip[3] <= 1080, 'home clip stays on screen');
+  let cards = rowCards(0);
+  const pitch = hl.card.w + hl.card.gap;
+  ok(cards.length === hl.card.visible + 1, 'a long row renders one peeking card past the visible ones: ' + cards.length);
+  const px = cards[hl.card.visible].translation[0];
+  ok(px === hl.card.visible * pitch && px < M().homeClipR && px + hl.card.w > M().homeClipR, 'the peeking card straddles the clip edge');
+  ok(M().homeClipR - px >= 80, 'at least 80px of the peeking card shows: ' + (M().homeClipR - px));
+  ok(cards[hl.card.visible - 1].translation[0] + hl.card.w + 22 * hl.card.focusScale < px + hl.peek.fadeX, 'the fade never covers the last fully visible card (incl. focus glow)');
+  ok(fades().length >= 1, 'a fade sits over the peeking card');
+  ok(cards[0].scale[0] === hl.card.focusScale && cards[1].scale[0] === 1, 'only the focused card is scaled up');
+  ok(cards[0].scaleRotateCenter[0] === hl.card.w / 2, 'focus scale is centred on the card');
+  const n0 = M().rows[0].items.length;
+  run(`m.hs.cols[0] = ${n0 - 1}; homeRender()`);
+  cards = rowCards(0);
+  ok(cards.length === hl.card.visible && cards[hl.card.visible - 1].scale[0] === hl.card.focusScale, 'at the end of a row there is no peeking card and the last card has focus');
+  const shortRow = M().rows.findIndex((r) => r.items.length <= hl.card.visible);
+  run(`m.hs.cols[0] = 0; m.hs.row = ${shortRow}; homeRender()`);
+  ok(rowCards(shortRow).length === M().rows[shortRow].items.length, 'a short row renders exactly its cards');
+  const rowsShown = [M().hs.top, M().hs.top + 1].filter((r) => r < M().rows.length);
+  const longShown = rowsShown.filter((r) => M().rows[r].items.length - M().hs.lefts[r] > hl.card.visible).length;
+  ok(fades().length === longShown, 'one fade per row that continues off-screen');
+  run('m.hs.row = 0; m.hs.top = 0; homeRender()');
+}
 // home Play goes straight to cook mode
 press('play');
 ok(M().screen === 'cook' && M().cs.sIdx === 0, 'Play on Home opens cook mode');
