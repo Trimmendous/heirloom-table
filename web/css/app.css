@@ -1,0 +1,41 @@
+/* The Heirloom Table — web clone. Everything inside #stage is laid out in 1920x1080 "TV pixels"
+   and scaled to the window, exactly like the Roku FHD canvas. */
+@font-face { font-family: "HT Script"; src: url("../assets/fonts/PinyonScript-Regular.ttf"); }
+@font-face { font-family: "HT Serif"; src: url("../assets/fonts/CrimsonText-Regular.ttf"); }
+@font-face { font-family: "HT SerifBold"; src: url("../assets/fonts/CrimsonText-Bold.ttf"); }
+@font-face { font-family: "HT Hand"; src: url("../assets/fonts/Kalam-Regular.ttf"); }
+
+html, body { margin: 0; height: 100%; background: #0b0705; overflow: hidden; font-family: "HT Serif", Georgia, serif; }
+#stage {
+  position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px;
+  transform-origin: 50% 50%; background: #160f0a; overflow: hidden;
+  user-select: none; -webkit-user-select: none; cursor: default;
+}
+.sg { position: absolute; left: 0; top: 0; }
+.sg-Poster { background-repeat: no-repeat; background-position: center; }
+.sg-Label, .sg-MultiStyleLabel { line-height: 1.22; -webkit-font-smoothing: antialiased; }
+.sg-MultiStyleLabel span { font-weight: normal; }
+.hit { position: absolute; left: 0; top: 0; cursor: pointer; }
+
+/* exit overlay (Back on Home) */
+#exit { position: absolute; inset: 0; background: rgba(10,6,4,.92); color: #f2d592; display: flex;
+  flex-direction: column; align-items: center; justify-content: center; font-size: 22px; z-index: 5; }
+#exit[hidden] { display: none; }
+#exit h1 { font-family: "HT Script"; font-weight: normal; font-size: 72px; margin: 0 0 12px; }
+
+/* on-screen Roku-style remote */
+#remote-toggle { position: fixed; right: 14px; top: 12px; z-index: 11; background: #2a1c12; color: #f2d592;
+  border: 1px solid #8c6a3a; border-radius: 18px; padding: 6px 14px; font: 15px "HT Serif", serif; cursor: pointer; }
+#remote { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 10; width: 150px; padding: 18px 14px 22px;
+  background: linear-gradient(#2b2b30, #17171a); border-radius: 70px 70px 40px 40px; box-shadow: 0 10px 30px rgba(0,0,0,.6);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; justify-items: center; }
+body.no-remote #remote { display: none; }
+#remote button { width: 40px; height: 40px; border-radius: 50%; border: 0; background: #3a3a42; color: #eee;
+  font: 15px/1 system-ui, sans-serif; cursor: pointer; box-shadow: inset 0 -2px 0 rgba(0,0,0,.4); }
+#remote button:hover { background: #4a4a54; }
+#remote button.pressed, #remote button:active { background: #d9a94a; color: #1b1208; }
+#remote .ok { background: #5b3b8c; font-weight: bold; }
+#remote .wide { grid-column: span 3; width: 100%; border-radius: 20px; height: 34px; font-size: 13px; }
+#remote .gap { visibility: hidden; }
+#remote .brand { grid-column: span 3; color: #b9a2e0; font: italic 14px "HT Serif", serif; letter-spacing: 2px; }
+#remote .legend { grid-column: span 3; color: #9a9aa6; font: 11px/1.45 system-ui, sans-serif; text-align: center; margin-top: 4px; }

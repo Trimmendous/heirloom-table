@@ -1,0 +1,12 @@
+title=The Heirloom Table
+subtitle=Family recipes, kitchen favorites and new traditions
+major_version=1
+minor_version=0
+build_version=1
+ui_resolutions=fhd
+mm_icon_focus_fhd=pkg:/images/channel/icon_focus_fhd.png
+mm_icon_focus_hd=pkg:/images/channel/icon_focus_hd.png
+splash_screen_fhd=pkg:/images/channel/splash_fhd.jpg
+splash_color=#1E140D
+splash_min_time=1200
+bs_const=DEBUG=false

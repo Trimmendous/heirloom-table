@@ -1,3 +1,7 @@
 dist/
 .DS_Store
 .noai-job-prompt.txt
+tools/.bin/
+tools/.build/
+__pycache__/
+*.pyc

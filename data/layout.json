@@ -1,0 +1,62 @@
+{
+  "_comment": "Shared 1920x1080 layout. Roku (roku/data/layout.json) and web (web/recipes.js) both read this; tools/make_art.py bakes panels at these coordinates. Title-safe area is x 96..1824, y 54..1026.",
+  "screen": {"w": 1920, "h": 1080, "safe": [96, 54, 1824, 1026]},
+  "colors": {
+    "gold": "0xD9A94AFF",
+    "goldLight": "0xF2D592FF",
+    "ink": "0x2E1C10FF",
+    "inkSoft": "0x5A3D24FF",
+    "rust": "0x7A3B16FF",
+    "dim": "0x0A0604C8",
+    "white": "0xFFFFFFFF"
+  },
+  "fonts": {
+    "script": "PinyonScript-Regular.ttf",
+    "serif": "CrimsonText-Regular.ttf",
+    "serifBold": "CrimsonText-Bold.ttf",
+    "hand": "Kalam-Regular.ttf"
+  },
+  "home": {
+    "bg": "images/ui/home_bg.jpg",
+    "title": {"x": 160, "y": 48, "w": 1600, "size": 118},
+    "tagline": {"x": 160, "y": 188, "w": 1600, "size": 28},
+    "rows": {"x": 150, "y": 270, "h": 756, "rowH": 378, "labelSize": 54, "labelH": 64},
+    "card": {"w": 360, "h": 300, "gap": 48, "thumbH": 184, "visible": 4, "titleSize": 28, "metaSize": 26}
+  },
+  "recipe": {
+    "bg": "images/ui/recipe_bg.jpg",
+    "header": {"x": 560, "y": 46, "w": 800, "size": 58},
+    "dish": {"x": 104, "y": 128, "w": 608, "h": 404},
+    "ingCard": {"x": 96, "y": 548, "w": 624, "h": 478},
+    "ingHeader": {"x": 214, "y": 556, "w": 480, "size": 58},
+    "ingList": {"x": 128, "y": 650, "w": 566, "h": 356, "size": 28, "gap": 10, "box": 28, "textX": 44},
+    "garnishSmall": {"x": 100, "y": 538, "s": 116},
+    "titleCard": {"x": 744, "y": 128, "w": 1050, "h": 330},
+    "title": {"x": 790, "y": 142, "w": 840, "h": 104, "size": 78, "sizeLong": 62, "longAt": 24},
+    "desc": {"x": 792, "y": 250, "w": 956, "size": 28},
+    "meta": {"x": 788, "y": 344, "colW": 240, "icon": 46, "size": 27},
+    "garnish": {"x": 1612, "y": 60, "s": 212},
+    "dirHeader": {"x": 770, "y": 464, "w": 600, "size": 62},
+    "steps": {"x": 764, "y": 558, "w": 1050, "h": 290, "size": 28, "gap": 14, "ring": 54, "textX": 74},
+    "noteCard": {"x": 744, "y": 864, "w": 840, "h": 162},
+    "noteHeader": {"x": 790, "y": 860, "w": 600, "size": 46},
+    "note": {"x": 790, "y": 922, "w": 766, "size": 26, "maxLines": 3},
+    "photo": {"x": 1600, "y": 836, "w": 224, "h": 190}
+  },
+  "cook": {
+    "bg": "images/ui/cook_bg.jpg",
+    "sheet": {"x": 150, "y": 96, "w": 1620, "h": 888},
+    "title": {"x": 260, "y": 118, "w": 1400, "size": 66},
+    "counter": {"x": 260, "y": 218, "w": 1400, "size": 32},
+    "ring": {"x": 900, "y": 272, "s": 120, "size": 64},
+    "lead": {"x": 260, "y": 412, "w": 1400, "size": 58},
+    "text": {"x": 300, "y": 494, "w": 1320, "size": 44, "maxLines": 6},
+    "dots": {"y": 874, "s": 22, "gap": 18},
+    "hint": {"x": 260, "y": 912, "w": 1400, "size": 27}
+  },
+  "menu": {
+    "panel": {"x": 600, "y": 120, "w": 720, "h": 840},
+    "title": {"x": 640, "y": 140, "w": 640, "size": 60},
+    "list": {"x": 660, "y": 236, "w": 600, "itemH": 58, "visible": 11, "size": 32}
+  }
+}

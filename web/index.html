@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Heirloom Table</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="stage" role="application" aria-label="The Heirloom Table cookbook. Use the arrow keys, Enter, Escape, Space, [ ] and O."></div>
+<div id="exit" hidden><h1>The Heirloom Table</h1><p>The channel has closed. Press any remote key to open it again.</p></div>
+
+<button id="remote-toggle" type="button" aria-controls="remote">Remote</button>
+<div id="remote" aria-label="On-screen remote">
+  <button data-key="back" title="Back (Backspace / Esc)">&#x21A9;</button>
+  <span class="gap"></span>
+  <button data-key="options" title="Options (* or O)">&#x2731;</button>
+  <span class="gap"></span>
+  <button data-key="up" title="Up">&#x25B2;</button>
+  <span class="gap"></span>
+  <button data-key="left" title="Left">&#x25C0;</button>
+  <button data-key="OK" class="ok" title="OK (Enter)">OK</button>
+  <button data-key="right" title="Right">&#x25B6;</button>
+  <span class="gap"></span>
+  <button data-key="down" title="Down">&#x25BC;</button>
+  <span class="gap"></span>
+  <button data-key="rewind" title="Rewind ([)">&#x23EA;</button>
+  <button data-key="play" title="Play / Pause (Space)">&#x23EF;</button>
+  <button data-key="fastforward" title="Fast forward (])">&#x23E9;</button>
+  <div class="brand">ROKU-STYLE</div>
+  <div class="legend">Arrows · Enter OK · Esc/Bksp Back<br>Space Play · [ ] Rew/FF · O Options</div>
+</div>
+
+<script src="recipes.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/home.js"></script>
+<script src="js/recipe.js"></script>
+<script src="js/cook.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
