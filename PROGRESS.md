@@ -55,14 +55,14 @@ The scheduled build job reads this first and updates it last. Roadmap is from `S
 
 ### Content
 - [ ] Recipes: fill the thinnest areas first (ongoing, 4 per run).
-  - Every category now has 2 (Mains 3). Next: a third Soup, Side, Breakfast, Bread, Dessert and Drink.
-  - 2 Hard recipes (dumplings, empanadas); a Hard dessert or bread would balance it.
-  - Still no Japanese, Middle Eastern *main*, or Caribbean dishes; only 3 recipes contain meat (12 of 15 are vegetarian/vegan).
-  - Gluten-free is 8 of 15.
+  - 19 recipes. Breakfast, Mains, Soups, Sides and Breads have 3; **Desserts and Drinks have 2, so they come next.**
+  - 3 Hard recipes (dumplings, empanadas, baguettes); still no Hard dessert.
+  - Japanese and Caribbean (Jamaican) are now covered. Still no Middle Eastern *main*. Only 3 recipes contain meat (15 of 19 are vegetarian/vegan; miso soup is pescatarian), so the next Mains should be meat or fish.
+  - Gluten-free is 10 of 19.
 
 ### Visual fidelity to the reference
 - [ ] Richer dish illustrations: the piccata asparagus reads as a flat block, and plates could use rim highlights and steam.
-- [ ] Leafy vine decoration down the right edge, plus a small gold house crest above the title, as in the reference.
+- [x] Leafy vine decoration down the right edge, plus a small gold house crest above the title, as in the reference. (2026-11-23, run 3)
 - [x] Home: show that more cards exist off-screen (a peeking 5th card or a fade), and a gentle focus scale. (2026-11-23, run 2)
 
 ### Remote and focus
@@ -78,7 +78,7 @@ The scheduled build job reads this first and updates it last. Roadmap is from `S
 ### Performance
 - [ ] Reuse Home card nodes instead of rebuilding them on each key.
 - [ ] Keep the package budget in check.
-  - It is 2.80 MB of 4 MB now (15 recipes). Each new recipe adds a dish JPG of about 50 KB, plus about 45 KB if it needs a new garnish, plus about 60 KB for a new vintage photo.
+  - It is 3.25 MB of 4 MB now (19 recipes). **Only about 2 more growth runs fit**, so the next run or the one after should free space. Each new recipe adds a dish JPG of about 50 KB, plus about 45 KB if it needs a new garnish, plus about 60 KB for a new vintage photo.
   - If it gets tight, swap Kalam (427 KB) for a lighter handwriting face, or shrink the dish JPGs.
 
 ### Accessibility
@@ -148,3 +148,19 @@ The scheduled build job reads this first and updates it last. Roadmap is from `S
     - WebKit screenshots of Home, Home scrolled to card 6, the 4 new recipe cards and a 1366×768 window were checked by eye: peek and fade read correctly, no seams, no text overlap
   - **Not** verified on a Roku device (see the new on-device risks for `clippingRect` and `scale`).
   - Next: a third recipe in the thinner categories (e.g. a Japanese soup, a Caribbean side, a Hard bread). Then reuse Home card nodes instead of rebuilding them, or add the leafy vine and crest from the reference.
+- 2026-11-23: **Growth run 3.**
+  - Added 4 recipes, each with its own dish illustration and new garnish:
+    - Shakshuka (Breakfast, Tunisian, vegetarian, gluten-free; eggs set in sauce; `tomato` garnish; reuses the `bazaar` photo)
+    - Miso Soup with Tofu and Wakame (Soups, **Japanese**, pescatarian, homemade kombu and bonito dashi; `tofu` garnish; reuses the `teahouse` photo)
+    - Jamaican Rice and Peas (Sides, **Jamaican**, vegan, gluten-free; `bonnet` garnish; new `seaside` photo)
+    - Crusty French Baguettes (Breads, French, **Hard**, 475°F with steam; `butter` garnish; new `boulangerie` photo)
+  - Improvement: **the reference's crest and vine.** The art is baked into the shared backgrounds, so Roku and web stay identical and there is no code or node-count cost.
+    - A gold farmhouse crest with laurel sprigs sits on the top frame line, centred above the title, on Home, Recipe and Cook. It hides the frame lines behind it, as in the reference.
+    - On the Recipe screen, a leafy olive-green vine with gold buds trails down the right edge, from below the title card to the vintage photo. It stays outside the title-safe area (x > 1824), so it never covers text.
+    - `tools/make_art.py` gained `crest()` and `vine()`, and helpers for the new art (tofu, wakame, Scotch bonnet, kidney beans, tomato, baguette, bread slice, butter, steam). `tools/screenshot.py` gained the 4 new recipe shots.
+  - Verified:
+    - `scripts/check.sh` passes: 19 recipes validated, 2,526 headless web assertions, BrightScript lint and twin check, package built
+    - the package is 3.25 MB of 4 MB
+    - WebKit screenshots of the 4 new recipe cards, Home and Cook were checked by eye: the crest clears the script title, the vine clears the step text and chevrons, garnishes don't cover the descriptions, and there is no text overlap. Side props near the dish-image edges (coconut, bread, butter) fall into the table vignette and read a little dim.
+  - **Not** verified on a Roku device.
+  - Next: free package space before adding more art (shrink the dish JPGs or the backgrounds, or swap Kalam), then a third Dessert and Drink (e.g. a Hard dessert, a meat or fish main).

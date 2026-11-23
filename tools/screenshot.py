@@ -27,6 +27,10 @@ SHOTS = [
     ("recipe-mint-tea", "remote=0&screen=recipe&id=moroccan-mint-tea"),
     ("recipe-empanadas", "remote=0&screen=recipe&id=argentine-beef-empanadas&zone=steps&step=2"),
     ("cook-timer", "remote=0&screen=cook&id=pork-and-chive-dumplings&step=5&timer=1"),
+    ("recipe-miso", "remote=0&screen=recipe&id=miso-soup-with-tofu-and-wakame"),
+    ("recipe-rice-peas", "remote=0&screen=recipe&id=jamaican-rice-and-peas"),
+    ("recipe-shakshuka", "remote=0&screen=recipe&id=shakshuka"),
+    ("recipe-baguettes", "remote=0&screen=recipe&id=crusty-french-baguettes&zone=steps&step=6"),
 ]
 
 

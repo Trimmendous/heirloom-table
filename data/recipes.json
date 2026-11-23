@@ -832,6 +832,258 @@
         "party",
         "freezer-friendly"
       ]
+    },
+    {
+      "id": "miso-soup-with-tofu-and-wakame",
+      "title": "Miso Soup with Tofu and Wakame",
+      "category": "Soups",
+      "cuisine": "Japanese",
+      "description": "A gentle, savoury bowl of homemade kombu and bonito dashi with silky tofu, wakame and scallions. Ready in under an hour.",
+      "prepMin": 35,
+      "cookMin": 15,
+      "serves": 4,
+      "difficulty": "Easy",
+      "ingredients": [
+        "4 cups (960 ml) cold water",
+        "1 piece kombu, about 4 × 4 inches (10 g)",
+        "1 cup (10 g) loosely packed katsuobushi (bonito flakes)",
+        "2 Tbsp dried cut wakame seaweed",
+        "7 oz (200 g) silken or soft tofu, in ½-inch cubes",
+        "3–4 Tbsp white or yellow miso paste",
+        "2 scallions, thinly sliced"
+      ],
+      "steps": [
+        {
+          "lead": "Soak the kombu.",
+          "text": "Wipe the kombu with a damp cloth (leave the white bloom, it is flavour) and soak it in the cold water in a saucepan for 30 minutes."
+        },
+        {
+          "lead": "Make the dashi.",
+          "text": "Heat over medium until tiny bubbles cling to the kombu, about 10 minutes, then lift it out before the water boils. Bring to a boil, add the bonito flakes, turn off the heat and steep for 2 minutes."
+        },
+        {
+          "lead": "Strain.",
+          "text": "Pour the dashi through a fine sieve lined with a paper towel. Don't press the flakes, or the broth turns cloudy and fishy."
+        },
+        {
+          "lead": "Plump the wakame.",
+          "text": "Soak the wakame in a bowl of cold water for 5 minutes, until it unfurls, then drain and squeeze it gently."
+        },
+        {
+          "lead": "Warm the tofu.",
+          "text": "Return the dashi to the pan over low heat. Slip in the tofu and wakame and warm through for 2 minutes."
+        },
+        {
+          "lead": "Dissolve the miso.",
+          "text": "Whisk the miso with a ladle of hot dashi until smooth, then stir it into the pot. Taste and add more if you like. Keep it below a boil from now on."
+        },
+        {
+          "lead": "Serve.",
+          "text": "Ladle into warm bowls and scatter over the scallions. Serve straight away, while the miso is still swirling."
+        }
+      ],
+      "kitchenNote": "Never let miso soup boil once the miso is in; it dulls the flavour. For a vegan bowl, soak 3 dried shiitake with the kombu instead of using bonito.",
+      "accent": {
+        "garnish": "tofu",
+        "color": "#4F7A3A"
+      },
+      "image": "images/dishes/miso-soup-with-tofu-and-wakame.jpg",
+      "photo": "images/photos/teahouse.png",
+      "tags": [
+        "pescatarian",
+        "dairy-free",
+        "quick",
+        "umami"
+      ]
+    },
+    {
+      "id": "jamaican-rice-and-peas",
+      "title": "Jamaican Rice and Peas",
+      "category": "Sides",
+      "cuisine": "Jamaican",
+      "description": "Fluffy rice simmered in coconut milk with red kidney beans, thyme, allspice and a whole Scotch bonnet for fragrance, not fire.",
+      "prepMin": 10,
+      "cookMin": 40,
+      "serves": 6,
+      "difficulty": "Easy",
+      "ingredients": [
+        "1½ cups (300 g) long-grain white rice",
+        "1 can (15 oz / 425 g) red kidney beans, drained and rinsed",
+        "1 can (13.5 oz / 400 ml) coconut milk",
+        "1 cup (240 ml) water",
+        "3 scallions, lightly crushed",
+        "3 cloves garlic, crushed",
+        "4 sprigs fresh thyme",
+        "6 whole allspice berries",
+        "1 whole Scotch bonnet pepper, left whole",
+        "1 tsp salt"
+      ],
+      "steps": [
+        {
+          "lead": "Rinse the rice.",
+          "text": "Rinse the rice in a sieve under cold water, swishing it with your hand, until the water runs almost clear. Drain well."
+        },
+        {
+          "lead": "Build the pot.",
+          "text": "In a heavy pot with a tight lid, combine the coconut milk, water, beans, scallions, garlic, thyme, allspice and salt. Bring to a boil over medium-high heat."
+        },
+        {
+          "lead": "Add the rice.",
+          "text": "Stir in the rice, then nestle the whole Scotch bonnet on top. Keep it whole and unbroken so it gives perfume without much heat. Return to a boil."
+        },
+        {
+          "lead": "Steam gently.",
+          "text": "Cover tightly, turn the heat to its lowest setting and cook for 20–25 minutes, without lifting the lid, until the liquid is absorbed and the rice is tender."
+        },
+        {
+          "lead": "Rest and fluff.",
+          "text": "Take the pot off the heat and leave it covered for 10 minutes. Lift out the pepper, scallions and thyme stems, then fluff gently with a fork."
+        }
+      ],
+      "kitchenNote": "Sunday dinner always had rice and peas beside it. Lift that Scotch bonnet out carefully: if it bursts, the whole pot turns fiery. Dried beans soaked overnight taste best.",
+      "accent": {
+        "garnish": "bonnet",
+        "color": "#E8761A"
+      },
+      "image": "images/dishes/jamaican-rice-and-peas.jpg",
+      "photo": "images/photos/seaside.png",
+      "tags": [
+        "vegan",
+        "gluten-free",
+        "coconut",
+        "one-pot"
+      ]
+    },
+    {
+      "id": "shakshuka",
+      "title": "Shakshuka",
+      "category": "Breakfast",
+      "cuisine": "Tunisian",
+      "description": "Eggs gently poached in a smoky, spiced tomato and red pepper sauce, finished with feta and herbs. Bring bread for dipping.",
+      "prepMin": 10,
+      "cookMin": 35,
+      "serves": 4,
+      "difficulty": "Easy",
+      "ingredients": [
+        "2 Tbsp olive oil",
+        "1 large onion, diced",
+        "1 red bell pepper, diced",
+        "3 cloves garlic, thinly sliced",
+        "1 tsp ground cumin",
+        "1 tsp sweet paprika",
+        "1 tsp harissa, or ¼ tsp cayenne",
+        "1 can (28 oz / 800 g) whole peeled tomatoes",
+        "½ tsp salt, plus black pepper to taste",
+        "6 large eggs",
+        "¼ cup (35 g) crumbled feta (optional)",
+        "2 Tbsp chopped parsley or cilantro",
+        "Warm bread, or gluten-free bread, to serve"
+      ],
+      "steps": [
+        {
+          "lead": "Soften the vegetables.",
+          "text": "Heat the oil in a 12-inch skillet over medium heat. Cook the onion and red pepper for 8–10 minutes, stirring now and then, until soft and sweet."
+        },
+        {
+          "lead": "Wake up the spices.",
+          "text": "Add the garlic, cumin, paprika and harissa and stir for 1 minute, until fragrant."
+        },
+        {
+          "lead": "Simmer the sauce.",
+          "text": "Crush the tomatoes into the pan with your hands, add their juice and the salt, and simmer for 10–15 minutes, until thick enough to hold a spoon's trail. Season with pepper."
+        },
+        {
+          "lead": "Nest the eggs.",
+          "text": "Make 6 hollows in the sauce with a spoon and crack an egg into each. Sprinkle the eggs with a pinch of salt."
+        },
+        {
+          "lead": "Poach in the sauce.",
+          "text": "Cover and cook over low heat for 6–8 minutes, until the whites are fully set and the yolks are still soft. Cook a few minutes longer for firm yolks."
+        },
+        {
+          "lead": "Finish and serve.",
+          "text": "Scatter over the feta and herbs and bring the skillet straight to the table, with warm bread for mopping up."
+        }
+      ],
+      "kitchenNote": "Make the sauce the night before and breakfast is ten minutes away: just warm it, nest the eggs and cover. A spoon of labneh on top is never a bad idea.",
+      "accent": {
+        "garnish": "tomato",
+        "color": "#C8321E"
+      },
+      "image": "images/dishes/shakshuka.jpg",
+      "photo": "images/photos/bazaar.png",
+      "tags": [
+        "vegetarian",
+        "gluten-free",
+        "eggs",
+        "one-pan"
+      ]
+    },
+    {
+      "id": "crusty-french-baguettes",
+      "title": "Crusty French Baguettes",
+      "category": "Breads",
+      "cuisine": "French",
+      "description": "Four simple ingredients, a few patient folds and a blast of steam make crackling crusts and open, chewy crumb. Makes 3.",
+      "prepMin": 195,
+      "cookMin": 25,
+      "serves": 6,
+      "difficulty": "Hard",
+      "ingredients": [
+        "4 cups (500 g) bread flour",
+        "1½ cups (360 ml) lukewarm water",
+        "1 tsp (3 g) instant yeast",
+        "2 tsp (10 g) fine sea salt",
+        "Rice flour or semolina, for dusting",
+        "1 cup boiling water, for steam"
+      ],
+      "steps": [
+        {
+          "lead": "Mix and rest.",
+          "text": "Stir the flour and water together until no dry flour remains. Cover and let it rest for 30 minutes so the flour can soak up the water."
+        },
+        {
+          "lead": "Add yeast and salt.",
+          "text": "Sprinkle the yeast and salt over the dough and squeeze them through with a wet hand for 3–4 minutes, until evenly mixed and smooth."
+        },
+        {
+          "lead": "Stretch and fold.",
+          "text": "Cover. Every 30 minutes for 2 hours, wet your hand, stretch each side of the dough up and fold it over the top. It will grow airy, smooth and about half again in size."
+        },
+        {
+          "lead": "Divide and pre-shape.",
+          "text": "Tip onto a lightly floured counter, cut into 3 equal pieces and roll each loosely into a short log. Cover and rest for 20 minutes."
+        },
+        {
+          "lead": "Shape the baguettes.",
+          "text": "Pat each log flat, fold the top third down and the bottom third up, then fold in half and seal the seam with the heel of your hand. Roll out to 14 inches with tapered ends."
+        },
+        {
+          "lead": "Proof.",
+          "text": "Lay them seam side up in the folds of a well-floured towel. Cover and proof for 45 minutes, until puffy. Meanwhile, heat the oven to 475°F with a baking steel and an empty metal pan on the rack below."
+        },
+        {
+          "lead": "Score and bake.",
+          "text": "Roll the loaves seam side down onto parchment. Make 4 long, shallow, overlapping slashes with a razor, slide onto the steel, pour the boiling water into the pan and bake for 22–25 minutes, until deep golden."
+        },
+        {
+          "lead": "Cool.",
+          "text": "Cool on a rack for at least 30 minutes, listening for the crust crackle. Slicing too soon makes the crumb gummy."
+        }
+      ],
+      "kitchenNote": "Don't fear a dark crust: that is where the flavour lives. Shaping takes practice, so don't worry if your first batch looks rustic; it still tastes like Paris.",
+      "accent": {
+        "garnish": "butter",
+        "color": "#E8C25A"
+      },
+      "image": "images/dishes/crusty-french-baguettes.jpg",
+      "photo": "images/photos/boulangerie.png",
+      "tags": [
+        "vegan",
+        "yeasted",
+        "weekend-project",
+        "crusty"
+      ]
     }
   ]
 }

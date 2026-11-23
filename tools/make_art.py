@@ -18,8 +18,8 @@ BUILD = os.path.join(ROOT, "tools", ".build")
 BIN = os.path.join(ROOT, "tools", ".bin", "render")
 L = json.load(open(os.path.join(ROOT, "data", "layout.json")))
 
-GARNISHES = ["lemon", "berries", "chili", "herbs", "apple", "wheat", "spice", "scallion", "lime", "olive", "mango", "peanut", "cucumber", "mint", "pepper"]
-PHOTOS = ["villa", "farmhouse", "cottage", "bazaar", "teahouse", "hacienda", "village"]
+GARNISHES = ["lemon", "berries", "chili", "herbs", "apple", "wheat", "spice", "scallion", "lime", "olive", "mango", "peanut", "cucumber", "mint", "pepper", "tofu", "bonnet", "tomato", "butter"]
+PHOTOS = ["villa", "farmhouse", "cottage", "bazaar", "teahouse", "hacienda", "village", "seaside", "boulangerie"]
 DISH_W, DISH_H = L["recipe"]["dish"]["w"], L["recipe"]["dish"]["h"]
 TABLE = "#160f0a"
 GS = L["recipe"]["garnish"]["s"]  # garnish art is drawn on a 256 grid and rendered at its largest on-screen size  # colour the dish images fade into; baked under the dish slot too
@@ -176,6 +176,62 @@ def ornament_rule(x1, x2, y, color="url(#goldH)", diamond="#b8862e", width=2):
             f'<circle cx="{cx-18}" cy="{y}" r="2.4" fill="{diamond}"/><circle cx="{cx+18}" cy="{y}" r="2.4" fill="{diamond}"/>')
 
 
+def crest(cx, cy=30):
+    """Small gold farmhouse crest with laurel sprigs, sitting on the top frame line (as in the reference)."""
+    hide = (f'<radialGradient id="crh" cx=".5" cy=".5" r=".5"><stop offset=".55" stop-color="#1a110b"/><stop offset="1" stop-color="#1a110b" stop-opacity="0"/></radialGradient>'
+            f'<ellipse cx="{cx}" cy="{cy}" rx="150" ry="30" fill="url(#crh)"/>')
+    house = (f'<g transform="translate({cx} {cy})" fill="none" stroke="url(#gold)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">'
+             f'<path d="M-24 -2 L0 -20 L24 -2"/><path d="M-19 -5 V16 H19 V-5"/><path d="M11 -14 V-22 H16 V-10"/>'
+             f'<path d="M-4 16 V5 H4 V16"/><rect x="-14" y="1" width="6" height="6"/><rect x="8" y="1" width="6" height="6"/>'
+             f'<path d="M-34 18 H34" stroke-width="1.6"/></g>')
+    sprigs = ""
+    for side in (-1, 1):
+        sx = cx + side * 34
+        sprigs += f'<path d="M{sx} {cy+14} Q{sx+side*48} {cy+12} {sx+side*104} {cy-6}" stroke="url(#gold)" stroke-width="2" fill="none" stroke-linecap="round"/>'
+        for i in range(6):
+            t = (i + .6) / 6.4
+            x = sx + side * (104 * t)
+            y = cy + 14 - 20 * t * t
+            for up in (-1, 1):
+                ang = side * (60 if up < 0 else 125) - (0 if side > 0 else 0)
+                ln = 15 - i * 1.2
+                sprigs += (f'<ellipse cx="0" cy="{-ln/2:.1f}" rx="{ln*.24:.1f}" ry="{ln/2:.1f}" fill="url(#gold)" '
+                           f'transform="translate({x:.1f} {y:.1f}) rotate({ang + up * 8 * side:.0f})"/>')
+        sprigs += f'<circle cx="{sx+side*108}" cy="{cy-8}" r="2.6" fill="#e9c77a"/>'
+    return hide + f'<g filter="url(#glow)">{house}{sprigs}</g>'
+
+
+def vine(x, y1, y2, seed=13):
+    """Leafy vine trailing down the right edge of the recipe screen, outside the title-safe area."""
+    rnd = random.Random(seed)
+    pts = []
+    n = 40
+    for i in range(n + 1):
+        t = i / n
+        pts.append((x + 9 * math.sin(t * math.tau * 2.2) + 4 * math.sin(t * 17), y1 + (y2 - y1) * t))
+    d = "M%.1f %.1f " % pts[0] + " ".join("L%.1f %.1f" % p for p in pts[1:])
+    out = [f'<path d="{d}" stroke="#6b5a2a" stroke-width="3.2" fill="none" stroke-linecap="round"/>',
+           f'<path d="{d}" stroke="url(#gold)" stroke-width="1.2" fill="none" opacity=".7"/>']
+    i = 2
+    side = 1
+    while i < n - 1:
+        px, py = pts[i]
+        ln = rnd.uniform(26, 38) * (1 - .35 * (i / n))
+        ang = side * rnd.uniform(48, 70) + 180
+        out.append(leaf(round(px, 1), round(py, 1), round(ln, 1), round(ln * .3, 1), round(ang),
+                        "#8aa04a", "#4a5e22", "#d8d08a"))
+        if rnd.random() < .45:
+            out.append(leaf(round(px, 1), round(py, 1), round(ln * .7, 1), round(ln * .22, 1), round(ang + side * 30),
+                            "#7a9440", "#3e5020", "#d8d08a"))
+        if rnd.random() < .22:
+            bx, by = px - side * 12, py + 6
+            out.append(f'<circle cx="{bx:.1f}" cy="{by:.1f}" r="3.6" fill="#e9c77a"/><circle cx="{bx-1:.1f}" cy="{by-1:.1f}" r="1.2" fill="#fff4d0"/>')
+        side = -side
+        i += rnd.choice((2, 3))
+    out.append(leaf(round(pts[-1][0], 1), round(pts[-1][1], 1), 22, 7, 170, "#8aa04a", "#4a5e22", "#d8d08a"))
+    return f'<g filter="url(#shadow)">' + "".join(out) + "</g>"
+
+
 # ------------------------------------------------------------------ screens
 def ui_jobs():
     W, H = 1920, 1080
@@ -197,17 +253,18 @@ def ui_jobs():
         + divs \
         + ornament_rule(R["ingHeader"]["x"] - 10, ic["x"] + ic["w"] - 34, R["ingList"]["y"] - 14, "#9c6f37", "#9c6f37", 1.4) \
         + ornament_rule(st["x"] + 4, st["x"] + st["w"] - 20, st["y"] - 14) \
-        + ornament_rule(R["noteHeader"]["x"], nc["x"] + nc["w"] - 40, R["note"]["y"] - 4, "#9c6f37", "#9c6f37", 1.2)
+        + ornament_rule(R["noteHeader"]["x"], nc["x"] + nc["w"] - 40, R["note"]["y"] - 4, "#9c6f37", "#9c6f37", 1.2) \
+        + crest(W / 2) + vine(1858, tc["y"] + tc["h"] - 40, R["photo"]["y"] - 6)
     jobs.append(("ui/recipe_bg.jpg", svg(W, H, body, d), W, H, 66))
 
     d, b = background(W, H, 5)
     T = L["home"]["title"]
-    body = b + frame(W, H) + ornament_rule(560, 1360, L["home"]["tagline"]["y"] + 50)
+    body = b + frame(W, H) + crest(W / 2) + ornament_rule(560, 1360, L["home"]["tagline"]["y"] + 50)
     jobs.append(("ui/home_bg.jpg", svg(W, H, body, d), W, H, 72))
 
     d, b = background(W, H, 9)
     s = L["cook"]["sheet"]
-    body = b + frame(W, H) + parchment(s["x"], s["y"], s["w"], s["h"], 31, grain=.3) \
+    body = b + frame(W, H) + crest(W / 2) + parchment(s["x"], s["y"], s["w"], s["h"], 31, grain=.3) \
         + ornament_rule(s["x"] + 300, s["x"] + s["w"] - 300, L["cook"]["counter"]["y"] + 56, "#9c6f37", "#9c6f37", 1.6)
     jobs.append(("ui/cook_bg.jpg", svg(W, H, body, d), W, H, 58))
     return jobs
@@ -514,6 +571,20 @@ def garnish_svg(name):
     elif name == "pepper":
         b = (cilantro(196, 236, 110, -20, 1.0) + bell_pepper(124, 118, 1.25, -14) + bell_pepper(194, 150, .85, 22, ("#ffd86a", "#f0a01a", "#8a4a08")) +
              pepper_strip(150, 196, 70, -8) + pepper_strip(176, 214, 60, 10, "#f0a01a"))
+    elif name == "tofu":
+        b = (wakame(96, 70, 120, 24, 16) + wakame(120, 120, 110, -8, 14) + scallion(214, 210, 150, -24) +
+             tofu_cube(150, 160, 46, -8) + tofu_cube(196, 120, 38, 12) + tofu_cube(120, 100, 34, -18) + scallion_rings(180, 190, 30, 22, 7, rnd, (5, 7)))
+    elif name == "bonnet":
+        b = (thyme(70, 150, 120, -60) + thyme(200, 220, 150, 10) + leaf(170, 74, 80, 24, 30, "#4d7a2a", "#2f5418") +
+             scotch_bonnet(120, 110, 1.3, -14) + scotch_bonnet(188, 160, 1.0, 22, ("#fff09a", "#f2c21a", "#9a6a06")) +
+             allspice(150, 196, 9) + allspice(170, 210, 8) + allspice(206, 206, 8) + allspice(228, 186, 7))
+    elif name == "tomato":
+        b = (leaf(70, 110, 80, 24, -60, "#4d7a2a", "#2f5418") + '<path d="M60 52 Q130 30 210 60" stroke="#4f7a22" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+             '<path d="M100 44 L102 70 M150 40 L154 88 M196 56 L198 110" stroke="#4f7a22" stroke-width="4" fill="none"/>' +
+             tomato(104, 100, 34) + tomato(156, 132, 42) + tomato(204, 150, 32) + garlic_clove(200, 208, 1.1, 20) + cilantro(150, 236, 80, 30, .8))
+    elif name == "butter":
+        b = (wheat(80, 200, 150, -28) + wheat(110, 210, 140, -8) + baguette(160, 110, 190, -38, 40, slashes=3) +
+             butter_pat(176, 182, 1.2, -8) + '<path d="M150 222 L236 196" stroke="#8a8c92" stroke-width="7" stroke-linecap="round"/><path d="M208 204 L246 192" stroke="#4a3a2a" stroke-width="10" stroke-linecap="round"/>')
     else:
         raise KeyError(name)
     k = GS / S
@@ -578,6 +649,24 @@ def photo_svg(name):
               + "".join(f'<path d="M160 42 q{dx} {dy} {dx*1.6:.0f} {dy+14}" stroke="{D}" stroke-width="3" fill="none"/>' for dx, dy in ((-22, -6), (22, -6), (-18, 4), (18, 4), (0, -12)))
               + f'<circle cx="40" cy="30" r="14" fill="#f2e2b8" opacity=".8"/>'
               + "".join(f'<ellipse cx="{x}" cy="{112+rnd.randint(0,8)}" rx="{rnd.randint(4,8)}" ry="3" fill="{M}" opacity=".7"/>' for x in range(6, 170, 17)))
+    elif name == "seaside":
+        sc = (f'<rect y="56" width="170" height="40" fill="{M}"/>' + "".join(f'<path d="M{x} {62+i*7} h{14+(i*7)%10}" stroke="#efe2c4" stroke-width="1" opacity=".6"/>' for i, x in enumerate(range(6, 160, 22)))
+              + f'<path d="M0 92 Q60 82 120 90 T170 88 V128 H0Z" fill="#d8c08a"/><circle cx="120" cy="34" r="12" fill="#f2e2b8" opacity=".85"/>'
+              + f'<rect x="80" y="70" width="40" height="24" fill="#c9a876"/><path d="M74 72 L100 54 L126 72Z" fill="{D}"/><rect x="96" y="80" width="8" height="14" fill="{D}"/>'
+              + f'<path d="M36 124 Q30 80 44 44" stroke="{D}" stroke-width="4" fill="none"/>'
+              + "".join(f'<path d="M44 44 q{dx} {dy} {dx*1.7:.0f} {dy+16}" stroke="{D}" stroke-width="3.4" fill="none"/>' for dx, dy in ((-24, -8), (24, -8), (-18, 4), (20, 4), (2, -14)))
+              + f'<path d="M136 128 Q140 104 150 92" stroke="{D}" stroke-width="3" fill="none"/>'
+              + "".join(f'<path d="M150 92 q{dx} {dy} {dx*1.5:.0f} {dy+12}" stroke="{D}" stroke-width="2.6" fill="none"/>' for dx, dy in ((-16, -6), (16, -6), (-12, 4), (14, 4)))
+              + "".join(f'<ellipse cx="{x}" cy="{110+rnd.randint(0,10)}" rx="{rnd.randint(3,6)}" ry="2" fill="{M}" opacity=".6"/>' for x in range(4, 170, 19)))
+    elif name == "boulangerie":
+        sc = (f'<rect x="0" y="0" width="170" height="128" fill="#b8956a"/><rect x="14" y="10" width="142" height="100" fill="#c9a876"/>'
+              f'<rect x="24" y="16" width="122" height="16" fill="{D}"/><path d="M40 24 h90" stroke="#efe2c4" stroke-width="3" stroke-dasharray="7 4"/>'
+              + "".join(f'<path d="M{x} 36 h14 l-3 14 h-8Z" fill="{D if i % 2 else M}"/>' for i, x in enumerate(range(14, 156, 14)))
+              + f'<rect x="22" y="56" width="70" height="42" fill="{D}"/><rect x="104" y="56" width="40" height="54" fill="{M}"/><rect x="108" y="60" width="32" height="24" fill="{D}"/>'
+              + "".join(f'<path d="M{28+i*14} 94 L{38+i*14} 64" stroke="#d6bb8a" stroke-width="5" stroke-linecap="round"/>' for i in range(5))
+              + f'<path d="M22 76 h70" stroke="#a8855a" stroke-width="2"/><circle cx="136" cy="96" r="2" fill="#efe2c4"/>'
+              + f'<rect x="0" y="110" width="170" height="18" fill="{M}"/>' + "".join(f'<path d="M{x} 110 v18 M{x+9} 119 h-18" stroke="{D}" stroke-width=".8" opacity=".6"/>' for x in range(9, 170, 18))
+              + f'<path d="M156 30 V100" stroke="{D}" stroke-width="2"/><circle cx="160" cy="46" r="8" fill="{D}"/>')
     else:
         raise KeyError(name)
     body = f"""
@@ -1061,6 +1150,211 @@ def dish_empanadas(rnd):
     return b
 
 
+# ------------------------------------------------------------------ growth run 3 ingredients
+def tofu_cube(cx, cy, s, ang):
+    return (f'<g transform="translate({cx} {cy}) rotate({ang})"><rect x="{-s/2}" y="{-s/2}" width="{s}" height="{s}" rx="{s*.12:.1f}" fill="#f4ecd4" stroke="#cfc29c" stroke-width="1"/>'
+            f'<path d="M{-s/2} {-s/2} l{s*.22:.1f} {-s*.18:.1f} h{s} l{-s*.22:.1f} {s*.18:.1f}Z" fill="#fffaea" stroke="#d8ccaa" stroke-width=".8"/>'
+            f'<path d="M{s/2} {-s/2} l{s*.22:.1f} {-s*.18:.1f} v{s} l{-s*.22:.1f} {s*.18:.1f}Z" fill="#e2d6b4" stroke="#cfc29c" stroke-width=".8"/>'
+            f'<ellipse cx="{-s*.18:.1f}" cy="{-s*.15:.1f}" rx="{s*.2:.1f}" ry="{s*.08:.1f}" fill="#fff" opacity=".5"/></g>')
+
+
+def wakame(x, y, ln, ang, wd=14):
+    g = uid("wk")
+    n = 6
+    top = " ".join("Q%.1f %.1f %.1f %.1f" % (ln * (i + .5) / n, -wd * (1.4 if i % 2 else .6), ln * (i + 1) / n, -wd * .9) for i in range(n))
+    bot = " ".join("Q%.1f %.1f %.1f %.1f" % (ln * (n - i - .5) / n, wd * (1.3 if i % 2 else .5), ln * (n - i - 1) / n, wd * .8) for i in range(n))
+    return (f'<linearGradient id="{g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f7a2e"/><stop offset=".5" stop-color="#2e5a1c"/><stop offset="1" stop-color="#1a3a10"/></linearGradient>'
+            f'<g transform="translate({x} {y}) rotate({ang})"><path d="M0 {-wd*.9:.1f} {top} L{ln} {wd*.8:.1f} {bot}Z" fill="url(#{g})" opacity=".95"/>'
+            f'<path d="M4 0 Q{ln*.5} -4 {ln-4} 0" stroke="#8ab85a" stroke-width="1.6" fill="none" opacity=".55"/></g>')
+
+
+def scotch_bonnet(cx, cy, s, ang, c=("#ffd27a", "#f07a12", "#9a3a06")):
+    g = uid("sb")
+    return (f'<radialGradient id="{g}" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="{c[0]}"/><stop offset=".5" stop-color="{c[1]}"/><stop offset="1" stop-color="{c[2]}"/></radialGradient>'
+            f'<g transform="translate({cx} {cy}) rotate({ang}) scale({s})">'
+            f'<path d="M-34 -14 C-44 6 -36 30 -18 34 C-10 40 -4 32 0 28 C6 36 14 40 22 32 C40 26 44 2 34 -14 C26 -28 12 -26 0 -22 C-12 -28 -26 -28 -34 -14Z" fill="url(#{g})" stroke="{c[2]}" stroke-width="1.4"/>'
+            f'<path d="M-14 -20 C-18 4 -14 24 -10 32 M14 -20 C18 4 16 24 12 32" stroke="{c[2]}" stroke-width="1.6" opacity=".45" fill="none"/>'
+            f'<ellipse cx="-18" cy="-6" rx="6" ry="13" fill="#fff" opacity=".35" transform="rotate(10 -18 -6)"/>'
+            f'<path d="M-14 -24 Q0 -32 14 -24 Q6 -20 0 -22 Q-6 -20 -14 -24Z" fill="#3f6a1e"/>'
+            f'<path d="M0 -26 Q-2 -40 6 -48" stroke="#4f7a22" stroke-width="6" fill="none" stroke-linecap="round"/></g>')
+
+
+def allspice(cx, cy, r=7):
+    return (f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="#5a2e14" stroke="#2e160a" stroke-width="1"/>'
+            f'<circle cx="{cx-r*.3:.1f}" cy="{cy-r*.35:.1f}" r="{r*.3:.1f}" fill="#9a6036" opacity=".7"/><circle cx="{cx+r*.2:.1f}" cy="{cy-r*.8:.1f}" r="{r*.22:.1f}" fill="#2e160a"/>')
+
+
+def kidney_bean(cx, cy, ang, s=1.0):
+    return (f'<g transform="translate({cx:.1f} {cy:.1f}) rotate({ang:.0f}) scale({s})"><path d="M-10 -3 C-10 -9 -2 -8 0 -5 C2 -8 10 -9 10 -3 C10 6 -10 6 -10 -3Z" fill="#7a1a1e" stroke="#4a0a10" stroke-width=".8"/>'
+            f'<ellipse cx="-4" cy="-3" rx="3" ry="1.4" fill="#c86a6a" opacity=".6"/></g>')
+
+
+def tomato(cx, cy, r, c=("#ff8a6a", "#d8301a", "#7a0c08")):
+    g = uid("tm")
+    cal = "".join(f'<path d="M0 0 Q{r*.12*math.cos(a+.5):.1f} {r*.12*math.sin(a+.5):.1f} {r*.5*math.cos(a):.1f} {r*.5*math.sin(a):.1f} Q{r*.12*math.cos(a-.5):.1f} {r*.12*math.sin(a-.5):.1f} 0 0Z" fill="#3f6a1e"/>'
+                  for a in [k * math.tau / 5 - math.pi / 2 for k in range(5)])
+    return (f'<radialGradient id="{g}" cx=".35" cy=".35" r=".8"><stop offset="0" stop-color="{c[0]}"/><stop offset=".55" stop-color="{c[1]}"/><stop offset="1" stop-color="{c[2]}"/></radialGradient>'
+            f'<g transform="translate({cx} {cy})"><ellipse rx="{r}" ry="{r*.88:.1f}" fill="url(#{g})" stroke="{c[2]}" stroke-width="1"/>'
+            f'<ellipse cx="{-r*.38:.1f}" cy="{-r*.3:.1f}" rx="{r*.22:.1f}" ry="{r*.13:.1f}" fill="#fff" opacity=".45" transform="rotate(-30 {-r*.38:.1f} {-r*.3:.1f})"/>'
+            f'<g transform="translate(0 {-r*.62:.1f})">{cal}<path d="M0 0 q2 -6 -2 -12" stroke="#4f7a22" stroke-width="3" fill="none"/></g></g>')
+
+
+def garlic_clove(cx, cy, s, ang):
+    return (f'<g transform="translate({cx} {cy}) rotate({ang}) scale({s})"><path d="M-16 10 C-20 -6 -6 -20 4 -26 C2 -14 18 -4 14 10 C10 16 -12 16 -16 10Z" fill="#f6efe0" stroke="#c8b898" stroke-width="1.2"/>'
+            f'<path d="M-8 8 C-8 -6 0 -16 4 -24" stroke="#d8ccb0" stroke-width="1.4" fill="none"/><path d="M4 -26 l2 -5" stroke="#b8a888" stroke-width="2"/></g>')
+
+
+def baguette(x, y, ln, ang, wd=44, rnd=None, slashes=4):
+    g = uid("bg")
+    cuts = ""
+    for i in range(slashes):
+        t = (i + .7) / (slashes + .4)
+        cx = -ln / 2 + ln * t
+        cuts += (f'<path d="M{cx-ln*.09:.1f} {wd*.12:.1f} Q{cx:.1f} {-wd*.32:.1f} {cx+ln*.1:.1f} {-wd*.18:.1f} Q{cx:.1f} {-wd*.02:.1f} {cx-ln*.09:.1f} {wd*.12:.1f}Z" fill="#f2d79a" stroke="#8a5418" stroke-width="1"/>'
+                 f'<path d="M{cx-ln*.07:.1f} {wd*.02:.1f} Q{cx:.1f} {-wd*.28:.1f} {cx+ln*.09:.1f} {-wd*.2:.1f}" stroke="#7a3e0c" stroke-width="2.4" fill="none"/>')
+    return (f'<linearGradient id="{g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6a650"/><stop offset=".45" stop-color="#c4782a"/><stop offset="1" stop-color="#7a4210"/></linearGradient>'
+            f'<g transform="translate({x} {y}) rotate({ang})" filter="url(#shadow)"><path d="M{-ln/2} 0 C{-ln/2} {-wd*.6:.1f} {-ln/2+wd*.6:.1f} {-wd/2} {-ln/2+wd} {-wd/2} H{ln/2-wd} C{ln/2-wd*.6:.1f} {-wd/2} {ln/2} {-wd*.6:.1f} {ln/2} 0 C{ln/2} {wd*.55:.1f} {ln/2-wd*.6:.1f} {wd/2} {ln/2-wd} {wd/2} H{-ln/2+wd} C{-ln/2+wd*.6:.1f} {wd/2} {-ln/2} {wd*.55:.1f} {-ln/2} 0Z" fill="url(#{g})" stroke="#6a3608" stroke-width="1.4"/>'
+            f'<path d="M{-ln/2} 0 C{-ln/2} {-wd*.6:.1f} {-ln/2+wd*.6:.1f} {-wd/2} {-ln/2+wd} {-wd/2} H{ln/2-wd} C{ln/2-wd*.6:.1f} {-wd/2} {ln/2} {-wd*.6:.1f} {ln/2} 0Z" filter="url(#crust)" opacity=".6"/>'
+            f'{cuts}<path d="M{-ln/2+wd*.8:.1f} {-wd*.36:.1f} H{ln/2-wd*.8:.1f}" stroke="#fff4d0" stroke-width="3" opacity=".25" stroke-linecap="round"/></g>')
+
+
+def bread_slice(cx, cy, r, ang, rnd):
+    g = uid("bs")
+    holes = "".join(f'<ellipse cx="{rnd.uniform(-r*.55, r*.55):.1f}" cy="{rnd.uniform(-r*.4, r*.4):.1f}" rx="{rnd.uniform(1.5, 4.5):.1f}" ry="{rnd.uniform(1, 3):.1f}" fill="#d8b878" opacity=".8"/>' for _ in range(18))
+    return (f'<radialGradient id="{g}"><stop offset="0" stop-color="#f8e4b4"/><stop offset=".8" stop-color="#ecd096"/><stop offset="1" stop-color="#d8b06a"/></radialGradient>'
+            f'<g transform="translate({cx} {cy}) rotate({ang})" filter="url(#shadow)"><ellipse rx="{r}" ry="{r*.72:.1f}" fill="#a8641e" stroke="#6a3608" stroke-width="1.2"/>'
+            f'<ellipse rx="{r*.88:.1f}" ry="{r*.62:.1f}" fill="url(#{g})"/>{holes}</g>')
+
+
+def butter_pat(cx, cy, s, ang):
+    return (f'<g transform="translate({cx} {cy}) rotate({ang}) scale({s})"><path d="M-30 -10 L20 -18 L36 -4 L-14 4Z" fill="#fff4b8" stroke="#d8c070" stroke-width="1"/>'
+            f'<path d="M-30 -10 L-14 4 L-14 22 L-30 8Z" fill="#f2dc84" stroke="#d8c070" stroke-width="1"/><path d="M-14 4 L36 -4 L36 14 L-14 22Z" fill="#f8e698" stroke="#d8c070" stroke-width="1"/>'
+            f'<path d="M-20 -8 Q4 -16 26 -10" stroke="#fffbe0" stroke-width="2.4" fill="none" opacity=".8"/></g>')
+
+
+def egg_in_sauce(x, y, r, rnd):
+    g = uid("yk")
+    return (f'<path d="{blob(x, y, r, rnd, .16)}" fill="#fbf8f0" stroke="#e8dcc0" stroke-width="1"/>'
+            f'<radialGradient id="{g}" cx=".38" cy=".35" r=".7"><stop offset="0" stop-color="#ffe27a"/><stop offset=".6" stop-color="#f6a81a"/><stop offset="1" stop-color="#d9800c"/></radialGradient>'
+            f'<circle cx="{x+3}" cy="{y+3}" r="{r*.42:.1f}" fill="#8a5a1a" opacity=".3"/><circle cx="{x+1}" cy="{y}" r="{r*.42:.1f}" fill="url(#{g})"/>'
+            f'<ellipse cx="{x-r*.12:.1f}" cy="{y-r*.16:.1f}" rx="{r*.13:.1f}" ry="{r*.07:.1f}" fill="#fff" opacity=".6"/>')
+
+
+def steam(x, y, h, n=3, gap=26):
+    return "".join(f'<path d="M{x+i*gap} {y} q-12 {-h*.25:.0f} 2 {-h*.5:.0f} q14 {-h*.25:.0f} 0 {-h*.5:.0f}" stroke="#fff" stroke-width="7" fill="none" opacity=".16" stroke-linecap="round" filter="url(#soft)"/>'
+                   for i in range(n))
+
+
+def dish_miso(rnd):
+    cx, cy = 286, 206
+    b = (f'<ellipse cx="{cx+6}" cy="{cy+16}" rx="176" ry="176" fill="#000" opacity=".65" filter="url(#soft)"/>'
+         '<radialGradient id="lac" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#4a1410"/><stop offset=".7" stop-color="#2a0a08"/><stop offset="1" stop-color="#120404"/></radialGradient>'
+         f'<circle cx="{cx}" cy="{cy}" r="172" fill="url(#lac)" stroke="#0a0202" stroke-width="3"/>'
+         f'<circle cx="{cx}" cy="{cy}" r="160" fill="none" stroke="#a8241a" stroke-width="8"/>'
+         f'<path d="M{cx-120} {cy-110} A164 164 0 0 1 {cx+60} {cy-156}" stroke="#fff" stroke-width="6" opacity=".18" fill="none" stroke-linecap="round"/>'
+         '<radialGradient id="miso" cx=".45" cy=".42" r=".6"><stop offset="0" stop-color="#e8c27a"/><stop offset=".7" stop-color="#c8963e"/><stop offset="1" stop-color="#9a6a24"/></radialGradient>'
+         f'<circle cx="{cx}" cy="{cy}" r="150" fill="url(#miso)"/>')
+    for _ in range(9):  # miso clouds
+        b += f'<path d="{blob(cx + rnd.uniform(-80, 80), cy + rnd.uniform(-80, 80), rnd.uniform(22, 42), rnd, .3, 10)}" fill="#f2dca8" opacity=".35" filter="url(#soft)"/>'
+    for _ in range(7):
+        a, d = rnd.uniform(0, math.tau), rnd.uniform(20, 105)
+        b += wakame(cx + d * math.cos(a) - 30, cy + d * math.sin(a), rnd.uniform(56, 80), rnd.uniform(0, 180), rnd.uniform(9, 13))
+    cubes = [(cx + rnd.uniform(-95, 95), cy + rnd.uniform(-95, 95)) for _ in range(14)]
+    for (x, y) in sorted([p for p in cubes if (p[0] - cx) ** 2 + (p[1] - cy) ** 2 < 112 ** 2], key=lambda p: p[1]):
+        b += tofu_cube(x, y, rnd.uniform(24, 30), rnd.uniform(-20, 20))
+    b += scallion_rings(cx, cy, 110, 110, 22, rnd, (3, 5.5))
+    b += f'<ellipse cx="{cx-50}" cy="{cy-60}" rx="60" ry="16" fill="#fff" opacity=".14" transform="rotate(-25 {cx-50} {cy-60})"/>'
+    b += steam(cx - 30, 70, 120)
+    b += ('<g filter="url(#shadow)"><rect x="478" y="92" width="30" height="16" rx="6" fill="#d8c8a0"/>'
+          '<path d="M470 386 L560 40" stroke="#2a1a12" stroke-width="10" stroke-linecap="round"/><path d="M494 390 L574 50" stroke="#2a1a12" stroke-width="10" stroke-linecap="round"/>'
+          '<path d="M546 96 L560 40 M562 104 L574 50" stroke="#a8241a" stroke-width="10" stroke-linecap="round"/></g>')
+    b += scallion(60, 380, 140, 50) + tofu_cube(88, 76, 54, -12)
+    return b
+
+
+def dish_rice_peas(rnd):
+    cx, cy = 290, 208
+    b = plate(cx, cy, 186, rnd, rim="#e8dcc4")
+    b += '<circle cx="290" cy="208" r="134" fill="none" stroke="#2a7a8a" stroke-width="4" opacity=".55"/><circle cx="290" cy="208" r="126" fill="none" stroke="#e8a020" stroke-width="2" opacity=".6"/>'
+    g = uid("ri")
+    b += (f'<radialGradient id="{g}" cx=".42" cy=".35" r=".7"><stop offset="0" stop-color="#fffaf0"/><stop offset=".7" stop-color="#f0e4ca"/><stop offset="1" stop-color="#cfbf98"/></radialGradient>'
+          f'<path d="{blob(cx, cy, 116, rnd, .07, 20)}" fill="url(#{g})" filter="url(#shadow)"/>')
+    items = []
+    for _ in range(380):
+        a, d = rnd.uniform(0, math.tau), 108 * math.sqrt(rnd.random())
+        items.append(("r", cx + d * math.cos(a), cy + d * math.sin(a)))
+    for _ in range(46):
+        a, d = rnd.uniform(0, math.tau), 100 * math.sqrt(rnd.random())
+        items.append(("b", cx + d * math.cos(a), cy + d * math.sin(a)))
+    rnd.shuffle(items)
+    for k, x, y in items:
+        if k == "r":
+            b += f'<ellipse cx="{x:.0f}" cy="{y:.0f}" rx="6" ry="2.4" transform="rotate({rnd.uniform(0,180):.0f} {x:.0f} {y:.0f})" fill="{rnd.choice(("#ffffff", "#f8f0de", "#ecdcbc", "#f2e6cc"))}" opacity=".95"/>'
+        else:
+            b += kidney_bean(x, y, rnd.uniform(0, 180), rnd.uniform(.9, 1.15))
+    b += thyme(250, 250, 110, -60) + thyme(330, 180, 80, 40)
+    b += scotch_bonnet(318, 176, .9, 18)
+    b += f'<ellipse cx="250" cy="150" rx="46" ry="12" fill="#fff" opacity=".2" transform="rotate(-20 250 150)"/>'
+    # coconut half, allspice, spare pepper
+    b += ('<g filter="url(#shadow)"><circle cx="494" cy="318" r="50" fill="#6a3e1c"/><circle cx="494" cy="318" r="50" filter="url(#crust)" opacity=".8"/>'
+          '<circle cx="494" cy="318" r="41" fill="#fffdf6"/><circle cx="494" cy="318" r="34" fill="#f6f0e2"/><ellipse cx="480" cy="304" rx="12" ry="6" fill="#fff" opacity=".8"/></g>')
+    for (x, y) in ((70, 70), (88, 84), (64, 96), (98, 62), (110, 92)):
+        b += allspice(x, y, 8)
+    b += scotch_bonnet(540, 84, .95, -20, ("#fff09a", "#f2c21a", "#9a6a06")) + leaf(80, 380, 70, 22, -30, "#4f7a28") + leaf(110, 384, 54, 18, 24, "#5f8a32")
+    return b
+
+
+def dish_shakshuka(rnd):
+    cx, cy = 280, 208
+    b = (f'<ellipse cx="{cx+8}" cy="{cy+16}" rx="184" ry="184" fill="#000" opacity=".65" filter="url(#soft)"/>'
+         f'<rect x="{cx+160}" y="{cy-22}" width="150" height="40" rx="16" fill="#1e1c1a" stroke="#0e0c0a" stroke-width="2" transform="rotate(-10 {cx} {cy})"/>'
+         '<radialGradient id="iron" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#4a4642"/><stop offset=".8" stop-color="#232120"/><stop offset="1" stop-color="#121110"/></radialGradient>'
+         f'<circle cx="{cx}" cy="{cy}" r="180" fill="url(#iron)" stroke="#0a0908" stroke-width="4"/>'
+         f'<path d="M{cx-140} {cy-100} A172 172 0 0 1 {cx+40} {cy-170}" stroke="#8a8680" stroke-width="4" opacity=".35" fill="none" stroke-linecap="round"/>'
+         '<radialGradient id="shk" cx=".45" cy=".42" r=".65"><stop offset="0" stop-color="#d8442a"/><stop offset=".75" stop-color="#b02a16"/><stop offset="1" stop-color="#7a160a"/></radialGradient>'
+         f'<circle cx="{cx}" cy="{cy}" r="160" fill="url(#shk)"/><circle cx="{cx}" cy="{cy}" r="158" filter="url(#crust)" opacity=".45"/>')
+    b += flecks(cx, cy, 150, 150, 90, rnd, ("#e8603a", "#7a1a0c", "#f07a4a", "#c8321e"), (2, 6))
+    for _ in range(14):  # pepper bits
+        x, y = cx + rnd.uniform(-130, 130), cy + rnd.uniform(-130, 130)
+        if (x - cx) ** 2 + (y - cy) ** 2 < 140 ** 2:
+            b += f'<rect x="{x:.0f}" y="{y:.0f}" width="16" height="10" rx="4" transform="rotate({rnd.uniform(0,180):.0f} {x:.0f} {y:.0f})" fill="#e8301a" stroke="#8a1208" stroke-width="1"/>'
+    for i in range(6):
+        a = i * math.tau / 6 + .2
+        b += egg_in_sauce(cx + 92 * math.cos(a), cy + 92 * math.sin(a), 38, rnd)
+    for _ in range(16):  # feta
+        x, y = cx + rnd.uniform(-120, 120), cy + rnd.uniform(-120, 120)
+        if (x - cx) ** 2 + (y - cy) ** 2 < 135 ** 2:
+            b += f'<path d="{blob(x, y, rnd.uniform(5, 9), rnd, .35, 7)}" fill="#fbf8f0" stroke="#e0d8c4" stroke-width=".8"/>'
+    for (x, y, a) in ((cx - 10, cy - 10, 20), (cx + 60, cy + 40, -40), (cx - 70, cy + 50, 80), (cx + 20, cy - 80, -10)):
+        b += cilantro(x, y, 30, a, .5)
+    b += flecks(cx, cy, 140, 140, 40, rnd, ("#3f7a24", "#5c9a33"), (1.5, 3))
+    b += steam(cx - 40, 60, 100)
+    b += bread_slice(506, 96, 54, 20, rnd) + bread_slice(528, 150, 50, 40, rnd)
+    b += tomato(506, 330, 34) + tomato(462, 364, 26) + garlic_clove(70, 80, 1.1, -20) + cilantro(60, 386, 100, 20, .8)
+    return b
+
+
+def dish_baguettes(rnd):
+    b = (f'<ellipse cx="300" cy="216" rx="260" ry="176" fill="#000" opacity=".55" filter="url(#soft)"/>'
+         '<g transform="rotate(-4 300 206)"><rect x="70" y="52" width="470" height="308" rx="10" fill="#e2d6b8"/>'
+         + "".join(f'<rect x="70" y="{y}" width="470" height="9" fill="#a8302a" opacity=".5"/>' for y in (76, 94, 318, 336))
+         + '<rect x="70" y="52" width="470" height="308" rx="10" filter="url(#grain)" opacity=".5"/>'
+         '<rect x="70" y="52" width="470" height="308" rx="10" fill="none" stroke="#a89878" stroke-width="2"/></g>')
+    b += flecks(300, 206, 240, 150, 120, rnd, ("#fbf6ea", "#e8dcc0", "#d8c49a"), (.8, 2)).replace("/>", ' opacity=".6"/>')
+    b += baguette(300, 120, 470, -8, 50) + baguette(292, 206, 480, -4, 52) + baguette(304, 292, 440, 3, 50)
+    b += bread_slice(492, 350, 40, -20, rnd) + bread_slice(446, 366, 36, 10, rnd)
+    b += butter_pat(130, 340, 1.2, -10) + wheat(548, 230, 150, 14) + wheat(560, 236, 130, 30)
+    return b
+
+
+EXTRA_DISHES = {
+    "miso-soup-with-tofu-and-wakame": dish_miso,
+    "jamaican-rice-and-peas": dish_rice_peas,
+    "shakshuka": dish_shakshuka,
+    "crusty-french-baguettes": dish_baguettes,
+}
+
+
 DISHES = {
     "tuscan-lemon-chicken-piccata": dish_piccata,
     "blueberry-buttermilk-pancakes": dish_pancakes,
@@ -1077,6 +1371,7 @@ DISHES = {
     "korean-cucumber-salad": dish_cucumber,
     "moroccan-mint-tea": dish_mint_tea,
     "argentine-beef-empanadas": dish_empanadas,
+    **EXTRA_DISHES,
 }
 
 
