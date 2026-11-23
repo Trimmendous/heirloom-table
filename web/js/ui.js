@@ -143,14 +143,17 @@ function fontKindFromUri(u) {
   return 'serif';
 }
 
-function Timer(t, p) { SGNode.call(this, t, null); this.duration = 1; this._obs = {}; }
+function Timer(t, p) { SGNode.call(this, t, null); this.duration = 1; this.repeat = false; this._obs = {}; }
 Timer.prototype = Object.create(SGNode.prototype);
 Timer.prototype.observeField = function (f, fn) { this._obs[f] = fn; };
 Object.defineProperty(Timer.prototype, 'control', {
   set: function (c) {
     var self = this;
+    var fire = function () { var fn = self._obs.fire; if (fn) window[fn](); };
     clearTimeout(this._t);
-    if (c === 'start') this._t = setTimeout(function () { var fn = self._obs.fire; if (fn) window[fn](); }, this.duration * 1000);
+    clearInterval(this._i);
+    if (c === 'start' && this.repeat) this._i = setInterval(fire, this.duration * 1000);
+    else if (c === 'start') this._t = setTimeout(fire, this.duration * 1000);
   }
 });
 
@@ -297,5 +300,8 @@ function showToast(text) {
   m.toastTimer.control = 'stop';
   m.toastTimer.control = 'start';
 }
+
+/* Milliseconds clock for timers (end time is stored, so a late tick never drifts). */
+function nowMs() { return Date.now(); }
 
 function onToastTimer() { m.toast.visible = false; }

@@ -50,7 +50,7 @@ const document = {
 const store = {};
 const ctx = {
   document, console, URLSearchParams, setTimeout: (fn) => { ctx.__timers.push(fn); return ctx.__timers.length; },
-  clearTimeout() {}, __timers: [], innerWidth: 1920, innerHeight: 1080, location: { search: '' },
+  clearTimeout() {}, setInterval: () => 1, clearInterval() {}, __timers: [], innerWidth: 1920, innerHeight: 1080, location: { search: '' },
   addEventListener() {},
   localStorage: { getItem: (k) => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); } }
 };
@@ -190,7 +190,16 @@ for (let r = 0; r < n; r++) {
   press('up', 'up', 'left', 'right');
   focusVisible(rec.id + ' zones');
   run('cookOpen(0)');
-  for (let i = 0; i < rec.steps.length + 1; i++) { press('OK'); focusVisible(rec.id + ' cook'); }
+  for (let i = 0; i < rec.steps.length + 1; i++) {
+    const before = M().cs.sIdx;
+    const hasTimer = rec.steps[before].timer > 0;
+    press(hasTimer ? 'right' : 'OK');
+    focusVisible(rec.id + ' cook');
+    const now = M().rec.steps[M().cs.sIdx];
+    ok(M().cTimerG.visible === (now.timer > 0 || M().timer.on || M().timer.done), rec.id + ': timer line shown only for timed steps');
+  }
+  if (rec.steps[rec.steps.length - 1].timer === 0) press('OK');
+  else run(`showToast('x')`);
   ok(M().cs.sIdx === rec.steps.length - 1 && M().toast.visible, rec.id + ': cook mode reaches the end');
   ok(M().cText.text === rec.steps[rec.steps.length - 1].text, rec.id + ': cook text shows the step');
   press('back');
@@ -210,6 +219,50 @@ ok(M().screen === 'home', 'two Backs return Home from cook mode');
 // unknown keys are not swallowed
 ok(run(`onKeyEvent('info', true)`) === false, 'unmapped keys are not handled');
 ok(run(`onKeyEvent('OK', false)`) === false, 'key releases are ignored');
+
+// cook-mode step timers
+{
+  const recs = M().D.recipes;
+  ok(recs.every((r) => r.steps.every((st) => /\d+(\s*[–-]\s*\d+)?[\s-]*(second|minute|hour)/i.test(st.text) === (st.timer > 0))),
+    'every step that names a duration has a timer, and only those');
+  const chai = recs.findIndex((r) => r.id === 'masala-chai');
+  ok(recs[chai].steps[1].timer === 180 && recs[chai].steps[1].timerText === '3 min', 'a 3–4 minute range gives a 3 min timer');
+  ok(run('cookClock(75)') === '1:15' && run('cookClock(3725)') === '1:02:05' && run('cookClock(5)') === '0:05', 'cookClock formats m:ss and h:mm:ss');
+  let T = 1000000;
+  run('nowMs = function () { return __T; }');
+  ctx.__T = T;
+  run(`recipeOpen(${chai})`);
+  run('cookOpen(1)');
+  ok(M().cTimerG.visible && M().cTimerLabel.text === 'OK: start a 3 min timer', 'a timed step offers its timer');
+  ok(M().cTimerIcon.translation[0] > 0 && M().cTimerIcon.translation[0] < 960, 'timer line is centred on screen');
+  press('OK');
+  ok(M().cs.sIdx === 1 && M().timer.on && M().timer.step === 1, 'OK on a timed step starts the timer instead of advancing');
+  ok(M().toast.visible && M().toastLabel.text === '3 min timer started', 'a toast confirms the timer');
+  ok(M().cTimerLabel.text.indexOf('3:00 left') === 0, 'countdown shows the full time at start');
+  ctx.__T = T + 61500; run('cookTick()');
+  ok(M().cTimerLabel.text.indexOf('1:59 left') === 0, 'countdown follows the clock, not the tick count: ' + M().cTimerLabel.text);
+  press('right');
+  ok(M().cs.sIdx === 2 && M().cTimerLabel.text === 'Simmer the spices: 1:59 left', 'the running timer stays visible on other steps');
+  press('back');
+  ok(M().screen === 'recipe' && M().timer.on, 'the timer keeps running outside cook mode');
+  ctx.__T = T + 180000; run('cookTick()');
+  ok(!M().timer.on && M().timer.done && M().toastLabel.text === "Time's up: Simmer the spices", 'time up raises a toast even on the recipe card');
+  press('play');
+  ok(M().screen === 'cook' && M().cTimerLabel.text.indexOf("Time's up") === 0, 'cook mode shows the finished timer');
+  const plain = M().rec.steps.findIndex((st) => st.timer === 0);
+  run(`m.cs.sIdx = ${plain}; cookRender()`);
+  press('OK');
+  ok(M().cs.sIdx === plain && !M().timer.done && !M().cTimerG.visible, 'OK dismisses a finished timer without skipping a step');
+  press('OK');
+  ok(M().cs.sIdx === plain + 1 || plain === M().rec.steps.length - 1, 'then OK advances again');
+  run('cookOpen(1)');
+  press('OK', 'OK');
+  ok(!M().timer.on && M().toastLabel.text === 'Timer stopped', 'OK twice stops the timer');
+  press('OK'); run('cookOpen(2)'); press('OK');
+  ok(M().timer.on && M().timer.step === 2 && M().cTimerLabel.text.indexOf('2:00 left') === 0, 'starting another step\'s timer replaces the old one');
+  press('OK');
+  ok(!M().timer.on, 'and OK stops it');
+}
 
 if (fails.length) {
   console.log(`web test FAILED: ${fails.length} of ${passed + fails.length} assertions`);

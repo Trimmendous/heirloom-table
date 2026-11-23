@@ -17,6 +17,11 @@ SHOTS = [
     ("recipe-lentil-steps", "remote=0&screen=recipe&id=turkish-red-lentil-soup&zone=steps&step=4"),
     ("cook-chai", "remote=0&screen=cook&id=masala-chai&step=1"),
     ("menu", "remote=0&screen=recipe&id=irish-soda-bread&menu=1"),
+    ("recipe-dumplings", "remote=0&screen=recipe&id=pork-and-chive-dumplings"),
+    ("recipe-huevos", "remote=0&screen=recipe&id=huevos-rancheros"),
+    ("recipe-manakish", "remote=0&screen=recipe&id=zaatar-manakish"),
+    ("recipe-mango", "remote=0&screen=recipe&id=mango-sticky-rice"),
+    ("cook-timer", "remote=0&screen=cook&id=pork-and-chive-dumplings&step=5&timer=1"),
 ]
 
 

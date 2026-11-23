@@ -105,7 +105,7 @@ function relayout() {
   m.rHeart.translation = [m.L.recipe.noteHeader.x + (hw < 50 ? 300 : hw) + 12, m.L.recipe.noteHeader.y + 14];
 }
 
-/* ?screen=recipe&id=<id>&zone=steps&step=2&menu=1 — deep links used by tools/screenshot.py */
+/* ?screen=recipe&id=<id>&zone=steps&step=2&menu=1 (&timer=1 starts a cook timer) — deep links used by tools/screenshot.py */
 function applyQuery() {
   var q = new URLSearchParams(location.search);
   var id = q.get('id');
@@ -116,6 +116,7 @@ function applyQuery() {
     if (q.get('zone') === 'steps') recipeFocusStep(+q.get('step') || 0);
     if (q.get('ing')) { m.rs.ing = +q.get('ing'); recipeLayout(); }
     if (q.get('screen') === 'cook') cookOpen(+q.get('step') || 0);
+    if (q.get('timer')) { cookKey('OK'); m.toast.visible = false; }
   }
   if (q.get('row')) { m.hs.row = +q.get('row'); homeRender(); }
   if (q.get('menu')) menuShow();

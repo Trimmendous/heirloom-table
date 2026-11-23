@@ -266,6 +266,313 @@
       "image": "images/dishes/masala-chai.jpg",
       "photo": "images/photos/bazaar.png",
       "tags": ["vegetarian", "gluten-free", "warming"]
+    },
+    {
+      "id": "pork-and-chive-dumplings",
+      "title": "Pork and Chive Dumplings",
+      "category": "Mains",
+      "cuisine": "Chinese",
+      "description": "Juicy pork and garlic-chive potstickers in hand-rolled wrappers, with crisp golden bottoms and a sharp black-vinegar dip.",
+      "prepMin": 75,
+      "cookMin": 25,
+      "serves": 4,
+      "difficulty": "Hard",
+      "ingredients": [
+        {
+          "group": "Wrappers",
+          "items": [
+            "2½ cups (320 g) all-purpose flour, plus more for dusting",
+            "½ cup (120 ml) just-boiled water",
+            "¼ cup (60 ml) cold water"
+          ]
+        },
+        {
+          "group": "Filling",
+          "items": [
+            "1 lb (450 g) ground pork, not too lean",
+            "1 cup garlic chives (or scallions), finely chopped",
+            "1 Tbsp freshly grated ginger",
+            "2 Tbsp soy sauce",
+            "1 Tbsp Shaoxing wine (or dry sherry)",
+            "1 tsp toasted sesame oil",
+            "½ tsp sugar",
+            "½ tsp salt",
+            "¼ tsp ground white pepper",
+            "3 Tbsp cold water",
+            "2 Tbsp neutral oil, for frying"
+          ]
+        },
+        {
+          "group": "Dipping sauce",
+          "items": [
+            "3 Tbsp Chinkiang black vinegar",
+            "2 Tbsp soy sauce",
+            "1 tsp chili oil",
+            "1 tsp ginger, cut into fine threads"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "lead": "Make the dough.",
+          "text": "Stir the just-boiled water into the flour with chopsticks until shaggy, then add the cold water and knead for 5 minutes until smooth. Cover and rest for 30 minutes."
+        },
+        {
+          "lead": "Mix the filling.",
+          "text": "Combine the pork, ginger, soy sauce, wine, sesame oil, sugar, salt and pepper. Stir hard in one direction, adding the water a spoonful at a time, until sticky, about 2 minutes. Fold in the chives."
+        },
+        {
+          "lead": "Roll the wrappers.",
+          "text": "Roll the dough into a log and cut 32 pieces. Flatten each and roll into a 3½-inch round, thinner at the edge than the middle. Keep the rest covered as you go."
+        },
+        {
+          "lead": "Fold and pleat.",
+          "text": "Spoon a heaped teaspoon of filling into the centre, fold in half and pinch the top. Pleat one side toward the middle, pressing each pleat to the flat side. Set on a floured tray."
+        },
+        {
+          "lead": "Sear the bottoms.",
+          "text": "Heat 1 Tbsp oil in a large nonstick skillet over medium-high heat. Arrange half the dumplings flat side down in a ring and fry for 2 minutes, until golden underneath."
+        },
+        {
+          "lead": "Steam them through.",
+          "text": "Pour in 1/3 cup water and cover at once. Steam over medium heat for 6–7 minutes, until the wrappers turn translucent and the filling reaches 160°F."
+        },
+        {
+          "lead": "Crisp and serve.",
+          "text": "Uncover and cook 1–2 minutes more, until the water is gone and the bottoms crackle. Repeat with the rest. Stir the dipping sauce together and serve hot."
+        }
+      ],
+      "kitchenNote": "Make a double batch and freeze them on a floured tray, then bag them. Cook straight from frozen, adding 2 minutes of steaming. A dumpling-folding party is the best kind.",
+      "accent": {
+        "garnish": "scallion",
+        "color": "#5E8A2E"
+      },
+      "image": "images/dishes/pork-and-chive-dumplings.jpg",
+      "photo": "images/photos/teahouse.png",
+      "tags": [
+        "pork",
+        "dairy-free",
+        "weekend-project",
+        "freezer-friendly"
+      ]
+    },
+    {
+      "id": "huevos-rancheros",
+      "title": "Huevos Rancheros",
+      "category": "Breakfast",
+      "cuisine": "Mexican",
+      "description": "Crisp-edged fried eggs on warm corn tortillas with black beans and a smoky ranchero sauce. A ranch-hand breakfast worth waking up for.",
+      "prepMin": 10,
+      "cookMin": 25,
+      "serves": 4,
+      "difficulty": "Easy",
+      "ingredients": [
+        {
+          "group": "Ranchero sauce",
+          "items": [
+            "1 Tbsp vegetable oil",
+            "½ white onion, chopped",
+            "1 jalapeño, seeded and minced",
+            "2 cloves garlic, minced",
+            "½ tsp ground cumin",
+            "1 can (14½ oz) fire-roasted diced tomatoes",
+            "½ tsp salt",
+            "Juice of ½ lime"
+          ]
+        },
+        {
+          "group": "To serve",
+          "items": [
+            "8 corn tortillas (6-inch)",
+            "2 Tbsp vegetable oil",
+            "8 large eggs",
+            "1 can (15 oz) black beans, drained and warmed",
+            "1 ripe avocado, sliced",
+            "½ cup crumbled queso fresco",
+            "Fresh cilantro and lime wedges"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "lead": "Start the sauce.",
+          "text": "Heat the oil in a saucepan over medium heat. Cook the onion and jalapeño for 5 minutes, until soft. Add the garlic and cumin and stir for 30 seconds, until fragrant."
+        },
+        {
+          "lead": "Simmer it down.",
+          "text": "Add the tomatoes and salt and simmer for 10 minutes, stirring now and then, until slightly thickened. Blend briefly if you like it smooth, stir in the lime juice and keep warm."
+        },
+        {
+          "lead": "Warm the tortillas.",
+          "text": "Heat a skillet over medium-high heat and brush the tortillas lightly with oil. Fry each for about 30 seconds per side, until soft and blistered. Wrap in a clean towel."
+        },
+        {
+          "lead": "Fry the eggs.",
+          "text": "Lower the heat to medium and add the remaining oil. Crack in the eggs and fry for 3–4 minutes, until the whites are fully set and the edges are lacy but the yolks still run."
+        },
+        {
+          "lead": "Build the plates.",
+          "text": "Overlap two tortillas on each plate, add a spoonful of black beans and top with two eggs. Ladle the warm sauce around the yolks."
+        },
+        {
+          "lead": "Finish and serve.",
+          "text": "Scatter over the avocado, queso fresco and cilantro, and tuck a lime wedge on the side. Serve right away, while the tortillas are warm."
+        }
+      ],
+      "kitchenNote": "Make the sauce the night before; it only gets better. On busy mornings I crack the eggs straight into the simmering sauce, cover the pan, and call it breakfast.",
+      "accent": {
+        "garnish": "lime",
+        "color": "#6FA23A"
+      },
+      "image": "images/dishes/huevos-rancheros.jpg",
+      "photo": "images/photos/hacienda.png",
+      "tags": [
+        "vegetarian",
+        "gluten-free",
+        "brunch",
+        "eggs"
+      ]
+    },
+    {
+      "id": "zaatar-manakish",
+      "title": "Za'atar Manakish",
+      "category": "Breads",
+      "cuisine": "Lebanese",
+      "description": "Soft, dimpled Lebanese flatbreads brushed with a fragrant paste of za'atar and olive oil, baked until golden at the edges.",
+      "prepMin": 95,
+      "cookMin": 25,
+      "serves": 6,
+      "difficulty": "Medium",
+      "ingredients": [
+        {
+          "group": "Dough",
+          "items": [
+            "3 cups (375 g) all-purpose flour",
+            "2¼ tsp (1 packet) instant yeast",
+            "1 tsp sugar",
+            "1 tsp salt",
+            "1 cup (240 ml) lukewarm water",
+            "2 Tbsp olive oil, plus more for the bowl"
+          ]
+        },
+        {
+          "group": "Topping",
+          "items": [
+            "1/3 cup za'atar spice blend",
+            "1/3 cup extra-virgin olive oil"
+          ]
+        },
+        {
+          "group": "To serve",
+          "items": [
+            "Sliced cucumber and tomato",
+            "Fresh mint leaves",
+            "Labneh or thick Greek yogurt"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "lead": "Mix the dough.",
+          "text": "Whisk the flour, yeast, sugar and salt in a large bowl. Add the water and olive oil and knead for 8 minutes, until smooth, soft and elastic."
+        },
+        {
+          "lead": "Let it rise.",
+          "text": "Place the dough in an oiled bowl, cover and leave in a warm spot for 1 hour, until doubled in size."
+        },
+        {
+          "lead": "Heat the oven.",
+          "text": "Set a baking steel or upturned sheet pan on the lowest rack and heat the oven to 475°F for at least 30 minutes, so the pan is scorching hot."
+        },
+        {
+          "lead": "Shape the rounds.",
+          "text": "Divide the dough into 6 pieces, roll into balls and rest for 10 minutes. Press each into a 7-inch round about ¼ inch thick, then dimple all over with your fingertips."
+        },
+        {
+          "lead": "Add the za'atar.",
+          "text": "Stir the za'atar into the olive oil to make a loose paste. Spread a generous spoonful over each round, leaving a thin bare border."
+        },
+        {
+          "lead": "Bake until golden.",
+          "text": "Slide two rounds at a time onto the hot pan and bake for 6–8 minutes, until the edges puff and turn golden and the bottoms are spotted brown."
+        },
+        {
+          "lead": "Roll and eat.",
+          "text": "Serve warm, folded around sliced cucumber, tomato, fresh mint and a cool smear of labneh."
+        }
+      ],
+      "kitchenNote": "Buy za'atar from a Middle Eastern grocer if you can; it's greener and far more fragrant. Leftover rounds crisp up beautifully in a dry skillet for breakfast.",
+      "accent": {
+        "garnish": "olive",
+        "color": "#7A7F2E"
+      },
+      "image": "images/dishes/zaatar-manakish.jpg",
+      "photo": "images/photos/bazaar.png",
+      "tags": [
+        "vegetarian",
+        "flatbread",
+        "yeasted",
+        "make-ahead"
+      ]
+    },
+    {
+      "id": "mango-sticky-rice",
+      "title": "Mango Sticky Rice",
+      "category": "Desserts",
+      "cuisine": "Thai",
+      "description": "Chewy sticky rice soaked in sweet, salty coconut milk, served with ripe mango and a sprinkle of toasted sesame.",
+      "prepMin": 255,
+      "cookMin": 30,
+      "serves": 4,
+      "difficulty": "Medium",
+      "ingredients": [
+        "1½ cups (300 g) Thai glutinous (sticky) rice",
+        "1 can (13½ oz) full-fat coconut milk, divided",
+        "½ cup (100 g) sugar",
+        "¾ tsp salt, divided",
+        "1 tsp rice flour or cornstarch",
+        "2 ripe mangoes (Ataulfo or Nam Dok Mai)",
+        "1 Tbsp toasted sesame seeds"
+      ],
+      "steps": [
+        {
+          "lead": "Soak the rice.",
+          "text": "Rinse the rice in several changes of cool water until it runs almost clear. Cover with fresh water and soak for at least 4 hours, or overnight."
+        },
+        {
+          "lead": "Steam the rice.",
+          "text": "Drain well and spread in a steamer basket lined with damp cheesecloth. Cover and steam over simmering water for 20–25 minutes, flipping halfway, until glossy and tender."
+        },
+        {
+          "lead": "Sweeten the coconut.",
+          "text": "Meanwhile, warm 1 cup of the coconut milk with the sugar and ½ tsp salt over medium-low heat, stirring until dissolved. Don't let it boil."
+        },
+        {
+          "lead": "Let it soak in.",
+          "text": "Tip the hot rice into a bowl, pour over the sweet coconut milk and stir gently. Cover and let stand for 20 minutes while the rice drinks it up."
+        },
+        {
+          "lead": "Make the topping.",
+          "text": "Whisk the remaining coconut milk with ¼ tsp salt and the rice flour. Simmer for 1–2 minutes, stirring, until lightly thickened."
+        },
+        {
+          "lead": "Slice and serve.",
+          "text": "Peel the mangoes and slice the cheeks off the stone. Mound the rice beside the mango, spoon the salty coconut sauce over and sprinkle with sesame."
+        }
+      ],
+      "kitchenNote": "Only Thai sticky rice works here; ordinary rice won't turn chewy. Pick mangoes that smell sweet at the stem and give a little when you press them.",
+      "accent": {
+        "garnish": "mango",
+        "color": "#E39A1E"
+      },
+      "image": "images/dishes/mango-sticky-rice.jpg",
+      "photo": "images/photos/teahouse.png",
+      "tags": [
+        "vegan",
+        "gluten-free",
+        "coconut",
+        "summer"
+      ]
     }
   ]
 }

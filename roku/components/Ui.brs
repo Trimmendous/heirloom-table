@@ -164,6 +164,12 @@ sub showToast(text as string)
     m.toastTimer.control = "start"
 end sub
 
+' Milliseconds since the channel started, for timers (end time is stored, so a late tick never drifts).
+function nowMs() as integer
+    if m.clock = invalid then m.clock = CreateObject("roTimespan")
+    return m.clock.TotalMilliseconds()
+end function
+
 sub onToastTimer()
     m.toast.visible = false
 end sub

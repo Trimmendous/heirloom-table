@@ -102,6 +102,21 @@ def fmt_minutes(m):
     return ("%d hr" % h) + (" %d min" % r if r else "")
 
 
+TIMER_RE = re.compile(r"(\d+)(?:\s*[–-]\s*\d+)?[\s-]*(seconds?|minutes?|hours?)\b", re.I)
+TIMER_UNIT = {"s": 1, "m": 60, "h": 3600}
+
+
+def step_timer(text):
+    """Cook-mode timer for a step: the longest duration it mentions (lower bound of a range), in seconds.
+    "Cook 3–4 minutes, then stir for 30 seconds" -> 180. Returns (seconds, label) or (0, "")."""
+    best = 0
+    for mt in TIMER_RE.finditer(text):
+        best = max(best, int(mt.group(1)) * TIMER_UNIT[mt.group(2)[0].lower()])
+    if not (0 < best <= 12 * 3600):
+        return 0, ""
+    return best, ("%d sec" % best if best < 60 else fmt_minutes(best // 60))
+
+
 def norm_title(t):
     t = unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode().lower()
     t = re.sub(r"\b(the|grandma'?s|my|classic|easy|best|homemade)\b", "", t)
@@ -225,6 +240,10 @@ def normalise(doc):
                 lst.extend({"text": s, "header": False} for s in ing["items"])
         n = dict(r)
         n["ingredients"] = lst
+        n["steps"] = []
+        for st in r["steps"]:
+            sec, label = step_timer(st["text"])
+            n["steps"].append({"lead": st["lead"], "text": st["text"], "timer": sec, "timerText": label})
         n["prepText"] = fmt_minutes(r["prepMin"])
         n["cookText"] = fmt_minutes(r["cookMin"])
         n["totalText"] = fmt_minutes(r["prepMin"] + r["cookMin"])

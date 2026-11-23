@@ -23,7 +23,7 @@ No build step and no server needed:
 
 You can also click the **Remote** button (top right) to show the on-screen Roku-style remote, or just click or tap items: the first click focuses an item and a second click presses OK. The mouse wheel works like up and down.
 
-Deep links (handy for screenshots): `web/index.html?screen=recipe&id=masala-chai`, `?screen=cook&id=irish-soda-bread&step=2`, `?menu=1`, `?remote=0`.
+Deep links (handy for screenshots): `web/index.html?screen=recipe&id=masala-chai`, `?screen=cook&id=irish-soda-bread&step=2`, `?menu=1`, `?remote=0`, `?screen=cook&id=masala-chai&step=1&timer=1` (starts that step's timer).
 
 ## Sideload on a Roku (developer mode)
 
@@ -39,13 +39,15 @@ Deep links (handy for screenshots): `web/index.html?screen=recipe&id=masala-chai
 | Key | Home | Recipe | Cook mode | Options menu |
 |---|---|---|---|---|
 | D-pad | move between cards and rows | up/down within a list, left/right between Ingredients and Directions | left/right (also up/down) change step | move |
-| OK | open the recipe | tick an ingredient; on a step, start cook mode there | next step | choose |
+| OK | open the recipe | tick an ingredient; on a step, start cook mode there | start/stop the step's timer on a timed step, otherwise next step | choose |
 | Back | exit the channel | Home | back to the recipe | up one level / close |
 | Play | cook mode for the focused card | cook mode (from the focused step) | back to the recipe | |
 | ◀◀ / ▶▶ | previous/next card | previous/next recipe | previous/next step | page up/down |
 | ✱ | Options: reset all ticks, browse all recipes, jump to a category | Options: reset this recipe's ticks, browse, jump, home | same | close |
 
 Ticked ingredients are remembered: in the Roku registry on the device, and in `localStorage` in the browser.
+
+**Cook-mode timers.** Any step that names a time ("simmer 3–4 minutes") gets a timer; `tools/build_data.py` picks the longest duration in the step (the low end of a range). On that step, OK starts or stops it. One timer runs at a time; it keeps counting on other steps and on the recipe card, and a toast says when time is up (the next OK dismisses it). While cook mode is open the Roku is told the viewer is active (`roAppManager.UpdateLastKeyPressTime`), and the browser asks for a screen wake lock where it can.
 
 ## Repository layout
 
