@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "categories": ["Breakfast", "Mains", "Soups", "Sides", "Breads", "Desserts", "Drinks"],
+  "categories": ["Chicken & Rice", "Italian", "Fish", "Mains", "Sides", "Breakfast", "Breads", "Desserts"],
   "recipes": [
     {
       "id": "tuscan-lemon-chicken-piccata",
       "title": "Tuscan Lemon Chicken Piccata",
-      "category": "Mains",
+      "category": "Italian",
       "cuisine": "Italian",
       "description": "Golden chicken cutlets in a bright lemon, garlic and caper sauce. Serve with roasted asparagus or a little angel hair pasta.",
       "prepMin": 10,
@@ -77,50 +77,6 @@
       "image": "images/dishes/blueberry-buttermilk-pancakes.jpg",
       "photo": "images/photos/farmhouse.png",
       "tags": ["vegetarian", "brunch", "family"]
-    },
-    {
-      "id": "turkish-red-lentil-soup",
-      "title": "Turkish Red Lentil Soup",
-      "category": "Soups",
-      "cuisine": "Turkish",
-      "description": "Mercimek çorbası: a silky, golden lentil soup finished with sizzling chili-mint oil and a squeeze of lemon.",
-      "prepMin": 10,
-      "cookMin": 35,
-      "serves": 6,
-      "difficulty": "Easy",
-      "ingredients": [
-        {"group": "For the soup", "items": [
-          "2 Tbsp olive oil",
-          "1 large onion, chopped",
-          "1 medium carrot, chopped",
-          "2 cloves garlic, minced",
-          "1 Tbsp tomato paste",
-          "1 tsp ground cumin",
-          "1 tsp sweet paprika",
-          "1½ cups (300 g) red lentils, rinsed",
-          "6 cups vegetable broth",
-          "1 tsp salt, or to taste"
-        ]},
-        {"group": "For the chili-mint oil", "items": [
-          "3 Tbsp olive oil",
-          "1 tsp Aleppo pepper, or ½ tsp red pepper flakes",
-          "1 tsp dried mint",
-          "Lemon wedges, to serve"
-        ]}
-      ],
-      "steps": [
-        {"lead": "Soften the vegetables.", "text": "Warm the olive oil in a large pot over medium heat. Add the onion and carrot and cook 6–8 minutes, stirring now and then, until soft and sweet."},
-        {"lead": "Bloom the spices.", "text": "Stir in the garlic, tomato paste, cumin and paprika and cook for 1 minute, until the paste darkens and smells toasty."},
-        {"lead": "Simmer.", "text": "Add the lentils and broth and bring to a boil. Lower the heat, partly cover and simmer 20–25 minutes, until the lentils have completely collapsed."},
-        {"lead": "Blend until silky.", "text": "Purée with an immersion blender until smooth. Thin with a splash of hot water if it is too thick, then season with salt."},
-        {"lead": "Make the chili-mint oil.", "text": "Warm the olive oil in a small pan until shimmering. Take it off the heat and stir in the Aleppo pepper and dried mint; it will sizzle and turn red."},
-        {"lead": "Serve.", "text": "Ladle the soup into bowls, swirl over the chili-mint oil and serve with lemon wedges for squeezing."}
-      ],
-      "kitchenNote": "Don't skip the lemon. It wakes the whole bowl up. The soup thickens as it sits, so loosen leftovers with a little water when you reheat them.",
-      "accent": {"garnish": "chili", "color": "#B8321E"},
-      "image": "images/dishes/turkish-red-lentil-soup.jpg",
-      "photo": "images/photos/bazaar.png",
-      "tags": ["vegan", "gluten-free", "budget"]
     },
     {
       "id": "provencal-ratatouille",
@@ -234,129 +190,6 @@
       "tags": ["vegetarian", "baking", "family"]
     },
     {
-      "id": "masala-chai",
-      "title": "Masala Chai",
-      "category": "Drinks",
-      "cuisine": "Indian",
-      "description": "Strong black tea simmered with milk, fresh ginger and whole warm spices. Comfort in a cup.",
-      "prepMin": 5,
-      "cookMin": 12,
-      "serves": 2,
-      "difficulty": "Easy",
-      "ingredients": [
-        "1½ cups water",
-        "1 cup whole milk",
-        "2 tsp loose Assam tea, or 2 black tea bags",
-        "2–3 tsp sugar, to taste",
-        "4 green cardamom pods",
-        "1 cinnamon stick (about 2 inches)",
-        "4 whole cloves",
-        "4 black peppercorns",
-        "1-inch piece fresh ginger, thinly sliced"
-      ],
-      "steps": [
-        {"lead": "Crack the spices.", "text": "Lightly crush the cardamom, cinnamon, cloves and peppercorns in a mortar, or under the flat of a knife, just to open them up."},
-        {"lead": "Simmer the spices.", "text": "Bring the water, crushed spices and ginger to a boil in a small saucepan, then simmer for 3–4 minutes until fragrant and golden."},
-        {"lead": "Brew the tea.", "text": "Add the tea and simmer for 2 minutes, until the liquid turns a deep reddish brown."},
-        {"lead": "Add milk and sugar.", "text": "Pour in the milk and sugar and bring back up until the chai rises in the pan. Lower the heat and let it rise once more, about 2 minutes in all."},
-        {"lead": "Strain and serve.", "text": "Strain into warmed cups and serve right away, piping hot."}
-      ],
-      "kitchenNote": "Letting the chai rise twice is the old trick for a rich, rounded cup. Watch the pan closely, because milk boils over the very second you look away!",
-      "accent": {"garnish": "spice", "color": "#8A4B22"},
-      "image": "images/dishes/masala-chai.jpg",
-      "photo": "images/photos/bazaar.png",
-      "tags": ["vegetarian", "gluten-free", "warming"]
-    },
-    {
-      "id": "pork-and-chive-dumplings",
-      "title": "Pork and Chive Dumplings",
-      "category": "Mains",
-      "cuisine": "Chinese",
-      "description": "Juicy pork and garlic-chive potstickers in hand-rolled wrappers, with crisp golden bottoms and a sharp black-vinegar dip.",
-      "prepMin": 75,
-      "cookMin": 25,
-      "serves": 4,
-      "difficulty": "Hard",
-      "ingredients": [
-        {
-          "group": "Wrappers",
-          "items": [
-            "2½ cups (320 g) all-purpose flour, plus more for dusting",
-            "½ cup (120 ml) just-boiled water",
-            "¼ cup (60 ml) cold water"
-          ]
-        },
-        {
-          "group": "Filling",
-          "items": [
-            "1 lb (450 g) ground pork, not too lean",
-            "1 cup garlic chives (or scallions), finely chopped",
-            "1 Tbsp freshly grated ginger",
-            "2 Tbsp soy sauce",
-            "1 Tbsp Shaoxing wine (or dry sherry)",
-            "1 tsp toasted sesame oil",
-            "½ tsp sugar",
-            "½ tsp salt",
-            "¼ tsp ground white pepper",
-            "3 Tbsp cold water",
-            "2 Tbsp neutral oil, for frying"
-          ]
-        },
-        {
-          "group": "Dipping sauce",
-          "items": [
-            "3 Tbsp Chinkiang black vinegar",
-            "2 Tbsp soy sauce",
-            "1 tsp chili oil",
-            "1 tsp ginger, cut into fine threads"
-          ]
-        }
-      ],
-      "steps": [
-        {
-          "lead": "Make the dough.",
-          "text": "Stir the just-boiled water into the flour with chopsticks until shaggy, then add the cold water and knead for 5 minutes until smooth. Cover and rest for 30 minutes."
-        },
-        {
-          "lead": "Mix the filling.",
-          "text": "Combine the pork, ginger, soy sauce, wine, sesame oil, sugar, salt and pepper. Stir hard in one direction, adding the water a spoonful at a time, until sticky, about 2 minutes. Fold in the chives."
-        },
-        {
-          "lead": "Roll the wrappers.",
-          "text": "Roll the dough into a log and cut 32 pieces. Flatten each and roll into a 3½-inch round, thinner at the edge than the middle. Keep the rest covered as you go."
-        },
-        {
-          "lead": "Fold and pleat.",
-          "text": "Spoon a heaped teaspoon of filling into the centre, fold in half and pinch the top. Pleat one side toward the middle, pressing each pleat to the flat side. Set on a floured tray."
-        },
-        {
-          "lead": "Sear the bottoms.",
-          "text": "Heat 1 Tbsp oil in a large nonstick skillet over medium-high heat. Arrange half the dumplings flat side down in a ring and fry for 2 minutes, until golden underneath."
-        },
-        {
-          "lead": "Steam them through.",
-          "text": "Pour in 1/3 cup water and cover at once. Steam over medium heat for 6–7 minutes, until the wrappers turn translucent and the filling reaches 160°F."
-        },
-        {
-          "lead": "Crisp and serve.",
-          "text": "Uncover and cook 1–2 minutes more, until the water is gone and the bottoms crackle. Repeat with the rest. Stir the dipping sauce together and serve hot."
-        }
-      ],
-      "kitchenNote": "Make a double batch and freeze them on a floured tray, then bag them. Cook straight from frozen, adding 2 minutes of steaming. A dumpling-folding party is the best kind.",
-      "accent": {
-        "garnish": "scallion",
-        "color": "#5E8A2E"
-      },
-      "image": "images/dishes/pork-and-chive-dumplings.jpg",
-      "photo": "images/photos/teahouse.png",
-      "tags": [
-        "pork",
-        "dairy-free",
-        "weekend-project",
-        "freezer-friendly"
-      ]
-    },
-    {
       "id": "huevos-rancheros",
       "title": "Huevos Rancheros",
       "category": "Breakfast",
@@ -431,323 +264,6 @@
         "gluten-free",
         "brunch",
         "eggs"
-      ]
-    },
-    {
-      "id": "zaatar-manakish",
-      "title": "Za'atar Manakish",
-      "category": "Breads",
-      "cuisine": "Lebanese",
-      "description": "Soft, dimpled Lebanese flatbreads brushed with a fragrant paste of za'atar and olive oil, baked until golden at the edges.",
-      "prepMin": 95,
-      "cookMin": 25,
-      "serves": 6,
-      "difficulty": "Medium",
-      "ingredients": [
-        {
-          "group": "Dough",
-          "items": [
-            "3 cups (375 g) all-purpose flour",
-            "2¼ tsp (1 packet) instant yeast",
-            "1 tsp sugar",
-            "1 tsp salt",
-            "1 cup (240 ml) lukewarm water",
-            "2 Tbsp olive oil, plus more for the bowl"
-          ]
-        },
-        {
-          "group": "Topping",
-          "items": [
-            "1/3 cup za'atar spice blend",
-            "1/3 cup extra-virgin olive oil"
-          ]
-        },
-        {
-          "group": "To serve",
-          "items": [
-            "Sliced cucumber and tomato",
-            "Fresh mint leaves",
-            "Labneh or thick Greek yogurt"
-          ]
-        }
-      ],
-      "steps": [
-        {
-          "lead": "Mix the dough.",
-          "text": "Whisk the flour, yeast, sugar and salt in a large bowl. Add the water and olive oil and knead for 8 minutes, until smooth, soft and elastic."
-        },
-        {
-          "lead": "Let it rise.",
-          "text": "Place the dough in an oiled bowl, cover and leave in a warm spot for 1 hour, until doubled in size."
-        },
-        {
-          "lead": "Heat the oven.",
-          "text": "Set a baking steel or upturned sheet pan on the lowest rack and heat the oven to 475°F for at least 30 minutes, so the pan is scorching hot."
-        },
-        {
-          "lead": "Shape the rounds.",
-          "text": "Divide the dough into 6 pieces, roll into balls and rest for 10 minutes. Press each into a 7-inch round about ¼ inch thick, then dimple all over with your fingertips."
-        },
-        {
-          "lead": "Add the za'atar.",
-          "text": "Stir the za'atar into the olive oil to make a loose paste. Spread a generous spoonful over each round, leaving a thin bare border."
-        },
-        {
-          "lead": "Bake until golden.",
-          "text": "Slide two rounds at a time onto the hot pan and bake for 6–8 minutes, until the edges puff and turn golden and the bottoms are spotted brown."
-        },
-        {
-          "lead": "Roll and eat.",
-          "text": "Serve warm, folded around sliced cucumber, tomato, fresh mint and a cool smear of labneh."
-        }
-      ],
-      "kitchenNote": "Buy za'atar from a Middle Eastern grocer if you can; it's greener and far more fragrant. Leftover rounds crisp up beautifully in a dry skillet for breakfast.",
-      "accent": {
-        "garnish": "olive",
-        "color": "#7A7F2E"
-      },
-      "image": "images/dishes/zaatar-manakish.jpg",
-      "photo": "images/photos/bazaar.png",
-      "tags": [
-        "vegetarian",
-        "flatbread",
-        "yeasted",
-        "make-ahead"
-      ]
-    },
-    {
-      "id": "mango-sticky-rice",
-      "title": "Mango Sticky Rice",
-      "category": "Desserts",
-      "cuisine": "Thai",
-      "description": "Chewy sticky rice soaked in sweet, salty coconut milk, served with ripe mango and a sprinkle of toasted sesame.",
-      "prepMin": 255,
-      "cookMin": 30,
-      "serves": 4,
-      "difficulty": "Medium",
-      "ingredients": [
-        "1½ cups (300 g) Thai glutinous (sticky) rice",
-        "1 can (13½ oz) full-fat coconut milk, divided",
-        "½ cup (100 g) sugar",
-        "¾ tsp salt, divided",
-        "1 tsp rice flour or cornstarch",
-        "2 ripe mangoes (Ataulfo or Nam Dok Mai)",
-        "1 Tbsp toasted sesame seeds"
-      ],
-      "steps": [
-        {
-          "lead": "Soak the rice.",
-          "text": "Rinse the rice in several changes of cool water until it runs almost clear. Cover with fresh water and soak for at least 4 hours, or overnight."
-        },
-        {
-          "lead": "Steam the rice.",
-          "text": "Drain well and spread in a steamer basket lined with damp cheesecloth. Cover and steam over simmering water for 20–25 minutes, flipping halfway, until glossy and tender."
-        },
-        {
-          "lead": "Sweeten the coconut.",
-          "text": "Meanwhile, warm 1 cup of the coconut milk with the sugar and ½ tsp salt over medium-low heat, stirring until dissolved. Don't let it boil."
-        },
-        {
-          "lead": "Let it soak in.",
-          "text": "Tip the hot rice into a bowl, pour over the sweet coconut milk and stir gently. Cover and let stand for 20 minutes while the rice drinks it up."
-        },
-        {
-          "lead": "Make the topping.",
-          "text": "Whisk the remaining coconut milk with ¼ tsp salt and the rice flour. Simmer for 1–2 minutes, stirring, until lightly thickened."
-        },
-        {
-          "lead": "Slice and serve.",
-          "text": "Peel the mangoes and slice the cheeks off the stone. Mound the rice beside the mango, spoon the salty coconut sauce over and sprinkle with sesame."
-        }
-      ],
-      "kitchenNote": "Only Thai sticky rice works here; ordinary rice won't turn chewy. Pick mangoes that smell sweet at the stem and give a little when you press them.",
-      "accent": {
-        "garnish": "mango",
-        "color": "#E39A1E"
-      },
-      "image": "images/dishes/mango-sticky-rice.jpg",
-      "photo": "images/photos/teahouse.png",
-      "tags": [
-        "vegan",
-        "gluten-free",
-        "coconut",
-        "summer"
-      ]
-    },
-    {
-      "id": "west-african-peanut-soup",
-      "title": "West African Peanut Soup",
-      "category": "Soups",
-      "cuisine": "West African",
-      "description": "A silky, gently spiced soup of sweet potato, tomato and peanut, finished with tender greens. Hearty, warming and naturally vegan.",
-      "prepMin": 15,
-      "cookMin": 40,
-      "serves": 6,
-      "difficulty": "Easy",
-      "ingredients": [
-        "2 Tbsp peanut or vegetable oil",
-        "1 large onion, diced",
-        "3 garlic cloves, minced",
-        "1 Tbsp freshly grated ginger",
-        "1 small Scotch bonnet or jalapeño, seeded and minced",
-        "2 Tbsp tomato paste",
-        "1 tsp ground coriander",
-        "1 large sweet potato (about 1 lb), peeled and cut in ¾-inch cubes",
-        "1 can (14½ oz) diced tomatoes",
-        "5 cups (1.2 L) vegetable broth (gluten-free if needed)",
-        "1 tsp salt, plus more to taste",
-        "½ cup (130 g) natural unsweetened peanut butter",
-        "4 cups chopped kale or spinach (about 3 oz)",
-        "¼ cup roasted peanuts, chopped, and fresh cilantro, to serve"
-      ],
-      "steps": [
-        {
-          "lead": "Soften the aromatics.",
-          "text": "Heat the oil in a large pot over medium heat. Cook the onion for 5–6 minutes, until soft and golden at the edges, then stir in the garlic, ginger and chili for 1 minute more."
-        },
-        {
-          "lead": "Toast the paste.",
-          "text": "Stir in the tomato paste and coriander and cook for 2 minutes, stirring, until the paste darkens to a deep brick red."
-        },
-        {
-          "lead": "Simmer the soup.",
-          "text": "Add the sweet potato, tomatoes, broth and salt. Bring to a boil, then cover, lower the heat and simmer for 15–20 minutes, until the sweet potato is tender."
-        },
-        {
-          "lead": "Stir in the peanut butter.",
-          "text": "Whisk the peanut butter with a ladle of the hot broth until smooth, then stir it into the pot. Mash a few chunks of sweet potato against the side of the pot to thicken the soup."
-        },
-        {
-          "lead": "Wilt the greens.",
-          "text": "Add the kale and simmer for 5 minutes, until tender and bright. Taste, and add more salt or a little more chili if you like."
-        },
-        {
-          "lead": "Serve.",
-          "text": "Ladle into warm bowls and scatter with the chopped peanuts and cilantro. Lovely with rice or crusty bread on the side."
-        }
-      ],
-      "kitchenNote": "Use a peanut butter made with nothing but peanuts and salt. The soup thickens as it stands, so loosen leftovers with a splash of broth when you warm them.",
-      "accent": {
-        "garnish": "peanut",
-        "color": "#B5651D"
-      },
-      "image": "images/dishes/west-african-peanut-soup.jpg",
-      "photo": "images/photos/village.png",
-      "tags": [
-        "vegan",
-        "gluten-free",
-        "one-pot",
-        "budget"
-      ]
-    },
-    {
-      "id": "korean-cucumber-salad",
-      "title": "Korean Cucumber Salad",
-      "category": "Sides",
-      "cuisine": "Korean",
-      "description": "Oi muchim: crisp salted cucumbers tossed with garlic, chili flakes, sesame and a splash of vinegar. Ready in minutes, no stove needed.",
-      "prepMin": 25,
-      "cookMin": 0,
-      "serves": 4,
-      "difficulty": "Easy",
-      "ingredients": [
-        "2 English cucumbers or 6 Persian cucumbers (about 1½ lb)",
-        "1 tsp kosher salt",
-        "2 scallions, thinly sliced",
-        "2 garlic cloves, finely grated",
-        "1–2 tsp gochugaru (Korean chili flakes)",
-        "1 Tbsp rice vinegar",
-        "2 tsp tamari (or soy sauce if gluten isn't a concern)",
-        "1 tsp sugar",
-        "1 tsp toasted sesame oil",
-        "1 tsp toasted sesame seeds"
-      ],
-      "steps": [
-        {
-          "lead": "Slice the cucumbers.",
-          "text": "Trim the ends. Halve any wide cucumbers lengthwise, then slice them about ¼ inch thick on a slight diagonal."
-        },
-        {
-          "lead": "Salt and drain.",
-          "text": "Toss the slices with the salt in a bowl and set aside for 15 minutes. Squeeze them gently by the handful and pour off the liquid; this keeps the salad crisp."
-        },
-        {
-          "lead": "Mix the dressing.",
-          "text": "In a large bowl, stir together the garlic, gochugaru, vinegar, tamari, sugar and sesame oil until the sugar dissolves."
-        },
-        {
-          "lead": "Toss and serve.",
-          "text": "Add the cucumbers and scallions and toss with your hands so every slice is coated. Sprinkle with sesame seeds and serve within the hour, cold or at room temperature."
-        }
-      ],
-      "kitchenNote": "Gochugaru is fruity more than fiery, so taste and add another pinch if you like. Eat it the day it's made, while the cucumbers still snap.",
-      "accent": {
-        "garnish": "cucumber",
-        "color": "#4E8A3A"
-      },
-      "image": "images/dishes/korean-cucumber-salad.jpg",
-      "photo": "images/photos/teahouse.png",
-      "tags": [
-        "vegan",
-        "gluten-free",
-        "no-cook",
-        "quick"
-      ]
-    },
-    {
-      "id": "moroccan-mint-tea",
-      "title": "Moroccan Mint Tea",
-      "category": "Drinks",
-      "cuisine": "Moroccan",
-      "description": "Green tea steeped with a fistful of fresh spearmint and sweetened generously, then poured from a height so every glass wears a little foam.",
-      "prepMin": 5,
-      "cookMin": 10,
-      "serves": 4,
-      "difficulty": "Easy",
-      "ingredients": [
-        "1 Tbsp Chinese gunpowder green tea",
-        "4 cups (1 L) boiling water, divided",
-        "1 large bunch fresh spearmint (about 1 oz)",
-        "3–4 Tbsp sugar, to taste"
-      ],
-      "steps": [
-        {
-          "lead": "Warm the pot.",
-          "text": "Swirl a splash of boiling water around a heatproof teapot to warm it, then pour it out."
-        },
-        {
-          "lead": "Save the spirit.",
-          "text": "Add the tea and 1 cup of the boiling water. Steep for 1 minute, then pour this first glass off and set it aside; it holds the tea's best flavour."
-        },
-        {
-          "lead": "Wash the leaves.",
-          "text": "Pour ½ cup boiling water over the leaves, swirl for a few seconds and discard it. This rinse tames the bitterness."
-        },
-        {
-          "lead": "Add the mint and sugar.",
-          "text": "Push the mint into the pot, add the sugar and the reserved first glass, then fill with the remaining 2½ cups boiling water. Steep for 3–4 minutes."
-        },
-        {
-          "lead": "Mix by pouring.",
-          "text": "Pour out a glass and tip it back into the pot two or three times to dissolve the sugar. Taste, and add more sugar if you like it sweeter."
-        },
-        {
-          "lead": "Pour from a height.",
-          "text": "Lift the pot as you pour into small glasses so each one gets a crown of foam. Serve straight away, with a sprig of mint."
-        }
-      ],
-      "kitchenNote": "Spearmint is the one to use, not peppermint. Practise the high pour over the sink: start low, then lift slowly as the glass fills.",
-      "accent": {
-        "garnish": "mint",
-        "color": "#3E8E5A"
-      },
-      "image": "images/dishes/moroccan-mint-tea.jpg",
-      "photo": "images/photos/bazaar.png",
-      "tags": [
-        "vegan",
-        "gluten-free",
-        "tea",
-        "hospitality"
       ]
     },
     {
@@ -834,69 +350,6 @@
       ]
     },
     {
-      "id": "miso-soup-with-tofu-and-wakame",
-      "title": "Miso Soup with Tofu and Wakame",
-      "category": "Soups",
-      "cuisine": "Japanese",
-      "description": "A gentle, savoury bowl of homemade kombu and bonito dashi with silky tofu, wakame and scallions. Ready in under an hour.",
-      "prepMin": 35,
-      "cookMin": 15,
-      "serves": 4,
-      "difficulty": "Easy",
-      "ingredients": [
-        "4 cups (960 ml) cold water",
-        "1 piece kombu, about 4 × 4 inches (10 g)",
-        "1 cup (10 g) loosely packed katsuobushi (bonito flakes)",
-        "2 Tbsp dried cut wakame seaweed",
-        "7 oz (200 g) silken or soft tofu, in ½-inch cubes",
-        "3–4 Tbsp white or yellow miso paste",
-        "2 scallions, thinly sliced"
-      ],
-      "steps": [
-        {
-          "lead": "Soak the kombu.",
-          "text": "Wipe the kombu with a damp cloth (leave the white bloom, it is flavour) and soak it in the cold water in a saucepan for 30 minutes."
-        },
-        {
-          "lead": "Make the dashi.",
-          "text": "Heat over medium until tiny bubbles cling to the kombu, about 10 minutes, then lift it out before the water boils. Bring to a boil, add the bonito flakes, turn off the heat and steep for 2 minutes."
-        },
-        {
-          "lead": "Strain.",
-          "text": "Pour the dashi through a fine sieve lined with a paper towel. Don't press the flakes, or the broth turns cloudy and fishy."
-        },
-        {
-          "lead": "Plump the wakame.",
-          "text": "Soak the wakame in a bowl of cold water for 5 minutes, until it unfurls, then drain and squeeze it gently."
-        },
-        {
-          "lead": "Warm the tofu.",
-          "text": "Return the dashi to the pan over low heat. Slip in the tofu and wakame and warm through for 2 minutes."
-        },
-        {
-          "lead": "Dissolve the miso.",
-          "text": "Whisk the miso with a ladle of hot dashi until smooth, then stir it into the pot. Taste and add more if you like. Keep it below a boil from now on."
-        },
-        {
-          "lead": "Serve.",
-          "text": "Ladle into warm bowls and scatter over the scallions. Serve straight away, while the miso is still swirling."
-        }
-      ],
-      "kitchenNote": "Never let miso soup boil once the miso is in; it dulls the flavour. For a vegan bowl, soak 3 dried shiitake with the kombu instead of using bonito.",
-      "accent": {
-        "garnish": "tofu",
-        "color": "#4F7A3A"
-      },
-      "image": "images/dishes/miso-soup-with-tofu-and-wakame.jpg",
-      "photo": "images/photos/teahouse.png",
-      "tags": [
-        "pescatarian",
-        "dairy-free",
-        "quick",
-        "umami"
-      ]
-    },
-    {
       "id": "jamaican-rice-and-peas",
       "title": "Jamaican Rice and Peas",
       "category": "Sides",
@@ -952,71 +405,6 @@
         "gluten-free",
         "coconut",
         "one-pot"
-      ]
-    },
-    {
-      "id": "shakshuka",
-      "title": "Shakshuka",
-      "category": "Breakfast",
-      "cuisine": "Tunisian",
-      "description": "Eggs gently poached in a smoky, spiced tomato and red pepper sauce, finished with feta and herbs. Bring bread for dipping.",
-      "prepMin": 10,
-      "cookMin": 35,
-      "serves": 4,
-      "difficulty": "Easy",
-      "ingredients": [
-        "2 Tbsp olive oil",
-        "1 large onion, diced",
-        "1 red bell pepper, diced",
-        "3 cloves garlic, thinly sliced",
-        "1 tsp ground cumin",
-        "1 tsp sweet paprika",
-        "1 tsp harissa, or ¼ tsp cayenne",
-        "1 can (28 oz / 800 g) whole peeled tomatoes",
-        "½ tsp salt, plus black pepper to taste",
-        "6 large eggs",
-        "¼ cup (35 g) crumbled feta (optional)",
-        "2 Tbsp chopped parsley or cilantro",
-        "Warm bread, or gluten-free bread, to serve"
-      ],
-      "steps": [
-        {
-          "lead": "Soften the vegetables.",
-          "text": "Heat the oil in a 12-inch skillet over medium heat. Cook the onion and red pepper for 8–10 minutes, stirring now and then, until soft and sweet."
-        },
-        {
-          "lead": "Wake up the spices.",
-          "text": "Add the garlic, cumin, paprika and harissa and stir for 1 minute, until fragrant."
-        },
-        {
-          "lead": "Simmer the sauce.",
-          "text": "Crush the tomatoes into the pan with your hands, add their juice and the salt, and simmer for 10–15 minutes, until thick enough to hold a spoon's trail. Season with pepper."
-        },
-        {
-          "lead": "Nest the eggs.",
-          "text": "Make 6 hollows in the sauce with a spoon and crack an egg into each. Sprinkle the eggs with a pinch of salt."
-        },
-        {
-          "lead": "Poach in the sauce.",
-          "text": "Cover and cook over low heat for 6–8 minutes, until the whites are fully set and the yolks are still soft. Cook a few minutes longer for firm yolks."
-        },
-        {
-          "lead": "Finish and serve.",
-          "text": "Scatter over the feta and herbs and bring the skillet straight to the table, with warm bread for mopping up."
-        }
-      ],
-      "kitchenNote": "Make the sauce the night before and breakfast is ten minutes away: just warm it, nest the eggs and cover. A spoon of labneh on top is never a bad idea.",
-      "accent": {
-        "garnish": "tomato",
-        "color": "#C8321E"
-      },
-      "image": "images/dishes/shakshuka.jpg",
-      "photo": "images/photos/bazaar.png",
-      "tags": [
-        "vegetarian",
-        "gluten-free",
-        "eggs",
-        "one-pan"
       ]
     },
     {
@@ -1084,6 +472,264 @@
         "weekend-project",
         "crusty"
       ]
+    },
+    {
+      "id": "lemon-chicken-and-rice",
+      "title": "Lemon Chicken and Rice",
+      "category": "Chicken & Rice",
+      "cuisine": "American",
+      "description": "Golden chicken thighs, tender long-grain rice and a squeeze of lemon, all from the same skillet.",
+      "prepMin": 10,
+      "cookMin": 35,
+      "serves": 4,
+      "difficulty": "Easy",
+      "ingredients": [
+        "4 boneless, skinless chicken thighs (about 1¼ lb)",
+        "¾ tsp kosher salt",
+        "½ tsp black pepper",
+        "1 Tbsp olive oil",
+        "1 small yellow onion, diced",
+        "2 cloves garlic, minced",
+        "1 cup long-grain white rice, rinsed and drained",
+        "1¾ cups low-sodium chicken broth",
+        "1 lemon, zested and juiced",
+        "2 Tbsp chopped parsley"
+      ],
+      "steps": [
+        {"lead": "Brown the chicken.", "text": "Pat the thighs dry and season with salt and pepper. Heat the oil in a deep, lidded skillet over medium-high heat. Brown the chicken for 3–4 minutes per side, then transfer it to a plate."},
+        {"lead": "Toast the rice.", "text": "Lower the heat to medium. Stir the onion in the drippings for 4 minutes. Add the garlic and drained rice and stir for 1 minute."},
+        {"lead": "Cover and simmer.", "text": "Stir in the broth and lemon zest, scraping the bottom of the skillet. Bring to a simmer. Nestle in the thighs and any juices, cover, and simmer on low for 18–22 minutes until the rice is tender and the chicken reaches 165°F."},
+        {"lead": "Rest and serve.", "text": "Take the covered skillet off the heat for 5 minutes. Fluff the rice and finish with lemon juice and parsley."}
+      ],
+      "kitchenNote": "A tight-fitting lid helps the rice cook evenly. Keep it closed until the first check.",
+      "accent": {"garnish": "lemon", "color": "#E9B824"},
+      "image": "images/dishes/lemon-chicken-and-rice.jpg",
+      "photo": "images/photos/farmhouse.png",
+      "tags": ["chicken", "rice", "one-pot", "weeknight"]
+    },
+    {
+      "id": "creamy-chicken-and-wild-rice",
+      "title": "Creamy Chicken and Wild Rice",
+      "category": "Chicken & Rice",
+      "cuisine": "American",
+      "description": "A cozy Minnesota-style soup with chicken, wild rice and vegetables in a light cream broth.",
+      "prepMin": 15,
+      "cookMin": 55,
+      "serves": 6,
+      "difficulty": "Easy",
+      "ingredients": [
+        "1 Tbsp butter",
+        "1 yellow onion, diced",
+        "2 carrots, diced",
+        "2 celery ribs, diced",
+        "1 tsp dried thyme",
+        "¾ cup whole wild rice, rinsed",
+        "6 cups low-sodium chicken broth",
+        "1 lb boneless, skinless chicken thighs",
+        "¾ cup half-and-half",
+        "Salt and pepper to taste"
+      ],
+      "steps": [
+        {"lead": "Soften the vegetables.", "text": "In a soup pot, melt the butter over medium heat. Add the onion, carrots and celery and cook for 6 minutes, stirring occasionally. Stir in the thyme."},
+        {"lead": "Simmer the rice.", "text": "Stir in the wild rice and broth. Bring to a boil, then lower the heat and simmer partially covered for 30 minutes."},
+        {"lead": "Poach the chicken.", "text": "Slip the thighs into the soup and simmer for 15–20 minutes, until the rice is tender and the chicken reaches 165°F. Transfer the thighs to a board and shred. Keep simmering the rice if it needs longer."},
+        {"lead": "Finish with cream.", "text": "Return the chicken to the pot and stir in the half-and-half. Warm gently over low heat and season with salt and pepper."}
+      ],
+      "kitchenNote": "Whole wild rice gives this soup its chewy texture. A wild rice blend will cook faster, so check the package.",
+      "accent": {"garnish": "herbs", "color": "#8B9D61"},
+      "image": "images/dishes/creamy-chicken-and-wild-rice.jpg",
+      "photo": "images/photos/cottage.png",
+      "tags": ["chicken", "rice", "soup", "one-pot"]
+    },
+    {
+      "id": "chicken-broccoli-rice-bake",
+      "title": "Chicken Broccoli Rice Bake",
+      "category": "Chicken & Rice",
+      "cuisine": "American",
+      "description": "Chicken, broccoli and cooked rice baked in a cheddar sauce with a crisp cracker topping.",
+      "prepMin": 15,
+      "cookMin": 30,
+      "serves": 6,
+      "difficulty": "Easy",
+      "ingredients": [
+        "3 cups cooked long-grain white rice",
+        "2 cups shredded cooked chicken",
+        "3 cups small broccoli florets",
+        "2 Tbsp unsalted butter",
+        "2 Tbsp all-purpose flour",
+        "1½ cups milk",
+        "½ cup low-sodium chicken broth",
+        "½ tsp kosher salt",
+        "¼ tsp black pepper",
+        "1½ cups shredded sharp cheddar",
+        "½ cup crushed buttery crackers"
+      ],
+      "steps": [
+        {"lead": "Prep the baking dish.", "text": "Heat the oven to 375°F and grease a 9-by-13-inch baking dish. Microwave the broccoli with a splash of water for 2 minutes, then drain well."},
+        {"lead": "Make the cheddar sauce.", "text": "Melt the butter in a saucepan over medium heat. Whisk in the flour for 1 minute. Slowly whisk in the milk, broth, salt and pepper. Simmer for 3 minutes while whisking, then remove from the heat and stir in the cheese."},
+        {"lead": "Assemble the bake.", "text": "Mix the rice, cooked chicken and broccoli with the sauce. Spread in the baking dish and sprinkle the cracker crumbs evenly over the top."},
+        {"lead": "Bake until bubbly.", "text": "Bake for 22–25 minutes, until the center reaches 165°F and the edges bubble. Let the dish stand briefly before serving."}
+      ],
+      "kitchenNote": "Rotisserie chicken and leftover rice make this a quick dinner.",
+      "accent": {"garnish": "wheat", "color": "#C2904D"},
+      "image": "images/dishes/chicken-broccoli-rice-bake.jpg",
+      "photo": "images/photos/farmhouse.png",
+      "tags": ["chicken", "rice", "casserole", "make-ahead"]
+    },
+    {
+      "id": "penne-alla-vodka",
+      "title": "Penne alla Vodka",
+      "category": "Italian",
+      "cuisine": "Italian-American",
+      "description": "Penne coated in a silky tomato and cream sauce with Parmesan and a little red pepper.",
+      "prepMin": 10,
+      "cookMin": 25,
+      "serves": 4,
+      "difficulty": "Easy",
+      "ingredients": [
+        "12 oz penne",
+        "2 Tbsp olive oil",
+        "1 shallot, finely chopped",
+        "2 cloves garlic, minced",
+        "¼ tsp crushed red pepper flakes",
+        "¼ cup tomato paste",
+        "¼ cup vodka",
+        "¾ cup heavy cream",
+        "½ cup finely grated Parmesan",
+        "Salt to taste"
+      ],
+      "steps": [
+        {"lead": "Boil the penne.", "text": "Cook the penne in salted water until just shy of al dente, following the package timing. Save 1 cup of the cooking water before draining."},
+        {"lead": "Cook the tomato paste.", "text": "Heat the oil in a wide skillet over medium heat. Soften the shallot for 3 minutes. Stir in the garlic, red pepper and tomato paste and cook for 3–4 minutes, until the paste darkens."},
+        {"lead": "Make the sauce.", "text": "Take the pan off the heat to add the vodka, then return it to the stove. Simmer for 2 minutes, stirring. Stir in the cream and ¼ cup of pasta water over low heat."},
+        {"lead": "Toss and serve.", "text": "Add the penne and simmer for 1 minute, tossing until evenly coated. Remove from the heat and stir in the Parmesan. Add pasta water a splash at a time to loosen the sauce, and salt to taste."}
+      ],
+      "kitchenNote": "Cook the tomato paste until it turns brick red. That extra time gives the sauce a deeper flavor.",
+      "accent": {"garnish": "tomato", "color": "#C66A42"},
+      "image": "images/dishes/penne-alla-vodka.jpg",
+      "photo": "images/photos/villa.png",
+      "tags": ["pasta", "weeknight"]
+    },
+    {
+      "id": "parmesan-mushroom-risotto",
+      "title": "Parmesan Mushroom Risotto",
+      "category": "Italian",
+      "cuisine": "Italian",
+      "description": "Creamy Arborio rice with browned mushrooms, Parmesan and a spoonful of butter.",
+      "prepMin": 15,
+      "cookMin": 35,
+      "serves": 4,
+      "difficulty": "Medium",
+      "ingredients": [
+        {"group": "Mushrooms", "items": ["1 Tbsp olive oil", "12 oz cremini mushrooms, sliced", "¼ tsp kosher salt"]},
+        {"group": "Risotto", "items": ["5 cups low-sodium vegetable broth", "2 Tbsp unsalted butter, divided", "1 small yellow onion, finely diced", "1½ cups Arborio rice", "½ cup dry white wine", "¾ cup finely grated Parmesan", "Black pepper to taste"]}
+      ],
+      "steps": [
+        {"lead": "Warm the broth.", "text": "Bring the broth to a gentle simmer in a saucepan, then keep it warm over low heat."},
+        {"lead": "Brown the mushrooms.", "text": "Heat the oil in a wide pan over medium-high heat. Add the mushrooms in a single layer and cook for 7–9 minutes, stirring occasionally, until browned. Season with salt and set aside."},
+        {"lead": "Toast the rice.", "text": "Reduce the heat to medium and melt 1 tablespoon of the butter in the pan. Soften the onion for 4 minutes, then stir in the rice for 1 minute. Add the wine and stir until mostly absorbed."},
+        {"lead": "Add broth gradually.", "text": "Add warm broth a ladle at a time, stirring often and waiting until most of each ladle is absorbed before adding more. Cook for 18–22 minutes, until the rice is creamy and tender with a slight bite."},
+        {"lead": "Finish off the heat.", "text": "Fold in the mushrooms, remaining butter and Parmesan. Loosen with a splash of warm broth if needed and season with pepper. Serve right away."}
+      ],
+      "kitchenNote": "The risotto should settle into the bowl when you spoon it in. Keep a little warm broth handy for the last stir.",
+      "accent": {"garnish": "butter", "color": "#C6A16A"},
+      "image": "images/dishes/parmesan-mushroom-risotto.jpg",
+      "photo": "images/photos/villa.png",
+      "tags": ["rice", "risotto", "mushrooms", "gluten-free"]
+    },
+    {
+      "id": "garlic-butter-baked-salmon",
+      "title": "Garlic Butter Baked Salmon",
+      "category": "Fish",
+      "cuisine": "American",
+      "description": "Salmon baked with lemon, garlic butter and parsley. Good with rice or roast potatoes.",
+      "prepMin": 10,
+      "cookMin": 15,
+      "serves": 4,
+      "difficulty": "Easy",
+      "ingredients": [
+        "4 salmon fillets (about 6 oz each)",
+        "3 Tbsp unsalted butter, melted",
+        "3 cloves garlic, minced",
+        "1 lemon",
+        "¾ tsp kosher salt",
+        "¼ tsp black pepper",
+        "2 Tbsp chopped parsley"
+      ],
+      "steps": [
+        {"lead": "Set up the pan.", "text": "Heat the oven to 400°F. Line a sheet pan with parchment. Zest half the lemon, then cut half into slices and save the rest for squeezing."},
+        {"lead": "Season the salmon.", "text": "Pat the fish dry and set it skin-side down on the pan. Stir together the melted butter, garlic, zest, salt and pepper. Brush it over the fish and lay a lemon slice on each fillet."},
+        {"lead": "Bake and serve.", "text": "Bake for 12–15 minutes, until the thickest part reaches 145°F. Finish with a squeeze of lemon juice and the chopped parsley."}
+      ],
+      "kitchenNote": "Start checking thin tail pieces early. Pieces of similar thickness will finish together.",
+      "accent": {"garnish": "lemon", "color": "#E7B650"},
+      "image": "images/dishes/garlic-butter-baked-salmon.jpg",
+      "photo": "images/photos/seaside.png",
+      "tags": ["fish", "salmon", "weeknight", "gluten-free"]
+    },
+    {
+      "id": "baked-cod-with-tomatoes",
+      "title": "Baked Cod with Tomatoes",
+      "category": "Fish",
+      "cuisine": "Italian-inspired",
+      "description": "Flaky cod baked over blistered cherry tomatoes, briny olives and garlic.",
+      "prepMin": 10,
+      "cookMin": 25,
+      "serves": 4,
+      "difficulty": "Easy",
+      "ingredients": [
+        "4 cod fillets (about 6 oz each)",
+        "2 cups cherry tomatoes",
+        "½ cup pitted Kalamata olives",
+        "3 cloves garlic, thinly sliced",
+        "2 Tbsp olive oil",
+        "½ tsp dried oregano",
+        "½ tsp kosher salt",
+        "¼ tsp black pepper",
+        "1 lemon",
+        "2 Tbsp torn fresh basil"
+      ],
+      "steps": [
+        {"lead": "Roast the tomatoes.", "text": "Heat the oven to 425°F. Toss the tomatoes, olives, garlic and oregano in a baking dish with 1 tablespoon of the oil. Roast for 12 minutes, until the tomatoes start to collapse."},
+        {"lead": "Add the cod.", "text": "Pat the fillets dry. Rub with the remaining oil and season with salt and pepper. Nestle them between the tomatoes and olives."},
+        {"lead": "Bake and finish.", "text": "Bake for 10–14 minutes, until the thickest part of the cod reaches 145°F. Spoon the juices over the fish and finish with lemon and basil."}
+      ],
+      "kitchenNote": "Serve with bread or a scoop of rice to catch the tomato juices.",
+      "accent": {"garnish": "olive", "color": "#8F9D53"},
+      "image": "images/dishes/baked-cod-with-tomatoes.jpg",
+      "photo": "images/photos/seaside.png",
+      "tags": ["fish", "cod", "weeknight", "gluten-free"]
+    },
+    {
+      "id": "pan-seared-trout-almondine",
+      "title": "Pan-Seared Trout Almondine",
+      "category": "Fish",
+      "cuisine": "French",
+      "description": "Crisp-skinned trout with toasted almonds, browned butter and lemon.",
+      "prepMin": 10,
+      "cookMin": 15,
+      "serves": 4,
+      "difficulty": "Easy",
+      "ingredients": [
+        "4 skin-on trout fillets (4–6 oz each)",
+        "½ tsp kosher salt",
+        "¼ tsp black pepper",
+        "1 Tbsp neutral oil",
+        "3 Tbsp unsalted butter",
+        "1/3 cup sliced almonds",
+        "1 Tbsp fresh lemon juice",
+        "2 Tbsp chopped parsley"
+      ],
+      "steps": [
+        {"lead": "Sear the trout.", "text": "Pat the trout dry and season with salt and pepper. Heat the oil in a large skillet over medium-high heat. Sear the fillets skin-side down for 3–4 minutes, working in batches if needed."},
+        {"lead": "Finish the fish.", "text": "Flip each fillet and cook for 1–2 minutes, until the thickest part reaches 145°F. Transfer the trout to warm plates, skin-side up."},
+        {"lead": "Make the almond butter.", "text": "Lower the heat to medium. Add the butter and almonds and stir for 2–3 minutes, until golden. Take the skillet off the heat, stir in the lemon juice and parsley, and spoon the sauce around the trout."}
+      ],
+      "kitchenNote": "Keep the fillets skin-side up after cooking so the skin stays crisp.",
+      "accent": {"garnish": "butter", "color": "#CAA367"},
+      "image": "images/dishes/pan-seared-trout-almondine.jpg",
+      "photo": "images/photos/seaside.png",
+      "tags": ["fish", "trout", "quick", "gluten-free"]
     }
   ]
 }

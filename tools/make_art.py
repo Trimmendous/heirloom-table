@@ -150,13 +150,17 @@ def frame(w, h):
     return "\n".join(out)
 
 
-def background(w, h, seed=1):
+def background(w, h, seed=1, night=False):
+    light, middle, dark, grain = (
+        ("#20384a", "#132533", "#080f1a", ".12 0 0 0 .34  0 0 0 0 .53")
+        if night else ("#36241a", "#211510", "#0f0906", ".55 0 0 0 .34  0 0 0 0 .16")
+    )
     return f"""
-<radialGradient id="bgg" cx=".42" cy=".38" r=".8"><stop offset="0" stop-color="#36241a"/><stop offset=".55" stop-color="#211510"/><stop offset="1" stop-color="#0f0906"/></radialGradient>
+<radialGradient id="bgg" cx=".42" cy=".38" r=".8"><stop offset="0" stop-color="{light}"/><stop offset=".55" stop-color="{middle}"/><stop offset="1" stop-color="{dark}"/></radialGradient>
 <filter id="bgn" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".006 .009" numOctaves="4" seed="{seed}"/>
 <feColorMatrix values="0 0 0 0 .05  0 0 0 0 .03  0 0 0 0 .02  1.8 0 0 0 -.8"/></filter>
 <filter id="bgw" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="2" seed="{seed+5}"/>
-<feColorMatrix values="0 0 0 0 .55  0 0 0 0 .34  0 0 0 0 .16  1.2 0 0 0 -.62"/></filter>
+<feColorMatrix values="0 0 0 0 {grain}  1.2 0 0 0 -.62"/></filter>
 <pattern id="damask" width="120" height="120" patternUnits="userSpaceOnUse">
   <g fill="none" stroke="#c9963f" stroke-width="1.2" opacity=".09">
    <path d="M60 10 C80 30 80 50 60 60 C40 50 40 30 60 10 Z M60 60 C80 70 80 90 60 110 C40 90 40 70 60 60Z M10 60 C30 40 50 40 60 60 C50 80 30 80 10 60Z M110 60 C90 40 70 40 60 60 C70 80 90 80 110 60Z"/>
@@ -233,10 +237,11 @@ def vine(x, y1, y2, seed=13):
 
 
 # ------------------------------------------------------------------ screens
-def ui_jobs():
+def ui_jobs(night=False):
     W, H = 1920, 1080
     jobs = []
-    d, b = background(W, H, 3)
+    suffix = "night" if night else "bg"
+    d, b = background(W, H, 3, night)
     R = L["recipe"]
     dish = R["dish"]
     slot = (f'<filter id="feather" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="22"/></filter>'
@@ -255,18 +260,18 @@ def ui_jobs():
         + ornament_rule(st["x"] + 4, st["x"] + st["w"] - 20, st["y"] - 14) \
         + ornament_rule(R["noteHeader"]["x"], nc["x"] + nc["w"] - 40, R["note"]["y"] - 4, "#9c6f37", "#9c6f37", 1.2) \
         + crest(W / 2) + vine(1858, tc["y"] + tc["h"] - 40, R["photo"]["y"] - 6)
-    jobs.append(("ui/recipe_bg.jpg", svg(W, H, body, d), W, H, 66))
+    jobs.append((f"ui/recipe_{suffix}.jpg", svg(W, H, body, d), W, H, 66))
 
-    d, b = background(W, H, 5)
+    d, b = background(W, H, 5, night)
     T = L["home"]["title"]
     body = b + frame(W, H) + crest(W / 2) + ornament_rule(560, 1360, L["home"]["tagline"]["y"] + 50)
-    jobs.append(("ui/home_bg.jpg", svg(W, H, body, d), W, H, 72))
+    jobs.append((f"ui/home_{suffix}.jpg", svg(W, H, body, d), W, H, 72))
 
-    d, b = background(W, H, 9)
+    d, b = background(W, H, 9, night)
     s = L["cook"]["sheet"]
     body = b + frame(W, H) + crest(W / 2) + parchment(s["x"], s["y"], s["w"], s["h"], 31, grain=.3) \
         + ornament_rule(s["x"] + 300, s["x"] + s["w"] - 300, L["cook"]["counter"]["y"] + 56, "#9c6f37", "#9c6f37", 1.6)
-    jobs.append(("ui/cook_bg.jpg", svg(W, H, body, d), W, H, 58))
+    jobs.append((f"ui/cook_{suffix}.jpg", svg(W, H, body, d), W, H, 58))
     return jobs
 
 
@@ -1355,7 +1360,82 @@ EXTRA_DISHES = {
 }
 
 
+def rice_plate(rnd, style):
+    cx, cy = 304, 207
+    b = plate(cx, cy, 181, rnd, rim="#e4d8bd")
+    base, grains = {
+        "lemon": ("#e1c28b", ("#f4e4b2", "#d4aa64", "#fff1c8")),
+        "soup": ("#bc925d", ("#5b4032", "#e4c18d", "#927154")),
+        "bake": ("#bb7233", ("#e8ac57", "#ffd581", "#8b4825")),
+        "risotto": ("#bc9d6f", ("#e7cda1", "#d2b68a", "#f2ddb5")),
+    }[style]
+    b += f'<ellipse cx="{cx}" cy="{cy}" rx="132" ry="129" fill="{base}"/>'
+    for _ in range(590):
+        a, d = rnd.uniform(0, math.tau), math.sqrt(rnd.random())
+        x, y = cx + 125*d*math.cos(a), cy + 121*d*math.sin(a)
+        b += (f'<ellipse cx="{x:.1f}" cy="{y:.1f}" rx="{rnd.uniform(3, 7):.1f}" ry="2" '
+              f'fill="{rnd.choice(grains)}" transform="rotate({rnd.randrange(180)} {x:.1f} {y:.1f})"/>')
+    if style == "lemon":
+        for x, y, angle in ((250, 200, -26), (339, 250, 17)):
+            b += (f'<g transform="translate({x} {y}) rotate({angle})">'
+                  '<path d="M-60 -12 Q-52 -49 -4 -49 Q48 -55 67 -19 Q81 18 38 39 Q-24 58 -58 24Z" '
+                  'fill="#ca8b45" stroke="#965727" stroke-width="4" filter="url(#shadow)"/>'
+                  f'{flecks(0, 0, 54, 32, 120, rnd, ("#ad672d", "#e8b363", "#f1cb82"))}</g>')
+        b += lemon_slice(375, 155, 32)
+    elif style == "risotto":
+        for x, y, angle in ((260, 153, -32), (329, 160, 64), (320, 221, 16), (235, 226, -72), (355, 255, 40), (285, 290, -15)):
+            b += (f'<g transform="translate({x} {y}) rotate({angle})">'
+                  '<path d="M-24 0 Q-23 -23 0 -25 Q20 -25 25 0 L7 3 L5 19 L-7 19 L-9 3Z" '
+                  'fill="#a77751" stroke="#744d36" stroke-width="3"/>'
+                  '<path d="M-17 -5 Q0 -28 17 -5" fill="none" stroke="#d1a178" stroke-width="3"/></g>')
+    else:
+        colors = ("#e5caa2", "#d78b4b", "#769150") if style == "soup" else ("#588345", "#3d6938", "#edc58a")
+        b += flecks(cx, cy, 119, 113, 130, rnd, colors, (4, 9))
+    return b + flecks(cx, cy, 114, 109, 46, rnd)
+
+
+def dish_penne(rnd):
+    b = plate(304, 205, 183, rnd)
+    b += '<ellipse cx="304" cy="205" rx="132" ry="129" fill="#a7502d"/>'
+    for _ in range(170):
+        a, d = rnd.uniform(0, math.tau), math.sqrt(rnd.random())
+        x, y = 304 + 115*d*math.cos(a), 205 + 113*d*math.sin(a)
+        shade = rnd.choice(("#de884d", "#e89b5e", "#ca6c3f", "#edaa6d"))
+        b += (f'<g transform="translate({x:.1f} {y:.1f}) rotate({rnd.randrange(360)})">'
+              f'<path d="M-15 -6 L12 -6 L18 6 L-11 6Z" fill="{shade}" stroke="#a65531"/>'
+              '<path d="M-11 -2 H12 M-9 1 H13" stroke="#f1ad72" fill="none"/></g>')
+    b += flecks(304, 205, 117, 115, 65, rnd, ("#f8e4b1", "#fbecce"), (1, 2.5))
+    return b + '<path d="M305 223 Q257 196 276 176 Q303 176 305 223 Q324 175 352 187 Q344 215 305 223Z" fill="#40713c"/>'
+
+
+def fish_plate(rnd, style):
+    b = plate(304, 205, 184, rnd, rim="#e2e7df")
+    color, detail, sides = {
+        "salmon": ("#dd895a", "#f1ae84", ("#657f40", "#9ba452", "#bea367")),
+        "cod": ("#eee0bd", "#fff4d6", ("#a93d24", "#d35731", "#625139")),
+        "trout": ("#917655", "#c5ab80", ("#be9562", "#e4ba83", "#72824b")),
+    }[style]
+    b += flecks(304, 213, 128, 123, 87, rnd, sides, (5, 13))
+    for x, y, angle in ((260, 170, -24), (343, 238, -23)):
+        b += (f'<g transform="translate({x} {y}) rotate({angle})">'
+              f'<path d="M-89 -35 Q-12 -49 77 -24 Q95 -18 80 5 Q21 40 -75 29 Q-96 23 -89 -35Z" '
+              f'fill="{color}" stroke="#896444" stroke-width="3" filter="url(#shadow)"/>')
+        for line in range(-65, 66, 22):
+            b += f'<path d="M{line} -23 q13 16 2 42" fill="none" stroke="{detail}" stroke-width="3" opacity=".8"/>'
+        b += flecks(-7, 0, 72, 23, 42, rnd, (detail, "#866745"), (1, 2)) + '</g>'
+    b += flecks(304, 205, 112, 101, 55, rnd)
+    return b + (lemon_slice(377, 150, 31) if style != "cod" else "")
+
+
 DISHES = {
+    "lemon-chicken-and-rice": lambda rnd: rice_plate(rnd, "lemon"),
+    "creamy-chicken-and-wild-rice": lambda rnd: rice_plate(rnd, "soup"),
+    "chicken-broccoli-rice-bake": lambda rnd: rice_plate(rnd, "bake"),
+    "parmesan-mushroom-risotto": lambda rnd: rice_plate(rnd, "risotto"),
+    "penne-alla-vodka": dish_penne,
+    "garlic-butter-baked-salmon": lambda rnd: fish_plate(rnd, "salmon"),
+    "baked-cod-with-tomatoes": lambda rnd: fish_plate(rnd, "cod"),
+    "pan-seared-trout-almondine": lambda rnd: fish_plate(rnd, "trout"),
     "tuscan-lemon-chicken-piccata": dish_piccata,
     "blueberry-buttermilk-pancakes": dish_pancakes,
     "turkish-red-lentil-soup": dish_lentil,
@@ -1379,6 +1459,17 @@ def dish_svg(rid):
     rnd = random.Random(rid)
     d, b = table_bg(sum(map(ord, rid)) % 50)
     return svg(DISH_W, DISH_H, b + DISHES[rid](rnd) + table_fg(), d)
+
+
+def recipe_card_svg():
+    defs, body = table_bg(33)
+    body += '<g transform="rotate(-9 304 202)">'
+    body += parchment(141, 79, 326, 246, 36)
+    body += ornament_rule(177, 431, 134, "#8d643a", "#ac7b46", 1.5)
+    for y, width in ((180, 208), (216, 248), (252, 229), (288, 175)):
+        body += f'<path d="M180 {y} h{width}" stroke="#a27646" stroke-width="2" opacity=".5"/>'
+    body += '</g>'
+    return svg(DISH_W, DISH_H, body + table_fg(), defs)
 
 
 # ------------------------------------------------------------------ channel art
@@ -1534,7 +1625,7 @@ def main():
     data = json.load(open(os.path.join(ROOT, "data", "recipes.json")))
     jobs = []
     if want("ui"):
-        jobs += ui_jobs()
+        jobs += ui_jobs() + ui_jobs(night=True)
     if want("icons"):
         jobs += icon_jobs()
     if want("garnish"):
@@ -1542,7 +1633,10 @@ def main():
     if want("photos"):
         jobs += [("photos/%s.png" % p, photo_svg(p), L["recipe"]["photo"]["w"], L["recipe"]["photo"]["h"], None) for p in PHOTOS]
     if want("dishes"):
+        jobs.append(("dishes/recipe-card.jpg", recipe_card_svg(), DISH_W, DISH_H, 80))
         for r in data["recipes"]:
+            if r["image"] == "images/dishes/recipe-card.jpg":
+                continue
             if r["id"] not in DISHES:
                 sys.exit("no dish illustration for %s: add one to DISHES in tools/make_art.py" % r["id"])
             jobs.append(("dishes/%s.jpg" % r["id"], dish_svg(r["id"]), DISH_W, DISH_H, 80))

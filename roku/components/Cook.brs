@@ -7,7 +7,7 @@ sub cookBuild()
     cc = m.L.colors
     m.cookG = mkGroup(m.root, 0, 0)
     m.cookG.visible = false
-    mkPoster(m.cookG, kl.bg, 0, 0, 1920, 1080)
+    m.cookBg = mkPoster(m.cookG, kl.bg, 0, 0, 1920, 1080)
     m.cTitle = mkLabel(m.cookG, "", "script", kl.title.size, cc.ink, kl.title.x, kl.title.y, kl.title.w, "center", 0)
     m.cCounter = mkLabel(m.cookG, "", "serifBold", kl.counter.size, cc.rust, kl.counter.x, kl.counter.y, kl.counter.w, "center", 0)
     mkPoster(m.cookG, "images/ui/ring_lg.png", kl.ring.x, kl.ring.y, kl.ring.s, kl.ring.s)

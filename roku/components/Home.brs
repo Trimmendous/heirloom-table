@@ -6,9 +6,11 @@ sub homeBuild()
     cc = m.L.colors
     m.homeG = mkGroup(m.root, 0, 0)
     m.homeG.visible = false
-    mkPoster(m.homeG, hl.bg, 0, 0, 1920, 1080)
+    m.homeBg = mkPoster(m.homeG, hl.bg, 0, 0, 1920, 1080)
     mkLabel(m.homeG, "The Heirloom Table", "script", hl.title.size, cc.gold, hl.title.x, hl.title.y, hl.title.w, "center", 0)
     mkLabel(m.homeG, "A COLLECTION OF FAMILY RECIPES, KITCHEN FAVORITES, AND NEW TRADITIONS.", "serif", hl.tagline.size, cc.goldLight, hl.tagline.x, hl.tagline.y, hl.tagline.w, "center", 0)
+    v = hl.version
+    mkLabel(m.homeG, "v" + m.D.app.version + "  ·  * Options", "serif", v.size, cc.goldLight, v.x, v.y, v.w, "right", 0)
     m.homeRows = mkGroup(m.homeG, hl.rows.x, hl.rows.y)
     ' Clip the rows at the right title-safe edge, so the card after the last visible one peeks in under a fade.
     m.homeClipR = m.L.screen.safe[2] - hl.rows.x

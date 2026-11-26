@@ -173,3 +173,24 @@ end function
 sub onToastTimer()
     m.toast.visible = false
 end sub
+
+function loadTheme() as string
+    sec = CreateObject("roRegistrySection", "heirloom")
+    if sec.Read("theme") = "midnight" then return "midnight"
+    return "classic"
+end function
+
+sub applyTheme(themeName as string)
+    m.themeName = themeName
+    bgKey = "bg"
+    if themeName = "midnight" then bgKey = "nightBg"
+    m.homeBg.uri = "pkg:/" + m.L.home[bgKey]
+    m.recipeBg.uri = "pkg:/" + m.L.recipe[bgKey]
+    m.cookBg.uri = "pkg:/" + m.L.cook[bgKey]
+end sub
+
+sub saveTheme(themeName as string)
+    sec = CreateObject("roRegistrySection", "heirloom")
+    sec.Write("theme", themeName)
+    sec.Flush()
+end sub

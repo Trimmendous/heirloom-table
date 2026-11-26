@@ -18,14 +18,17 @@
   },
   "home": {
     "bg": "images/ui/home_bg.jpg",
+    "nightBg": "images/ui/home_night.jpg",
     "title": {"x": 160, "y": 48, "w": 1600, "size": 118},
     "tagline": {"x": 160, "y": 188, "w": 1600, "size": 28},
+    "version": {"x": 1460, "y": 118, "w": 330, "size": 28},
     "rows": {"x": 120, "y": 270, "h": 756, "rowH": 378, "labelSize": 54, "labelH": 64},
     "card": {"w": 360, "h": 300, "gap": 40, "thumbH": 184, "visible": 4, "titleSize": 28, "metaSize": 26, "focusScale": 1.05},
     "peek": {"fade": "images/ui/fade_r.png", "fadeX": -10, "fadeW": 114}
   },
   "recipe": {
     "bg": "images/ui/recipe_bg.jpg",
+    "nightBg": "images/ui/recipe_night.jpg",
     "header": {"x": 560, "y": 46, "w": 800, "size": 58},
     "dish": {"x": 104, "y": 128, "w": 608, "h": 404},
     "ingCard": {"x": 96, "y": 548, "w": 624, "h": 478},
@@ -46,6 +49,7 @@
   },
   "cook": {
     "bg": "images/ui/cook_bg.jpg",
+    "nightBg": "images/ui/cook_night.jpg",
     "sheet": {"x": 150, "y": 96, "w": 1620, "h": 888},
     "title": {"x": 260, "y": 118, "w": 1400, "size": 66},
     "counter": {"x": 260, "y": 218, "w": 1400, "size": 32},
@@ -59,6 +63,7 @@
   "menu": {
     "panel": {"x": 600, "y": 120, "w": 720, "h": 840},
     "title": {"x": 640, "y": 140, "w": 640, "size": 60},
-    "list": {"x": 660, "y": 236, "w": 600, "itemH": 58, "visible": 11, "size": 32}
+    "list": {"x": 660, "y": 236, "w": 600, "itemH": 58, "visible": 11, "size": 32},
+    "note": {"x": 684, "w": 552, "size": 30, "gap": 36, "panelH": 590}
   }
 }

@@ -365,3 +365,22 @@ function showToast(text) {
 function nowMs() { return Date.now(); }
 
 function onToastTimer() { m.toast.visible = false; }
+
+function loadTheme() {
+  try {
+    if (localStorage.getItem('heirloom.theme') === 'midnight') return 'midnight';
+  } catch (e) { /* use the default for browsers with storage disabled */ }
+  return 'classic';
+}
+
+function applyTheme(themeName) {
+  m.themeName = themeName;
+  var bgKey = themeName === 'midnight' ? 'nightBg' : 'bg';
+  m.homeBg.uri = m.L.home[bgKey];
+  m.recipeBg.uri = m.L.recipe[bgKey];
+  m.cookBg.uri = m.L.cook[bgKey];
+}
+
+function saveTheme(themeName) {
+  try { localStorage.setItem('heirloom.theme', themeName); } catch (e) { /* keep the current selection */ }
+}

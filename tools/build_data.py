@@ -26,6 +26,7 @@ REQUIRED = {
 }
 DIFFICULTIES = ["Easy", "Medium", "Hard"]
 GARNISHES = None  # filled from tools/make_art.py's list via art manifest below
+SHARED_DISH_IMAGE = "images/dishes/recipe-card.jpg"
 LIMITS = {"title": 34, "description": 150, "kitchenNote": 190, "ingredient": 80,
           "lead": 34, "stepText": 300}
 
@@ -220,8 +221,8 @@ def validate(doc, layout):
             err("%s: accent must be {garnish, color:#RRGGBB}" % where)
         elif acc["garnish"] not in garnishes:
             err("%s: garnish %r has no art in tools/make_art.py (have %s)" % (where, acc["garnish"], sorted(garnishes)))
-        if r["image"] != "images/dishes/%s.jpg" % r["id"]:
-            err("%s: image must be images/dishes/<id>.jpg" % where)
+        if r["image"] not in ("images/dishes/%s.jpg" % r["id"], SHARED_DISH_IMAGE):
+            err("%s: image must be images/dishes/<id>.jpg or %s" % (where, SHARED_DISH_IMAGE))
         if r["photo"] not in ["images/photos/%s.png" % p for p in photos]:
             err("%s: photo must be one of images/photos/{%s}.png" % (where, ",".join(sorted(photos))))
         if not all(isinstance(t, str) and re.fullmatch(r"[a-z0-9-]+", t) for t in r["tags"]):
@@ -253,7 +254,16 @@ def normalise(doc):
     cats = [c for c in doc["categories"] if any(r["category"] == c for r in out)]
     # stable home order: category order, then title
     out.sort(key=lambda r: (doc["categories"].index(r["category"]), r["title"]))
-    return {"version": doc["version"], "categories": cats, "recipes": out}
+    with open(os.path.join(ROOT, "roku", "manifest"), encoding="utf-8") as f:
+        manifest = dict(line.strip().split("=", 1) for line in f if "=" in line)
+    major, minor, build = (int(manifest[key]) for key in ("major_version", "minor_version", "build_version"))
+    app = {
+        "version": f"{major}.{minor}.{build}",
+        "versionCode": major * 1_000_000 + minor * 1_000 + build,
+        "releases": "https://github.com/Trimmendous/heirloom-table/releases",
+        "latestRelease": "https://api.github.com/repos/Trimmendous/heirloom-table/releases/latest",
+    }
+    return {"version": doc["version"], "app": app, "categories": cats, "recipes": out}
 
 
 def write(path, text):

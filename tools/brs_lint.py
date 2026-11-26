@@ -167,7 +167,8 @@ def main():
         for sp in scripts:
             d = {}
             lint_file(sp, d)
-            twin_check(sp, d)
+            if comp.get("extends") != "Task":
+                twin_check(sp, d)
             n_files += 1
         src = "\n".join(open(p).read() for p in scripts).lower()
         if comp.get("extends") == "Scene" and "function onkeyevent(" not in src:

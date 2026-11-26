@@ -37,6 +37,11 @@ Object.defineProperty(El.prototype, 'offsetWidth', {
   get() { const size = parseFloat(this.style.fontSize) || 0; return Math.round(this._text.length * size * 0.42); }
 });
 const ids = { stage: new El('div'), exit: new El('div'), 'remote-toggle': new El('button') };
+ids['preview-controls'] = new El('header');
+ids['remote-dock'] = new El('aside');
+ids.screen = new El('main');
+ids.screen.clientWidth = 1920;
+ids.screen.clientHeight = 1080;
 ids.exit.hidden = true;
 const document = {
   readyState: 'complete',
@@ -48,8 +53,18 @@ const document = {
   body: new El('body')
 };
 const store = {};
+const requests = [];
+const downloads = [];
+function ReleaseRequest() { requests.push(this); }
+ReleaseRequest.prototype.open = function (method, url) { this.method = method; this.url = url; };
+ReleaseRequest.prototype.send = function () {};
+ReleaseRequest.prototype.respond = function (status, data) {
+  this.status = status;
+  this.responseText = JSON.stringify(data);
+  this.onload();
+};
 const ctx = {
-  document, console, URLSearchParams, setTimeout: (fn) => { ctx.__timers.push(fn); return ctx.__timers.length; },
+  document, console, URLSearchParams, XMLHttpRequest: ReleaseRequest, open: (url) => downloads.push(url), setTimeout: (fn) => { ctx.__timers.push(fn); return ctx.__timers.length; },
   clearTimeout() {}, setInterval: () => 1, clearInterval() {}, __timers: [], innerWidth: 1920, innerHeight: 1080, location: { search: '' },
   addEventListener() {},
   localStorage: { getItem: (k) => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); } }
@@ -124,11 +139,12 @@ ok(M().rs.zone === 'steps' && M().rs.sIdx === 1, 'right enters directions, down 
 press('play');
 ok(M().screen === 'cook' && M().cs.sIdx === 1, 'Play opens cook mode at the focused step');
 press('right', 'fastforward');
-ok(M().cs.sIdx === 3, 'right / FF advance the cook step');
+const advancedStep = Math.min(3, M().rec.steps.length - 1);
+ok(M().cs.sIdx === advancedStep, 'right / FF advance the cook step');
 press('rewind');
-ok(M().cs.sIdx === 2, 'rewind goes back a step');
+ok(M().cs.sIdx === advancedStep - 1, 'rewind goes back a step');
 press('back');
-ok(M().screen === 'recipe' && M().rs.zone === 'steps' && M().rs.sIdx === 2, 'Back returns to the recipe on the same step');
+ok(M().screen === 'recipe' && M().rs.zone === 'steps' && M().rs.sIdx === advancedStep - 1, 'Back returns to the recipe on the same step');
 press('play', 'play');
 ok(M().screen === 'recipe', 'Play toggles cook mode off again');
 
@@ -150,21 +166,57 @@ press('OK');
 ok(run(`Object.keys(m.checks[m.rec.id] || {}).length`) === 1, 'tick before reset');
 press('options');
 ok(M().menuOpen, 'Options opens the menu');
+ok(M().mstack[0].items[0].label === 'Update Now' && M().mstack[0].items[1].label === 'Theme',
+  'update and theme are directly available from Options');
+const published = { tag_name: 'v2.0.0', assets: [{ name: 'heirloom-table-roku.zip' }, { name: 'heirloom-table-fire-tv.apk' }] };
 press('OK');
+const latest = requests[requests.length - 1];
+ok(latest.url === M().D.app.latestRelease && downloads.length === 0, 'Update Now checks the release before downloading');
+latest.respond(200, published);
+ok(M().mTitle.text === 'Confirm Update' && M().mNote.text.includes('v2.0.0') && downloads.length === 0,
+  'a newer release shows the exact version before downloading');
+press('back');
+ok(!M().menuOpen && M().screen === 'recipe' && downloads.length === 0, 'Back exits update confirmation and preserves the underlying screen');
+press('options', 'OK');
+requests[requests.length - 1].respond(200, published);
+press('OK');
+ok(downloads[0] === M().D.app.releases + '/download/v2.0.0/heirloom-table-roku.zip', 'Confirm opens the versioned download directly');
+run('m.fireTv = true');
+press('options', 'OK');
+requests[requests.length - 1].respond(200, published);
+press('OK');
+ok(downloads[1] === M().D.app.releases + '/download/v2.0.0/heirloom-table-fire-tv.apk', 'Fire TV selects the APK');
+run('m.fireTv = false');
+press('options', 'OK');
+requests[requests.length - 1].respond(404, {});
+ok(M().mNote.text.includes('no public release') && downloads.length === 2, 'a missing release never starts a download');
+press('back', 'options', 'OK', 'back');
+requests[requests.length - 1].respond(200, published);
+ok(!M().menuOpen && downloads.length === 2, 'a response after Back cannot reopen the menu');
+press('options', 'down', 'OK');
+ok(M().mTitle.text === 'Theme', 'Theme opens the picker');
+press('down', 'OK');
+ok(!M().menuOpen && M().themeName === 'midnight' && run('loadTheme()') === 'midnight'
+  && M().homeBg.uri === M().L.home.nightBg && M().recipeBg.uri === M().L.recipe.nightBg && M().cookBg.uri === M().L.cook.nightBg,
+  'Midnight updates all three backgrounds and persists the choice');
+press('options', 'down', 'OK');
+ok(M().mstack[1].sel === 1, 'theme menu selects the saved theme');
+press('up', 'OK');
+ok(M().themeName === 'classic' && run('loadTheme()') === 'classic', 'Classic restores the original appearance');
+press('options', 'down', 'down', 'OK');
 ok(!M().menuOpen && run(`Object.keys(m.checks[m.rec.id] || {}).length`) === 0, 'Reset checkboxes clears this recipe');
 ok(M().toast.visible, 'toast confirms the reset');
-press('options', 'down', 'OK');
+press('options', 'down', 'down', 'down', 'OK');
 ok(M().mstack.length === 2 && M().mstack[1].title === 'All Recipes', 'Browse all recipes opens the list');
 const titles = M().mstack[1].items.map((i) => i.label);
 ok(JSON.stringify(titles) === JSON.stringify([...titles].sort()), 'recipe list is alphabetical');
 press('back');
-ok(M().menuOpen && M().mstack.length === 1, 'Back pops one menu level');
-ok(M().mstack[0].sel === 1, 'menu keeps its selection after Back');
-press('OK', 'down', 'OK');
+ok(!M().menuOpen && M().screen === 'recipe', 'Back closes the entire Browse menu');
+press('options', 'down', 'down', 'down', 'OK', 'down', 'OK');
 ok(!M().menuOpen && M().screen === 'recipe' && M().rec.title === titles[1], 'choosing a recipe opens it');
 press('options');
 const cats = M().D.categories;
-for (let i = 0; i < 3; i++) press('down');      // reset, browse, jump to cats[0], cats[1]
+for (let i = 0; i < 5; i++) press('down');      // updates, theme, reset, browse, jump to cats[0], cats[1]
 press('OK');
 ok(M().screen === 'home' && M().rows[M().hs.row].title === cats[1], 'Jump to category lands on that row');
 press('options', 'options');
@@ -256,13 +308,13 @@ ok(run(`onKeyEvent('OK', false)`) === false, 'key releases are ignored');
   const recs = M().D.recipes;
   ok(recs.every((r) => r.steps.every((st) => /\d+(\s*[–-]\s*\d+)?[\s-]*(second|minute|hour)/i.test(st.text) === (st.timer > 0))),
     'every step that names a duration has a timer, and only those');
-  const chai = recs.findIndex((r) => r.id === 'masala-chai');
-  ok(recs[chai].steps[1].timer === 180 && recs[chai].steps[1].timerText === '3 min', 'a 3–4 minute range gives a 3 min timer');
+  const penne = recs.findIndex((r) => r.id === 'penne-alla-vodka');
+  ok(recs[penne].steps[1].timer === 180 && recs[penne].steps[1].timerText === '3 min', 'a 3–4 minute range gives a 3 min timer');
   ok(run('cookClock(75)') === '1:15' && run('cookClock(3725)') === '1:02:05' && run('cookClock(5)') === '0:05', 'cookClock formats m:ss and h:mm:ss');
   let T = 1000000;
   run('nowMs = function () { return __T; }');
   ctx.__T = T;
-  run(`recipeOpen(${chai})`);
+  run(`recipeOpen(${penne})`);
   run('cookOpen(1)');
   ok(M().cTimerG.visible && M().cTimerLabel.text === 'OK: start a 3 min timer', 'a timed step offers its timer');
   ok(M().cTimerIcon.translation[0] > 0 && M().cTimerIcon.translation[0] < 960, 'timer line is centred on screen');
@@ -273,11 +325,11 @@ ok(run(`onKeyEvent('OK', false)`) === false, 'key releases are ignored');
   ctx.__T = T + 61500; run('cookTick()');
   ok(M().cTimerLabel.text.indexOf('1:59 left') === 0, 'countdown follows the clock, not the tick count: ' + M().cTimerLabel.text);
   press('right');
-  ok(M().cs.sIdx === 2 && M().cTimerLabel.text === 'Simmer the spices: 1:59 left', 'the running timer stays visible on other steps');
+  ok(M().cs.sIdx === 2 && M().cTimerLabel.text === 'Cook the tomato paste: 1:59 left', 'the running timer stays visible on other steps');
   press('back');
   ok(M().screen === 'recipe' && M().timer.on, 'the timer keeps running outside cook mode');
   ctx.__T = T + 180000; run('cookTick()');
-  ok(!M().timer.on && M().timer.done && M().toastLabel.text === "Time's up: Simmer the spices", 'time up raises a toast even on the recipe card');
+  ok(!M().timer.on && M().timer.done && M().toastLabel.text === "Time's up: Cook the tomato paste", 'time up raises a toast even on the recipe card');
   press('play');
   ok(M().screen === 'cook' && M().cTimerLabel.text.indexOf("Time's up") === 0, 'cook mode shows the finished timer');
   const plain = M().rec.steps.findIndex((st) => st.timer === 0);

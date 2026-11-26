@@ -59,14 +59,17 @@ def check_assets():
                     err("%s: dish image is %s, expected %dx%d" % (r["id"], sz, layout["recipe"]["dish"]["w"], layout["recipe"]["dish"]["h"]))
     check_ref(layout["home"]["peek"]["fade"], "layout home.peek.fade")
     for sec in ("home", "recipe", "cook"):
-        p = check_ref(layout[sec]["bg"], "layout %s.bg" % sec)
-        if p and image_size(p) != (1920, 1080):
-            err("%s background must be 1920x1080" % sec)
+        for key in ("bg", "nightBg"):
+            p = check_ref(layout[sec][key], "layout %s.%s" % (sec, key))
+            if p and image_size(p) != (1920, 1080):
+                err("%s.%s must be 1920x1080" % (sec, key))
     # every literal image path in code (Roku + web)
     code = []
     for d in (os.path.join(ROKU, "components"), os.path.join(ROKU, "source"), os.path.join(ROOT, "web", "js")):
         for fn in os.listdir(d):
-            code.append((fn, open(os.path.join(d, fn), encoding="utf-8").read()))
+            path = os.path.join(d, fn)
+            if os.path.isfile(path):
+                code.append((fn, open(path, encoding="utf-8").read()))
     for fn, src in code:
         for uri in set(re.findall(r"""["'](images/[\w/.\-]+\.(?:png|jpg))["']""", src)):
             check_ref(uri, fn)

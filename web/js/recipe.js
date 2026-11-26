@@ -5,7 +5,7 @@ function recipeBuild() {
   var rl = m.L.recipe, cc = m.L.colors;
   m.recG = mkGroup(m.root, 0, 0);
   m.recG.visible = false;
-  mkPoster(m.recG, rl.bg, 0, 0, 1920, 1080);
+  m.recipeBg = mkPoster(m.recG, rl.bg, 0, 0, 1920, 1080);
   m.rDish = mkPoster(m.recG, '', rl.dish.x, rl.dish.y, rl.dish.w, rl.dish.h);
   mkLabel(m.recG, 'The Heirloom Table', 'script', rl.header.size, cc.gold, rl.header.x, rl.header.y, rl.header.w, 'center', 0);
 

@@ -36,3 +36,7 @@ These are released under the same terms as the rest of the project.
 ## Design reference
 
 `design/reference-recipe-card.png` was supplied with the build brief as the visual target. It is not shipped in the app.
+
+## Roku update QR code
+
+The Roku update handoff uses [Paramount's BrightScript QR Code generator](https://github.com/paramount-engineering/QR-Code-generator-brightscript) at commit `b5a48b96620e6603078053c8fe7500a23f152b5c`, derived from Project Nayuki's QR Code generator. The MIT license is included in `roku/components/vendor/qrCode/LICENSE.txt`.

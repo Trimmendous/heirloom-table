@@ -11,6 +11,7 @@ sub init()
     homeBuild()
     recipeBuild()
     cookBuild()
+    applyTheme(loadTheme())
     menuBuild()
     m.toast = mkGroup(m.root, 0, 0)
     m.toast.visible = false

@@ -30,4 +30,9 @@ node tools/web_test.js
 step "package"
 scripts/package.sh
 
+if [[ "${1:-}" == "--fire-tv" ]]; then
+  step "Fire TV APK"
+  scripts/package-fire-tv.sh
+fi
+
 printf '\nALL CHECKS PASSED\n'

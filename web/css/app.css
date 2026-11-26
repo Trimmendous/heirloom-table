@@ -5,7 +5,11 @@
 @font-face { font-family: "HT SerifBold"; src: url("../assets/fonts/CrimsonText-Bold.ttf"); }
 @font-face { font-family: "HT Hand"; src: url("../assets/fonts/Kalam-Regular.ttf"); }
 
-html, body { margin: 0; height: 100%; background: #0b0705; overflow: hidden; font-family: "HT Serif", Georgia, serif; }
+html, body { margin: 0; height: 100%; background: #0b0705; font-family: "HT Serif", Georgia, serif; }
+body { display: flex; flex-direction: column; overflow: hidden; }
+[hidden] { display: none !important; }
+#preview { flex: 1; display: flex; min-height: 0; }
+#screen { position: relative; flex: 1; min-width: 0; min-height: 0; overflow: hidden; }
 #stage {
   position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px;
   transform-origin: 50% 50%; background: #160f0a; overflow: hidden;
@@ -23,19 +27,70 @@ html, body { margin: 0; height: 100%; background: #0b0705; overflow: hidden; fon
 #exit[hidden] { display: none; }
 #exit h1 { font-family: "HT Script"; font-weight: normal; font-size: 72px; margin: 0 0 12px; }
 
-/* on-screen Roku-style remote */
-#remote-toggle { position: fixed; right: 14px; top: 12px; z-index: 11; background: #2a1c12; color: #f2d592;
-  border: 1px solid #8c6a3a; border-radius: 18px; padding: 6px 14px; font: 15px "HT Serif", serif; cursor: pointer; }
-#remote { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 10; width: 150px; padding: 18px 14px 22px;
-  background: linear-gradient(#2b2b30, #17171a); border-radius: 70px 70px 40px 40px; box-shadow: 0 10px 30px rgba(0,0,0,.6);
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; justify-items: center; }
-body.no-remote #remote { display: none; }
-#remote button { width: 40px; height: 40px; border-radius: 50%; border: 0; background: #3a3a42; color: #eee;
-  font: 15px/1 system-ui, sans-serif; cursor: pointer; box-shadow: inset 0 -2px 0 rgba(0,0,0,.4); }
-#remote button:hover { background: #4a4a54; }
-#remote button.pressed, #remote button:active { background: #d9a94a; color: #1b1208; }
-#remote .ok { background: #5b3b8c; font-weight: bold; }
-#remote .wide { grid-column: span 3; width: 100%; border-radius: 20px; height: 34px; font-size: 13px; }
-#remote .gap { visibility: hidden; }
-#remote .brand { grid-column: span 3; color: #b9a2e0; font: italic 14px "HT Serif", serif; letter-spacing: 2px; }
-#remote .legend { grid-column: span 3; color: #9a9aa6; font: 11px/1.45 system-ui, sans-serif; text-align: center; margin-top: 4px; }
+/* Browser frame and on-screen controls */
+#preview-controls {
+  display: flex; flex: 0 0 auto; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 8px 16px; padding: 9px 16px; border-bottom: 1px solid #3c2d22; background: #18120f;
+  font: 14px system-ui, sans-serif;
+}
+#platform-picker { display: flex; padding: 3px; border: 1px solid #514031; border-radius: 8px; }
+#preview-controls button {
+  min-height: 34px; border: 1px solid transparent; border-radius: 5px; padding: 5px 12px;
+  background: transparent; color: #e8dcc8; font: inherit; cursor: pointer;
+}
+#platform-picker [aria-pressed="true"] { background: #e9ce9b; color: #271b10; font-weight: 650; }
+#preview-controls #remote-toggle { border-color: #69513c; }
+#preview-controls button:hover:not([aria-pressed="true"]) { background: #3a2b20; }
+#preview-controls button:focus-visible, #remote-dock button:focus-visible { outline: 2px solid #f2d592; outline-offset: 3px; }
+
+#remote-dock {
+  display: flex; flex: 0 0 200px; align-items: safe center; justify-content: center;
+  padding: 16px 8px; overflow: auto; box-sizing: border-box;
+}
+.remote {
+  width: 152px; padding: 20px 12px 24px; display: grid; justify-items: center; gap: 12px;
+  border: 1px solid #3f3b45; border-radius: 34px 34px 33px 33px;
+  box-shadow: 0 10px 28px #0009, inset 0 1px #ffffff20;
+  font: 14px system-ui, sans-serif; color: #e9e4ed;
+}
+.roku-remote { background: linear-gradient(#292630, #1a171f); }
+.fire-remote { background: linear-gradient(#24292e, #12161b); border-color: #3b424b; border-radius: 46px 46px 40px 40px; }
+.remote-name { font-weight: 700; font-size: 17px; letter-spacing: .02em; }
+.roku-remote .remote-name { color: #d4b9f6; }
+.fire-remote .remote-name { color: #ffc489; }
+.remote-actions, .remote-media { display: flex; justify-content: center; gap: 9px; }
+.remote-actions { justify-content: space-between; width: 100%; }
+.remote button {
+  display: grid; place-items: center; width: 41px; height: 41px; padding: 0; border: 0;
+  border-radius: 50%; background: #3a3642; color: #f4eff9; font: 15px/1 system-ui, sans-serif;
+  cursor: pointer; box-shadow: inset 0 -2px #0005;
+}
+.remote button:hover { background: #55505e; }
+.remote button.pressed, .remote button:active { background: #e5bd70; color: #22170d; }
+.direction-pad {
+  display: grid;
+  grid-template-areas: ". up ." "left select right" ". down .";
+  grid-template-columns: repeat(3, 41px);
+  grid-template-rows: repeat(3, 41px);
+  gap: 2px;
+}
+.direction-pad .up { grid-area: up; }
+.direction-pad .left { grid-area: left; }
+.direction-pad .select { grid-area: select; }
+.direction-pad .right { grid-area: right; }
+.direction-pad .down { grid-area: down; }
+.roku-remote .direction-pad button { background: #64409a; }
+.roku-remote .direction-pad button:hover { background: #7955b0; }
+.roku-remote .direction-pad .select { font-weight: 750; }
+.fire-remote .direction-pad { border-radius: 50%; background: #363f49; box-shadow: inset 0 0 0 1px #53606e; }
+.fire-remote button { background: #343b43; }
+.fire-remote .direction-pad button { background: transparent; box-shadow: none; }
+.fire-remote .direction-pad .select { background: #171d23; border: 1px solid #576470; }
+.fire-remote button:hover, .fire-remote .direction-pad button:hover { background: #505d6b; }
+.remote .direction-pad button.pressed, .remote .direction-pad button:active { background: #e5bd70; color: #22170d; }
+
+@media (max-width: 660px) and (orientation: portrait) {
+  #preview { flex-direction: column; overflow: auto; }
+  #screen { flex-basis: min(56.25vw, 100%); }
+  #remote-dock { flex: 0 0 auto; }
+}
