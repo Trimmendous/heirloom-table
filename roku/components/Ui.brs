@@ -194,3 +194,21 @@ sub saveTheme(themeName as string)
     sec.Write("theme", themeName)
     sec.Flush()
 end sub
+
+function loadIngredientExclusions() as object
+    sec = CreateObject("roRegistrySection", "heirloom")
+    avoid = {}
+    if not sec.Exists("ingredientExclusions") then return avoid
+    saved = ParseJson(sec.Read("ingredientExclusions"))
+    if Type(saved) <> "roAssociativeArray" then return avoid
+    for each name in m.D.ingredientFilters
+        if saved.DoesExist(name) then avoid[name] = true
+    end for
+    return avoid
+end function
+
+sub saveIngredientExclusions(avoid as object)
+    sec = CreateObject("roRegistrySection", "heirloom")
+    sec.Write("ingredientExclusions", FormatJson(avoid))
+    sec.Flush()
+end sub

@@ -13,7 +13,8 @@ sub cookBuild()
     mkPoster(m.cookG, "images/ui/ring_lg.png", kl.ring.x, kl.ring.y, kl.ring.s, kl.ring.s)
     m.cNum = mkLabel(m.cookG, "", "serifBold", kl.ring.size, cc.goldLight, kl.ring.x, kl.ring.y + 14, kl.ring.s, "center", 0)
     m.cLead = mkLabel(m.cookG, "", "serifBold", kl.lead.size, cc.ink, kl.lead.x, kl.lead.y, kl.lead.w, "center", 0)
-    m.cText = mkLabel(m.cookG, "", "serif", kl.text.size, cc.ink, kl.text.x, kl.text.y, kl.text.w, "center", kl.text.maxLines)
+    m.cText = mkLabel(m.cookG, "", "serif", kl.text.size, cc.ink, kl.text.x, kl.text.y, kl.text.w, "center", 0)
+    m.cText.wrap = true
     m.cTimerG = mkGroup(m.cookG, 0, kl.timer.y)
     m.cTimerIcon = mkPoster(m.cTimerG, "images/ui/icon_clock.png", 0, 0, kl.timer.icon, kl.timer.icon)
     m.cTimerLabel = mkLabel(m.cTimerG, "", "serifBold", kl.timer.size, cc.rust, 0, -4, 0, "left", 0)
@@ -46,10 +47,12 @@ sub cookRender()
     m.cCounter.text = "Step " + (i + 1).ToStr() + " of " + n.ToStr()
     m.cNum.text = (i + 1).ToStr()
     m.cLead.text = s.lead
-    m.cText.text = s.text
-    if s.timer > 0 and i = n - 1
+    m.cText.text = recipeStepText(i)
+    cookFitText()
+    timed = recipeStepTiming(i).timer > 0
+    if timed and i = n - 1
         m.cHint.text = "Last step   ·   OK: start or stop the timer   ·   Left: previous   ·   Play or Back: recipe"
-    else if s.timer > 0
+    else if timed
         m.cHint.text = "OK: start or stop the timer   ·   Right: next step   ·   Left: previous   ·   Play or Back: recipe"
     else if i = n - 1
         m.cHint.text = "Last step. Enjoy your meal!   ·   Left: previous   ·   Play or Back: return to the recipe"
@@ -67,10 +70,21 @@ sub cookRender()
     cookTimerRender()
 end sub
 
+sub cookFitText()
+    layout = m.L.cook.text
+    size = layout.size
+    chars = Len(m.cText.text)
+    m.cText.font = uiFont("serif", size)
+    while size > layout.minSize and textHeight(m.cText, size, chars, layout.w) > layout.h
+        size = size - 2
+        m.cText.font = uiFont("serif", size)
+    end while
+end sub
+
 ' The clock line above the progress dots: an offer, a live countdown, or "time's up".
 sub cookTimerRender()
     kl = m.L.cook.timer
-    s = m.rec.steps[m.cs.sIdx]
+    s = recipeStepTiming(m.cs.sIdx)
     t = m.timer
     txt = ""
     if t.on and t.rid = m.rec.id and t.step = m.cs.sIdx
@@ -105,7 +119,7 @@ function cookClock(sec as integer) as string
 end function
 
 sub cookTimerToggle()
-    s = m.rec.steps[m.cs.sIdx]
+    s = recipeStepTiming(m.cs.sIdx)
     t = m.timer
     if s.timer = 0
         t.done = false
@@ -113,7 +127,7 @@ sub cookTimerToggle()
         t.on = false
         showToast("Timer stopped")
     else
-        lead = s.lead
+        lead = m.rec.steps[m.cs.sIdx].lead
         if Right(lead, 1) = "." then lead = Left(lead, Len(lead) - 1)
         m.timer = { on: true, done: false, endMs: nowMs() + s.timer * 1000, left: s.timer, rid: m.rec.id, step: m.cs.sIdx, lead: lead }
         m.cTick.control = "start"
@@ -155,7 +169,7 @@ function cookKey(key as string) as boolean
     n = m.rec.steps.Count()
     if key = "left" or key = "rewind" or key = "up"
         if m.cs.sIdx > 0 then m.cs.sIdx = m.cs.sIdx - 1
-    else if key = "OK" and (m.rec.steps[m.cs.sIdx].timer > 0 or m.timer.done)
+    else if key = "OK" and (recipeStepTiming(m.cs.sIdx).timer > 0 or m.timer.done)
         cookTimerToggle()
     else if key = "right" or key = "fastforward" or key = "down" or key = "OK"
         if m.cs.sIdx < n - 1

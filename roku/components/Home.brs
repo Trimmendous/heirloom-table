@@ -1,4 +1,4 @@
-' Home.brs: title + rows of recipe cards ("Every Recipe" first, then one row per category).
+' Home.brs: category filter and recipe card rows.
 ' Mirrors web/js/home.js.
 
 sub homeBuild()
@@ -7,8 +7,14 @@ sub homeBuild()
     m.homeG = mkGroup(m.root, 0, 0)
     m.homeG.visible = false
     m.homeBg = mkPoster(m.homeG, hl.bg, 0, 0, 1920, 1080)
-    mkLabel(m.homeG, "The Heirloom Table", "script", hl.title.size, cc.gold, hl.title.x, hl.title.y, hl.title.w, "center", 0)
+    mkLabel(m.homeG, "Culinote", "script", hl.title.size, cc.gold, hl.title.x, hl.title.y, hl.title.w, "center", 0)
     mkLabel(m.homeG, "A COLLECTION OF FAMILY RECIPES, KITCHEN FAVORITES, AND NEW TRADITIONS.", "serif", hl.tagline.size, cc.goldLight, hl.tagline.x, hl.tagline.y, hl.tagline.w, "center", 0)
+    f = hl.filter
+    filterGroup = mkGroup(m.homeG, f.x, f.y)
+    m.homeFilterFocus = mkPoster(filterGroup, "images/ui/focus.9.png", -14, -14, f.w + 28, f.h + 28)
+    mkPoster(filterGroup, "images/ui/parchment.9.png", 0, 0, f.w, f.h)
+    m.homeFilterTint = mkRect(filterGroup, "0xEAB95466", 5, 5, f.w - 10, f.h - 10)
+    m.homeFilterLabel = mkLabel(filterGroup, "", "serifBold", f.size, cc.ink, 12, 10, f.w - 24, "center", 0)
     v = hl.version
     mkLabel(m.homeG, "v" + m.D.app.version + "  ·  * Options", "serif", v.size, cc.goldLight, v.x, v.y, v.w, "right", 0)
     m.homeRows = mkGroup(m.homeG, hl.rows.x, hl.rows.y)
@@ -18,23 +24,78 @@ sub homeBuild()
     m.homeUp = mkPoster(m.homeG, "images/ui/chev_up.png", 1770, hl.rows.y + 18, 30, 20)
     m.homeDown = mkPoster(m.homeG, "images/ui/chev_down.png", 1770, hl.rows.y + hl.rows.h - 24, 30, 20)
     m.homeMore = mkLabel(m.homeG, "", "serif", hl.card.metaSize, cc.goldLight, 1424, hl.rows.y + 14, 330, "right", 0)
+    fn = hl.filterNote
+    m.homeFilterCategory = mkLabel(m.homeG, "", "serifBold", fn.size, cc.goldLight, fn.x, fn.y, fn.w, "left", 0)
+    m.homeFilterNote = mkLabel(m.homeG, "", "serif", fn.size, cc.goldLight, fn.x, fn.y + 30, fn.w, "left", 2)
+    m.homeEmpty = mkLabel(m.homeG, "No recipes match these filters.", "serif", 34, cc.goldLight, hl.rows.x, hl.rows.y + 26, 950, "left", 0)
 
-    m.rows = [{ title: "Every Recipe", items: [] }]
-    for i = 0 to m.D.recipes.Count() - 1
-        m.rows[0].items.Push(i)
-    end for
+    m.homeCategories = []
     for each c in m.D.categories
         row = { title: c, items: [] }
         for i = 0 to m.D.recipes.Count() - 1
             if m.D.recipes[i].category = c then row.items.Push(i)
         end for
-        m.rows.Push(row)
+        m.homeCategories.Push(row)
     end for
-    m.hs = { row: 0, top: 0, cols: [], lefts: [] }
+    m.homeAvoid = loadIngredientExclusions()
+    homeApplyFilter("")
+end sub
+
+sub homeApplyFilter(category as string)
+    m.homeCategory = category
+    m.rows = []
+    m.homeMatches = []
+    for each row in m.homeCategories
+        if category = "" or row.title = category
+            items = []
+            for each idx in row.items
+                matched = false
+                for each ingredient in m.D.recipes[idx].ingredientFilters
+                    if m.homeAvoid.DoesExist(ingredient)
+                        matched = true
+                        exit for
+                    end if
+                end for
+                if not matched
+                    items.Push(idx)
+                    m.homeMatches.Push(idx)
+                end if
+            end for
+            if items.Count() > 0 then m.rows.Push({ title: row.title, items: items })
+        end if
+    end for
+    m.hs = { row: 0, top: 0, cols: [], lefts: [], filter: m.menuOpen = true or m.rows.Count() = 0 }
     for each r in m.rows
         m.hs.cols.Push(0)
         m.hs.lefts.Push(0)
     end for
+    names = []
+    for each name in m.D.ingredientFilters
+        if m.homeAvoid.DoesExist(name) then names.Push(name)
+    end for
+    active = category <> "" or names.Count() > 0
+    m.homeFilterTint.visible = active
+    m.homeFilterLabel.text = "Filter"
+    if active then m.homeFilterLabel.text = "Filter · Active"
+    categoryLabel = category
+    if categoryLabel = "" then categoryLabel = "All Categories"
+    m.homeFilterCategory.visible = active
+    m.homeFilterCategory.text = categoryLabel + " · " + m.homeMatches.Count().ToStr() + " recipes"
+    m.homeFilterNote.visible = names.Count() > 0
+    if names.Count() > 2
+        m.homeFilterNote.text = "Avoiding " + names[0] + " +" + (names.Count() - 1).ToStr() + " more"
+    else
+        m.homeFilterNote.text = "Avoiding " + names.Join(", ")
+    end if
+    m.homeEmpty.visible = m.rows.Count() = 0
+    homeRender()
+end sub
+
+sub homeOpenFilter()
+    if m.menuOpen then return
+    m.hs.filter = true
+    homeRender()
+    menuShowFilter()
 end sub
 
 sub homeRender()
@@ -42,6 +103,7 @@ sub homeRender()
     cc = m.L.colors
     hs = m.hs
     vis = Int(hl.rows.h / hl.rows.rowH)
+    m.homeFilterFocus.visible = hs.filter
     if hs.row < hs.top then hs.top = hs.row
     if hs.row >= hs.top + vis then hs.top = hs.row - vis + 1
     removeKids(m.homeRows)
@@ -64,7 +126,7 @@ sub homeRender()
             if c >= n then exit for
             rec = m.D.recipes[row.items[c]]
             g = mkGroup(m.homeRows, (c - lft) * (cw + hl.card.gap), y + hl.rows.labelH)
-            if r = hs.row and c = col
+            if not hs.filter and r = hs.row and c = col
                 g.scaleRotateCenter = [cw / 2, ch / 2]
                 g.scale = [hl.card.focusScale, hl.card.focusScale]
                 mkPoster(g, "images/ui/focus.9.png", -22, -22, cw + 44, ch + 44)
@@ -82,36 +144,59 @@ sub homeRender()
             m.homeMore.text = (col + 1).ToStr() + " of " + n.ToStr()
         end if
     end for
-    m.homeMore.visible = m.rows[hs.row].items.Count() > hl.card.visible
+    m.homeMore.visible = false
+    if m.rows.Count() > 0 then m.homeMore.visible = m.rows[hs.row].items.Count() > hl.card.visible
     m.homeUp.visible = hs.top > 0
     m.homeDown.visible = hs.top + vis < m.rows.Count()
 end sub
 
-' Put focus on a recipe's card in the current row (used when returning from a recipe).
+' Put focus on the recipe's card when returning to Home.
 sub homeFocusRecipe(rpos as integer)
-    items = m.rows[m.hs.row].items
-    for c = 0 to items.Count() - 1
-        if items[c] = rpos then m.hs.cols[m.hs.row] = c
+    for r = 0 to m.rows.Count() - 1
+        items = m.rows[r].items
+        for c = 0 to items.Count() - 1
+            if items[c] = rpos
+                m.hs.row = r
+                m.hs.cols[r] = c
+                m.hs.filter = false
+                return
+            end if
+        end for
     end for
 end sub
 
-sub homeJump(cat as string)
-    for r = 0 to m.rows.Count() - 1
-        if m.rows[r].title = cat
-            m.hs.row = r
-            m.hs.cols[r] = 0
-        end if
+function homeAdjacentRecipe(rpos as integer, direction as integer) as integer
+    items = m.homeMatches
+    count = items.Count()
+    if count = 0 then return rpos
+    for c = 0 to count - 1
+        if items[c] = rpos then return items[(c + direction + count) mod count]
     end for
-    showScreen("home")
-end sub
+    return items[0]
+end function
 
 function homeKey(key as string) as boolean
     hs = m.hs
-    n = m.rows[hs.row].items.Count()
+    n = 0
+    if m.rows.Count() > 0 then n = m.rows[hs.row].items.Count()
     if key = "up"
-        if hs.row > 0 then hs.row = hs.row - 1
+        if hs.filter then return true
+        if hs.row > 0
+            hs.row = hs.row - 1
+        else
+            hs.filter = true
+        end if
     else if key = "down"
-        if hs.row < m.rows.Count() - 1 then hs.row = hs.row + 1
+        if hs.filter and n > 0
+            hs.filter = false
+        else if hs.row < m.rows.Count() - 1
+            hs.row = hs.row + 1
+        end if
+    else if hs.filter and key = "OK"
+        homeOpenFilter()
+        return true
+    else if hs.filter and (key = "left" or key = "right" or key = "play" or key = "rewind" or key = "fastforward")
+        return true
     else if key = "left" or key = "rewind"
         if hs.cols[hs.row] > 0 then hs.cols[hs.row] = hs.cols[hs.row] - 1
     else if key = "right" or key = "fastforward"

@@ -25,7 +25,10 @@ mkdir -p dist
 WORK="$(mktemp -d "$PWD/dist/fire-tv-build.XXXXXX")"
 trap 'rm -rf -- "$WORK"' EXIT
 mkdir -p "$WORK/classes" "$WORK/dex" "$WORK/res/drawable-nodpi"
-cp roku/images/channel/icon_focus_fhd.png "$WORK/res/drawable-nodpi/tile.png"
+cp -R fire-tv/res/. "$WORK/res/"
+cp roku/images/channel/fire_tv_banner.png "$WORK/res/drawable-nodpi/tile.png"
+cp roku/images/channel/culinote_mark.png "$WORK/res/drawable-nodpi/mark.png"
+cp roku/images/channel/splash_fhd.jpg "$WORK/res/drawable-nodpi/splash.jpg"
 "$TOOLS/aapt2" compile --dir "$WORK/res" -o "$WORK/resources.zip"
 "$TOOLS/aapt2" link -I "$PLATFORM" --manifest fire-tv/AndroidManifest.xml \
   --version-name "$VERSION" --version-code "$CODE" \
@@ -44,8 +47,8 @@ if [[ ! -f "$KEYSTORE" ]]; then
     -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Heirloom Table Debug"
 fi
 "$TOOLS/apksigner" sign --ks "$KEYSTORE" --ks-key-alias heirloom-debug \
-  --ks-pass pass:android --key-pass pass:android --out "$WORK/heirloom-table-fire-tv.apk" "$WORK/aligned.apk"
-"$TOOLS/apksigner" verify --verbose "$WORK/heirloom-table-fire-tv.apk"
-"$TOOLS/zipalign" -c 4 "$WORK/heirloom-table-fire-tv.apk"
-mv "$WORK/heirloom-table-fire-tv.apk" dist/heirloom-table-fire-tv.apk
-echo "Built dist/heirloom-table-fire-tv.apk"
+  --ks-pass pass:android --key-pass pass:android --out "$WORK/culinote-fire-tv.apk" "$WORK/aligned.apk"
+"$TOOLS/apksigner" verify --verbose "$WORK/culinote-fire-tv.apk"
+"$TOOLS/zipalign" -c 4 "$WORK/culinote-fire-tv.apk"
+mv "$WORK/culinote-fire-tv.apk" dist/culinote-fire-tv.apk
+echo "Built dist/culinote-fire-tv.apk"

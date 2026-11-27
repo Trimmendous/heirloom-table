@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "categories": ["Chicken & Rice", "Italian", "Fish", "Mains", "Sides", "Breakfast", "Breads", "Desserts"],
+  "categories": ["Chicken & Rice", "Italian", "Fish", "Mains", "Sides", "Breakfast", "Breads", "Desserts", "Drinks"],
   "recipes": [
     {
       "id": "tuscan-lemon-chicken-piccata",
@@ -10,10 +10,13 @@
       "description": "Golden chicken cutlets in a bright lemon, garlic and caper sauce. Serve with roasted asparagus or a little angel hair pasta.",
       "prepMin": 10,
       "cookMin": 20,
+      "prepVariableMin": 7,
+      "cookVariableMin": 1,
       "serves": 4,
       "difficulty": "Easy",
+      "cookware": ["Skillet", "Shallow dish", "Thermometer"],
       "ingredients": [
-        "4 boneless, skinless chicken breasts (about 1½ lb)",
+        "{{4|boneless, skinless chicken breast|boneless, skinless chicken breasts}} (about {{1½ lb}})",
         "½ cup all-purpose flour",
         "1 tsp salt",
         "½ tsp black pepper",
@@ -22,18 +25,19 @@
         "2 Tbsp unsalted butter",
         "3 cloves garlic, minced",
         "¾ cup low-sodium chicken broth",
-        "1/3 cup fresh lemon juice (about 2 lemons)",
+        "1/3 cup fresh lemon juice (about {{2 lemons}})",
         "2 Tbsp capers, drained",
-        "Zest of 1 lemon (about 1 tsp)",
+        "Zest of {{1 lemon}} (about {{1 tsp}})",
         "¼ cup fresh parsley, chopped, plus more to garnish"
       ],
       "steps": [
-        {"lead": "Prepare the chicken.", "text": "Slice each breast in half horizontally to make 8 thin cutlets. Season both sides with the salt, pepper and Italian seasoning, then dredge lightly in flour, shaking off any excess."},
-        {"lead": "Sear the chicken.", "text": "Heat the olive oil in a large skillet over medium-high heat. Cook the cutlets in batches, 3–4 minutes per side, until golden and cooked through (165°F inside). Move to a plate and tent loosely with foil."},
-        {"lead": "Make the sauce.", "text": "Lower the heat to medium and melt the butter in the same skillet. Stir in the garlic and cook for about 30 seconds, just until fragrant."},
-        {"lead": "Add the brightness.", "text": "Pour in the broth and lemon juice, scraping up the browned bits from the pan. Stir in the capers and lemon zest and simmer 3–4 minutes, until slightly reduced."},
+        {"lead": "Prepare the chicken.", "text": "Pat {{4|chicken breast|chicken breasts}} dry and slice each in half horizontally to make {{8|thin cutlet|thin cutlets}}. Mix {{1 tsp}} salt, {{½ tsp}} black pepper and {{½ tsp}} Italian seasoning. Sprinkle over both sides."},
+        {"lead": "Dredge in flour.", "text": "Spread {{½ cup}} flour on a shallow plate. Coat each cutlet on both sides and shake off the excess. Discard the flour that touched the raw chicken."},
+        {"lead": "Sear the chicken.", "text": "Heat {{2 Tbsp}} olive oil in a large skillet over medium-high heat, dividing it over {{batches}}. Sear for 3–4 minutes per side, until each cutlet reaches 165°F at its thickest part. Transfer to a clean plate and tent loosely with foil.", "batchServes": 2, "batchCookSeconds": 420},
+        {"lead": "Make the sauce.", "text": "Lower the heat to medium and melt {{2 Tbsp}} butter in the same skillet. Stir in {{3 cloves}} minced garlic and cook for about 30 seconds, just until fragrant."},
+        {"lead": "Add the brightness.", "text": "Pour in {{¾ cup}} broth and {{1/3 cup}} lemon juice and scrape up the browned bits. Stir in {{2 Tbsp}} capers and zest from {{1 lemon}}. Simmer 3–4 minutes, until slightly reduced."},
         {"lead": "Bring it together.", "text": "Return the chicken and any juices to the skillet and spoon the sauce over the top. Simmer for 2 minutes to warm through."},
-        {"lead": "Serve.", "text": "Scatter with parsley and a few extra lemon slices. Lovely with roasted asparagus, a green salad or angel hair pasta."}
+        {"lead": "Serve.", "text": "Scatter with {{¼ cup}} chopped parsley and a few extra lemon slices if you like. Serve with roasted asparagus, a green salad or angel hair pasta."}
       ],
       "kitchenNote": "Squeeze the lemons fresh and add a little extra zest at the very end. Leftover sauce is wonderful tossed through a bowl of buttered pasta the next day.",
       "accent": {"garnish": "lemon", "color": "#E9B824"},
@@ -49,27 +53,29 @@
       "description": "Tall, tender buttermilk pancakes dotted with jammy blueberries. A slow Saturday morning on a plate.",
       "prepMin": 10,
       "cookMin": 20,
+      "prepVariableMin": 4,
       "serves": 4,
       "difficulty": "Easy",
+      "cookware": ["Mixing bowls", "Skillet or griddle", "Spatula"],
       "ingredients": [
-        "2 cups (250 g) all-purpose flour",
+        "2 cups ({{250 g}}) all-purpose flour",
         "2 Tbsp sugar",
         "2 tsp baking powder",
         "1 tsp baking soda",
         "½ tsp salt",
         "2 cups buttermilk",
-        "2 large eggs",
+        "{{2|large egg|large eggs}}",
         "3 Tbsp unsalted butter, melted, plus more for the pan",
         "1 tsp vanilla extract",
         "1 cup fresh blueberries",
         "Maple syrup, to serve"
       ],
       "steps": [
-        {"lead": "Whisk the dry.", "text": "In a large bowl, whisk together the flour, sugar, baking powder, baking soda and salt."},
-        {"lead": "Whisk the wet.", "text": "In a second bowl, whisk the buttermilk, eggs, melted butter and vanilla until smooth."},
+        {"lead": "Whisk the dry.", "text": "Whisk {{2 cups}} flour, {{2 Tbsp}} sugar, {{2 tsp}} baking powder, {{1 tsp}} baking soda and {{½ tsp}} salt in a large bowl."},
+        {"lead": "Whisk the wet.", "text": "In another bowl whisk {{2 cups}} buttermilk, {{2 eggs}}, {{3 Tbsp}} melted butter and {{1 tsp}} vanilla. If you need a fraction of an egg, beat it separately before measuring."},
         {"lead": "Combine gently.", "text": "Pour the wet ingredients into the dry and fold with a spatula until just combined. A few lumps are good. Let the batter rest for 5 minutes."},
-        {"lead": "Heat the griddle.", "text": "Warm a griddle or large skillet over medium heat and brush it lightly with butter."},
-        {"lead": "Cook the pancakes.", "text": "Pour ¼ cup of batter per pancake and scatter a few blueberries on top. Cook 2–3 minutes, until bubbles form and the edges look set, then flip and cook 1–2 minutes more."},
+        {"lead": "Heat the griddle.", "text": "Warm a griddle or large skillet over medium heat. A drop of water should sizzle on contact. Wipe the pan dry, then brush it lightly with butter."},
+        {"lead": "Cook the pancakes.", "text": "Plan on {{batches}}. Pour ¼ cup batter per pancake and divide {{1 cup}} blueberries across the tops. Cook 2–3 minutes, until bubbles pop and the edges set. Flip and cook 1–2 minutes more, until set in the center and golden underneath.", "batchServes": 1, "batchCookSeconds": 240},
         {"lead": "Serve warm.", "text": "Keep finished pancakes in a 200°F oven while you cook the rest. Serve with a pat of butter and warm maple syrup."}
       ],
       "kitchenNote": "Don't press the pancakes after flipping. Let them rise on their own. Frozen blueberries work too; add them straight from the freezer so they don't bleed.",
@@ -85,30 +91,33 @@
       "cuisine": "French",
       "description": "Summer vegetables cooked one by one, then simmered together with tomato, thyme and good olive oil.",
       "prepMin": 25,
-      "cookMin": 50,
+      "cookMin": 60,
+      "prepVariableMin": 18,
+      "cookVariableMin": 4,
       "serves": 6,
       "difficulty": "Medium",
+      "cookware": ["Large pot with lid", "Bowl"],
       "ingredients": [
         "5 Tbsp olive oil, divided, plus more to finish",
-        "1 medium eggplant (about 1 lb), cut into ¾-inch cubes",
-        "2 medium zucchini, cut into ¾-inch half-moons",
-        "1 large onion, diced",
-        "1 red and 1 yellow bell pepper, cut into 1-inch pieces",
+        "{{1|medium eggplant|medium eggplants}} (about {{1 lb}}), cut into ¾-inch cubes",
+        "{{2|medium zucchini|medium zucchini}}, cut into ¾-inch half-moons",
+        "{{1|large onion|large onions}}, diced",
+        "{{1}} red and {{1|yellow bell pepper|yellow bell peppers}}, cut into 1-inch pieces",
         "4 cloves garlic, thinly sliced",
         "1 can (28 oz) whole peeled tomatoes, crushed by hand",
-        "4 sprigs fresh thyme (or 1 tsp dried)",
-        "1 bay leaf",
+        "4 sprigs fresh thyme (or {{1 tsp}} dried)",
+        "{{1|bay leaf|bay leaves}}",
         "1½ tsp salt, plus more to taste",
         "½ tsp black pepper",
         "¼ cup fresh basil, torn"
       ],
       "steps": [
-        {"lead": "Brown the eggplant.", "text": "Heat 2 Tbsp of the oil in a wide, heavy pot over medium-high heat. Add the eggplant with a pinch of salt and cook 8–10 minutes, stirring, until golden. Spoon into a bowl."},
-        {"lead": "Sear the zucchini.", "text": "Add 1 Tbsp oil and the zucchini and cook about 5 minutes, until lightly browned but still firm. Add to the eggplant."},
-        {"lead": "Soften the aromatics.", "text": "Add the last 2 Tbsp oil, the onion and the peppers. Cook 8–10 minutes over medium heat until soft, then stir in the garlic for 1 minute."},
-        {"lead": "Simmer the tomatoes.", "text": "Add the tomatoes and their juice, the thyme, bay leaf, salt and pepper. Simmer for 15 minutes, until slightly thickened."},
+        {"lead": "Brown the eggplant.", "text": "Heat {{2 Tbsp}} oil in a wide pot. Brown {{1 lb}} cubed eggplant over medium-high heat in {{batches}}, dividing the oil and {{¼ tsp}} salt among batches. Cook each for 8–10 minutes, stirring. Transfer to a bowl.", "batchServes": 6, "batchCookSeconds": 540},
+        {"lead": "Sear the zucchini.", "text": "Cook {{2|sliced zucchini|sliced zucchini}} in {{batches}}, dividing {{1 Tbsp}} oil among batches. Cook each about 5 minutes, until lightly browned but still firm. Add to the eggplant.", "batchServes": 6, "batchCookSeconds": 300},
+        {"lead": "Soften the aromatics.", "text": "Add {{2 Tbsp}} oil, {{1|diced onion|diced onions}}, {{1}} red and {{1|yellow bell pepper|yellow bell peppers}}. Cook 8–10 minutes over medium heat until soft, then stir in {{4 cloves}} sliced garlic for 1 minute."},
+        {"lead": "Simmer the tomatoes.", "text": "Add {{1|28-oz can|28-oz cans}} of crushed whole tomatoes with juice, {{4 sprigs}} thyme, {{1|bay leaf|bay leaves}}, {{1¼ tsp}} salt and {{½ tsp}} pepper. Simmer uncovered for 15 minutes, until slightly thickened."},
         {"lead": "Bring it together.", "text": "Return the eggplant and zucchini to the pot, cover and simmer gently 15–20 minutes, until everything is tender but still holds its shape."},
-        {"lead": "Finish and serve.", "text": "Fish out the bay leaf and thyme stems. Fold in the basil, taste for salt and finish with a thread of olive oil. Serve warm or at room temperature."}
+        {"lead": "Finish and serve.", "text": "Remove the bay and thyme stems. Fold in {{¼ cup}} torn basil, taste for salt and finish with a thread of olive oil. Serve warm or at room temperature."}
       ],
       "kitchenNote": "Ratatouille is even better the next day, so make a big pot. Spoon leftovers over polenta or toast, or bake them with eggs cracked right on top.",
       "accent": {"garnish": "herbs", "color": "#5E7D3A"},
@@ -124,22 +133,26 @@
       "description": "A craggy, golden loaf made with just four ingredients and no yeast. From bowl to oven in ten minutes.",
       "prepMin": 10,
       "cookMin": 40,
+      "prepVariableMin": 5,
+      "cookVariableMin": 7,
       "serves": 8,
       "difficulty": "Easy",
+      "cookware": ["Mixing bowl", "Baking sheet or skillet", "Cooling rack"],
       "ingredients": [
-        "4 cups (500 g) all-purpose flour, plus more for dusting",
+        "4 cups ({{500 g}}) all-purpose flour, plus more for dusting",
         "1 tsp baking soda",
         "1 tsp fine salt",
-        "1¾ cups (420 ml) cold buttermilk, plus a splash more if needed",
+        "1¾ cups ({{420 ml}}) cold buttermilk, plus a splash more if needed",
         "Salted butter, to serve"
       ],
       "steps": [
         {"lead": "Heat the oven.", "text": "Preheat the oven to 425°F (220°C) and dust a baking sheet or cast-iron skillet with flour."},
-        {"lead": "Mix the dry ingredients.", "text": "Whisk the flour, baking soda and salt together in a large bowl, then make a well in the center."},
-        {"lead": "Add the buttermilk.", "text": "Pour in most of the buttermilk and stir with a fork or one cupped hand until a soft, shaggy dough forms. Add the rest only if dry flour remains."},
-        {"lead": "Shape gently.", "text": "Turn the dough onto a floured counter and pat it into a round about 2 inches high. Handle it as little as possible to keep the loaf tender."},
-        {"lead": "Score the cross.", "text": "Set the round on the sheet and cut a deep cross across the top with a floured knife, almost to the edges, to help it bake through."},
-        {"lead": "Bake.", "text": "Bake 35–40 minutes, until deep golden and hollow-sounding when tapped underneath. Cool on a rack, wrapped in a clean tea towel for a softer crust."}
+        {"lead": "Mix the dry ingredients.", "text": "Whisk {{4 cups}} flour, {{1 tsp}} baking soda and {{1 tsp}} fine salt in a large bowl, then make a well in the center."},
+        {"lead": "Add the buttermilk.", "text": "Measure {{1¾ cups}} cold buttermilk. Pour in most and stir until a soft, shaggy dough forms. Add the rest only if dry flour remains."},
+        {"lead": "Shape gently.", "text": "Turn the dough onto a floured counter and pat it into a round about 2 inches high. Divide a large batch into rounds of that same height. Handle it as little as possible to keep the loaf tender."},
+        {"lead": "Score the cross.", "text": "Set the round on the floured sheet or skillet. With a floured knife, score an X about ½ inch deep across the top, extending it nearly to the edges."},
+        {"lead": "Bake.", "text": "Bake on the middle rack. Start checking after {{smallBatch|20 minutes|35 minutes}}. The bread should be deep golden and sound hollow when tapped underneath. If it sounds dull, bake a few more minutes and check again.", "smallBatchServes": 4},
+        {"lead": "Cool before slicing.", "text": "Transfer to a wire rack and let the loaf cool before slicing. Wrap it loosely in a clean tea towel if you prefer a softer crust. Serve with salted butter."}
       ],
       "kitchenNote": "Granny always said the cross was there to let the fairies out. It's at its best the day it's baked, still a little warm, with plenty of good salted butter.",
       "accent": {"garnish": "wheat", "color": "#C9973F"},
@@ -155,32 +168,46 @@
       "description": "Soft cinnamon apples under a buttery oat crumble, baked until bubbling. Pass the custard.",
       "prepMin": 20,
       "cookMin": 45,
+      "prepVariableMin": 14,
       "serves": 6,
       "difficulty": "Easy",
+      "cookware": ["Mixing bowls", "Baking dish"],
       "ingredients": [
-        {"group": "For the filling", "items": [
-          "2½ lb tart apples (about 6), peeled, cored and sliced",
-          "¼ cup (50 g) granulated sugar",
-          "1 Tbsp lemon juice",
-          "1 Tbsp all-purpose flour",
-          "1 tsp ground cinnamon"
-        ]},
-        {"group": "For the crumble", "items": [
-          "1¼ cups (160 g) all-purpose flour",
-          "½ cup (100 g) light brown sugar",
-          "½ cup (45 g) rolled oats",
-          "½ tsp ground cinnamon",
-          "¼ tsp salt",
-          "½ cup (1 stick) cold unsalted butter, cubed",
-          "Custard, cream or vanilla ice cream, to serve"
-        ]}
+        {
+          "group": "For the filling",
+          "items": [
+            "2½ lb tart apples (about {{6}}), peeled, cored and sliced",
+            "¼ cup ({{50 g}}) granulated sugar",
+            "1 Tbsp lemon juice",
+            "1 Tbsp all-purpose flour",
+            "1 tsp ground cinnamon"
+          ]
+        },
+        {
+          "group": "For the crumble",
+          "items": [
+            "1¼ cups ({{160 g}}) all-purpose flour",
+            "½ cup ({{100 g}}) light brown sugar",
+            "½ cup ({{45 g}}) rolled oats",
+            "½ tsp ground cinnamon",
+            "¼ tsp salt",
+            "½ cup ({{1 stick}}) cold unsalted butter, cubed",
+            "Custard, cream or vanilla ice cream, to serve"
+          ]
+        },
+        {
+          "group": "For the dish",
+          "items": [
+            "1 tsp unsalted butter, for greasing the dish"
+          ]
+        }
       ],
       "steps": [
-        {"lead": "Heat the oven.", "text": "Preheat the oven to 375°F (190°C) and butter a 2-quart baking dish."},
-        {"lead": "Toss the apples.", "text": "In a large bowl, toss the apple slices with the sugar, lemon juice, flour and cinnamon. Tip into the dish and spread them out evenly."},
-        {"lead": "Rub the crumble.", "text": "Mix the flour, brown sugar, oats, cinnamon and salt. Rub in the cold butter with your fingertips until the mixture clumps like damp sand with a few larger pebbles."},
+        {"lead": "Heat the oven.", "text": "Heat the oven to 375°F (190°C) with a rack in the middle. Rub {{1 tsp}} butter over the baking dish. Choose a dish that holds the filling in an even layer."},
+        {"lead": "Toss the apples.", "text": "Peel and core {{2½ lb}} apples, then cut them into ¼-inch slices. Toss with {{¼ cup}} sugar, {{1 Tbsp}} lemon juice, {{1 Tbsp}} flour and {{1 tsp}} cinnamon. Spread evenly in the prepared dish."},
+        {"lead": "Rub the crumble.", "text": "Mix {{1¼ cups}} flour, {{½ cup}} brown sugar, {{½ cup}} oats, {{½ tsp}} cinnamon and {{¼ tsp}} salt. Rub in {{½ cup}} cold cubed butter with your fingertips until the mixture clumps like damp sand."},
         {"lead": "Top the fruit.", "text": "Scatter the crumble loosely over the apples, right to the edges. Don't press it down; the little gaps let it crisp."},
-        {"lead": "Bake.", "text": "Bake 40–45 minutes, until the top is deep golden and the juices bubble thickly at the edges."},
+        {"lead": "Bake.", "text": "Start checking after {{smallBatch|30 minutes|40 minutes}} of baking. The crumble is ready when the top is deep golden and the juices bubble thickly at the edges.", "smallBatchServes": 3},
         {"lead": "Rest and serve.", "text": "Let it settle for 10 minutes, then spoon into bowls with warm custard, cold cream or a scoop of vanilla ice cream."}
       ],
       "kitchenNote": "Use a mix of apples if you can, some sharp and some sweet. A handful of blackberries tucked in with the apples was always Grandma's late-summer secret.",
@@ -197,20 +224,23 @@
       "description": "Crisp-edged fried eggs on warm corn tortillas with black beans and a smoky ranchero sauce. A ranch-hand breakfast worth waking up for.",
       "prepMin": 10,
       "cookMin": 25,
+      "prepVariableMin": 6,
+      "cookVariableMin": 2,
       "serves": 4,
       "difficulty": "Easy",
+      "cookware": ["Saucepans", "Skillet"],
       "ingredients": [
         {
           "group": "Ranchero sauce",
           "items": [
             "1 Tbsp vegetable oil",
-            "½ white onion, chopped",
-            "1 jalapeño, seeded and minced",
+            "{{½|white onion|white onions}}, chopped",
+            "{{1|jalapeño|jalapeños}}, seeded and minced",
             "2 cloves garlic, minced",
             "½ tsp ground cumin",
             "1 can (14½ oz) fire-roasted diced tomatoes",
             "½ tsp salt",
-            "Juice of ½ lime"
+            "Juice of {{½ lime}}"
           ]
         },
         {
@@ -218,38 +248,47 @@
           "items": [
             "8 corn tortillas (6-inch)",
             "2 Tbsp vegetable oil",
-            "8 large eggs",
-            "1 can (15 oz) black beans, drained and warmed",
-            "1 ripe avocado, sliced",
+            "{{8|large egg|large eggs}}",
+            "1 can (15 oz) black beans, drained",
+            "{{1|ripe avocado|ripe avocados}}, sliced",
             "½ cup crumbled queso fresco",
-            "Fresh cilantro and lime wedges"
+            "Fresh cilantro and lime wedges",
+            "2 Tbsp water, for warming the beans"
           ]
         }
       ],
       "steps": [
         {
           "lead": "Start the sauce.",
-          "text": "Heat the oil in a saucepan over medium heat. Cook the onion and jalapeño for 5 minutes, until soft. Add the garlic and cumin and stir for 30 seconds, until fragrant."
+          "text": "Heat {{1 Tbsp}} oil over medium heat. Cook {{½|chopped onion|chopped onions}} and {{1|minced jalapeño|minced jalapeños}} for 5 minutes, until soft. Add {{2 cloves}} garlic and {{½ tsp}} cumin and stir for 30 seconds."
         },
         {
           "lead": "Simmer it down.",
-          "text": "Add the tomatoes and salt and simmer for 10 minutes, stirring now and then, until slightly thickened. Blend briefly if you like it smooth, stir in the lime juice and keep warm."
+          "text": "Add {{1|14½-oz can|14½-oz cans}} diced tomatoes and {{½ tsp}} salt. Simmer for 10 minutes, until slightly thickened. Blend off the heat for a smooth sauce if desired. Stir in juice from {{½ lime}} and keep warm."
         },
         {
           "lead": "Warm the tortillas.",
-          "text": "Heat a skillet over medium-high heat and brush the tortillas lightly with oil. Fry each for about 30 seconds per side, until soft and blistered. Wrap in a clean towel."
+          "text": "Heat a skillet over medium-high heat. Brush {{8|tortilla|tortillas}} with about {{1 Tbsp}} oil. Plan on {{batches}}, frying about 30 seconds per side until soft and blistered. Wrap in a clean towel.",
+          "batchServes": 1,
+          "batchCookSeconds": 60
+        },
+        {
+          "lead": "Warm the beans.",
+          "text": "Put {{1|15-oz can|15-oz cans}} of drained beans in a saucepan with {{2 Tbsp}} water. Warm over medium-low heat, stirring, until steaming. Cover to keep warm."
         },
         {
           "lead": "Fry the eggs.",
-          "text": "Lower the heat to medium and add the remaining oil. Crack in the eggs and fry for 3–4 minutes, until the whites are fully set and the edges are lacy but the yolks still run."
+          "text": "Reduce the skillet to medium heat and add the remaining {{1 Tbsp}} oil. Divide {{8 eggs}} across {{batches}}. Cover and cook each batch until the whites and yolks are firm.",
+          "batchServes": 2,
+          "batchCookSeconds": 240
         },
         {
           "lead": "Build the plates.",
-          "text": "Overlap two tortillas on each plate, add a spoonful of black beans and top with two eggs. Ladle the warm sauce around the yolks."
+          "text": "Put two tortillas and an even share of the warm beans on each plate. Top each serving with two eggs and spoon the warm ranchero sauce over and around them."
         },
         {
           "lead": "Finish and serve.",
-          "text": "Scatter over the avocado, queso fresco and cilantro, and tuck a lime wedge on the side. Serve right away, while the tortillas are warm."
+          "text": "Divide {{1|sliced avocado|sliced avocados}} and {{½ cup}} queso fresco among the plates. Add cilantro and a lime wedge to each. Serve while the tortillas are warm."
         }
       ],
       "kitchenNote": "Make the sauce the night before; it only gets better. On busy mornings I crack the eggs straight into the simmering sauce, cover the pan, and call it breakfast.",
@@ -274,65 +313,76 @@
       "description": "Flaky hand pies filled with cumin-spiced beef, sweet pepper, egg and olives, crimped by hand and baked until deep golden. Makes 12.",
       "prepMin": 120,
       "cookMin": 45,
+      "prepVariableMin": 22,
+      "cookVariableMin": 2,
       "serves": 6,
       "difficulty": "Hard",
+      "cookware": ["Mixing bowl", "Skillet", "Rolling pin", "Baking sheets", "Thermometer"],
       "ingredients": [
         {
           "group": "Dough",
           "items": [
-            "3 cups (375 g) all-purpose flour, plus more for rolling",
+            "3 cups ({{375 g}}) all-purpose flour, plus more for rolling",
             "1 tsp salt",
-            "½ cup (113 g) cold unsalted butter or lard, cubed",
+            "½ cup ({{113 g}}) cold unsalted butter or lard, cubed",
             "1 large egg",
-            "½ cup (120 ml) cold water, plus 1–2 Tbsp as needed"
+            "½ cup ({{120 ml}}) cold water, plus {{1–2 Tbsp}} as needed"
           ]
         },
         {
           "group": "Filling",
           "items": [
             "1 Tbsp olive oil",
-            "1 large onion, finely diced",
-            "1 red bell pepper, finely diced",
-            "1 lb (450 g) ground beef (85% lean)",
+            "{{1|large onion|large onions}}, finely diced",
+            "{{1|red bell pepper|red bell peppers}}, finely diced",
+            "1 lb ({{450 g}}) ground beef (85% lean)",
             "2 tsp sweet paprika",
             "2 tsp ground cumin",
             "½ tsp crushed red pepper flakes",
             "1 tsp salt",
             "4 scallions, thinly sliced",
-            "2 hard-boiled eggs, chopped",
+            "{{2|hard-boiled egg|hard-boiled eggs}}, chopped",
             "¼ cup pitted green olives, chopped",
-            "1 egg, beaten, for brushing"
+            "{{1 egg}}, beaten, for brushing"
           ]
         }
       ],
       "steps": [
         {
           "lead": "Make the dough.",
-          "text": "Whisk the flour and salt, then rub in the butter with your fingertips until it looks like coarse crumbs. Beat the egg with the water, stir it in, and add more water a spoonful at a time until the dough holds. Wrap and chill for 1 hour."
+          "text": "Whisk {{3 cups}} flour and {{1 tsp}} salt. Rub in {{½ cup}} cold butter or lard. Beat {{1 egg}} before measuring if you need a fraction. Mix it in with {{½ cup}} water. Add a little more water if needed. Wrap and chill for 1 hour."
         },
         {
           "lead": "Soften the vegetables.",
-          "text": "Heat the oil in a large skillet over medium heat. Cook the onion and red pepper for 8–10 minutes, stirring now and then, until very soft and sweet."
+          "text": "Heat {{1 Tbsp}} oil in a skillet over medium heat. Cook {{1|diced onion|diced onions}} and {{1|diced red pepper|diced red peppers}} for 8–10 minutes, stirring occasionally, until soft."
         },
         {
           "lead": "Brown the beef.",
-          "text": "Raise the heat to medium-high, add the beef and cook for 6–8 minutes, breaking it up, until browned with no pink left (160°F). Stir in the paprika, cumin, pepper flakes and salt and cook for 1 minute."
+          "text": "Brown {{1 lb}} beef in {{batches}} over medium-high heat. Break it into crumbles and cook each batch for 6–8 minutes, until it reaches 160°F. Combine and stir in {{2 tsp}} paprika, {{2 tsp}} cumin, {{½ tsp}} pepper flakes and {{1 tsp}} salt.",
+          "batchServes": 6,
+          "batchCookSeconds": 420
         },
         {
           "lead": "Cool the filling.",
-          "text": "Stir in the scallions, spread the filling on a plate and chill for 30 minutes, until cold. Warm filling melts the dough and makes the empanadas leak."
+          "text": "Stir in {{4 scallions}}, spread the filling on a plate and chill for 30 minutes, until cold. Warm filling melts the dough and makes the empanadas leak."
         },
         {
           "lead": "Roll and cut.",
-          "text": "Heat the oven to 400°F and line two baking sheets with parchment. Roll the dough out thin, about 3 mm (1/8 inch), and cut 12 rounds about 5 inches across, rerolling the scraps once."
+          "text": "Heat the oven to 400°F and line enough baking sheets with parchment. Roll the dough out thin, about 3 mm (1/8 inch), and cut {{12 rounds}} about 5 inches across, rerolling the scraps once."
         },
         {
           "lead": "Fill and crimp.",
-          "text": "Spoon 2 heaping Tbsp of filling onto each round and top with a little egg and olive. Brush the edge with water, fold into a half-moon and press to seal, then twist the edge into a rope or crimp it with a fork."
+          "text": "Spoon 2–3 tablespoons filling onto each round. Divide {{2|chopped hard-boiled egg|chopped hard-boiled eggs}} and {{¼ cup}} olives among them, leaving a ½-inch border. Wet the rim, fold and seal with a fork."
         },
         {
           "lead": "Bake.",
-          "text": "Set the empanadas on the sheets, brush with beaten egg and bake for 20–25 minutes, until deep golden. Rest for 5 minutes before serving; the filling is very hot."
+          "text": "Space the empanadas on the sheets and brush with {{1|beaten egg|beaten eggs}}. Plan on {{batches}} if baking one sheet at a time. Bake each sheet for 20–25 minutes, until deep golden brown.",
+          "batchServes": 6,
+          "batchCookSeconds": 1350
+        },
+        {
+          "lead": "Rest before serving.",
+          "text": "Let the empanadas rest for 5 minutes on the baking sheet before serving. The filling will be very hot."
         }
       ],
       "kitchenNote": "The twisted rope edge is called the repulgue and takes a few tries; a fork crimp seals just as well. Unbaked empanadas freeze beautifully. Bake from frozen, adding 5 minutes.",
@@ -357,40 +407,43 @@
       "description": "Fluffy rice simmered in coconut milk with red kidney beans, thyme, allspice and a whole Scotch bonnet for fragrance, not fire.",
       "prepMin": 10,
       "cookMin": 40,
+      "prepVariableMin": 5,
+      "cookVariableMin": 5,
       "serves": 6,
       "difficulty": "Easy",
+      "cookware": ["Pot with lid", "Strainer"],
       "ingredients": [
-        "1½ cups (300 g) long-grain white rice",
+        "1½ cups ({{300 g}}) long-grain white rice",
         "1 can (15 oz / 425 g) red kidney beans, drained and rinsed",
         "1 can (13.5 oz / 400 ml) coconut milk",
-        "1 cup (240 ml) water",
+        "1 cup ({{240 ml}}) water",
         "3 scallions, lightly crushed",
         "3 cloves garlic, crushed",
         "4 sprigs fresh thyme",
-        "6 whole allspice berries",
-        "1 whole Scotch bonnet pepper, left whole",
+        "{{6|whole allspice berry|whole allspice berries}}",
+        "Scotch bonnet pepper, to taste (up to 1 whole pepper)",
         "1 tsp salt"
       ],
       "steps": [
         {
           "lead": "Rinse the rice.",
-          "text": "Rinse the rice in a sieve under cold water, swishing it with your hand, until the water runs almost clear. Drain well."
+          "text": "Rinse {{1½ cups}} rice in a sieve under cold water, swishing with your hand, until the water runs almost clear. Drain well."
         },
         {
           "lead": "Build the pot.",
-          "text": "In a heavy pot with a tight lid, combine the coconut milk, water, beans, scallions, garlic, thyme, allspice and salt. Bring to a boil over medium-high heat."
+          "text": "In a lidded pot, combine {{1|13½-oz can|13½-oz cans}} coconut milk, {{1 cup}} water, {{1|15-oz can|15-oz cans}} drained beans, {{3 scallions}}, {{3 cloves}} garlic, {{4 sprigs}} thyme, {{6|allspice berry|allspice berries}} and {{1 tsp}} salt. Bring to a boil."
         },
         {
           "lead": "Add the rice.",
-          "text": "Stir in the rice, then nestle the whole Scotch bonnet on top. Keep it whole and unbroken so it gives perfume without much heat. Return to a boil."
+          "text": "Stir in the rice, then nestle the whole Scotch bonnet on top. Leave a whole pepper unbroken for mild flavor. For a small batch, omit it or use a small piece for more heat. Return to a boil."
         },
         {
           "lead": "Steam gently.",
-          "text": "Cover tightly, turn the heat to its lowest setting and cook for 20–25 minutes, without lifting the lid, until the liquid is absorbed and the rice is tender."
+          "text": "Cover tightly and reduce to the lowest heat that keeps a gentle simmer. Cook for 20–25 minutes without lifting the lid. Check at the end for tender grains and no liquid pooling at the bottom."
         },
         {
           "lead": "Rest and fluff.",
-          "text": "Take the pot off the heat and leave it covered for 10 minutes. Lift out the pepper, scallions and thyme stems, then fluff gently with a fork."
+          "text": "Take off the heat and rest, covered, for 10 minutes. Remove the whole pepper, scallions, thyme stems and any visible allspice berries. Fluff with a fork before serving."
         }
       ],
       "kitchenNote": "Sunday dinner always had rice and peas beside it. Lift that Scotch bonnet out carefully: if it bursts, the whole pot turns fiery. Dried beans soaked overnight taste best.",
@@ -413,46 +466,56 @@
       "category": "Breads",
       "cuisine": "French",
       "description": "Four simple ingredients, a few patient folds and a blast of steam make crackling crusts and open, chewy crumb. Makes 3.",
-      "prepMin": 195,
+      "prepMin": 250,
       "cookMin": 25,
+      "prepVariableMin": 12,
       "serves": 6,
       "difficulty": "Hard",
+      "cookware": ["Mixing bowl", "Baking steel", "Metal pan", "Peel", "Kettle"],
       "ingredients": [
-        "4 cups (500 g) bread flour",
-        "1½ cups (360 ml) lukewarm water",
-        "1 tsp (3 g) instant yeast",
-        "2 tsp (10 g) fine sea salt",
+        "4 cups ({{500 g}}) bread flour",
+        "1½ cups ({{360 ml}}) lukewarm water",
+        "1 tsp ({{3 g}}) instant yeast",
+        "2 tsp ({{10 g}}) fine sea salt",
         "Rice flour or semolina, for dusting",
-        "1 cup boiling water, for steam"
+        "Boiling water for steam (1 cup per oven batch)"
       ],
       "steps": [
         {
           "lead": "Mix and rest.",
-          "text": "Stir the flour and water together until no dry flour remains. Cover and let it rest for 30 minutes so the flour can soak up the water."
+          "text": "Stir {{4 cups}} bread flour and {{1½ cups}} lukewarm water until no dry flour remains. Cover and rest for 30 minutes."
         },
         {
           "lead": "Add yeast and salt.",
-          "text": "Sprinkle the yeast and salt over the dough and squeeze them through with a wet hand for 3–4 minutes, until evenly mixed and smooth."
+          "text": "Sprinkle {{1 tsp}} instant yeast and {{2 tsp}} fine sea salt over the dough. Squeeze them through with a wet hand for 3–4 minutes, until evenly mixed and smooth."
         },
         {
           "lead": "Stretch and fold.",
-          "text": "Cover. Every 30 minutes for 2 hours, wet your hand, stretch each side of the dough up and fold it over the top. It will grow airy, smooth and about half again in size."
+          "text": "Cover the dough. Every 30 minutes for 2 hours, wet your hand and stretch each of the four sides up and over the center. Cover again after each of the four rounds of folds.",
+          "timerSeconds": 1800
         },
         {
           "lead": "Divide and pre-shape.",
-          "text": "Tip onto a lightly floured counter, cut into 3 equal pieces and roll each loosely into a short log. Cover and rest for 20 minutes."
+          "text": "Tip onto a lightly floured counter, divide into portions using roughly two servings' worth of dough per loaf and roll each loosely into a short log. Cover and rest for 20 minutes."
         },
         {
           "lead": "Shape the baguettes.",
-          "text": "Pat each log flat, fold the top third down and the bottom third up, then fold in half and seal the seam with the heel of your hand. Roll out to 14 inches with tapered ends."
+          "text": "Pat each log flat, fold the top third down and the bottom third up, then fold in half and seal the seam with the heel of your hand. Roll each portion into a log with tapered ends. Aim for about 14 inches for a standard loaf and less for a smaller portion."
         },
         {
           "lead": "Proof.",
-          "text": "Lay them seam side up in the folds of a well-floured towel. Cover and proof for 45 minutes, until puffy. Meanwhile, heat the oven to 475°F with a baking steel and an empty metal pan on the rack below."
+          "text": "Lay the loaves seam-side up in the folds of a floured towel, with folds separating them. Cover and proof for 45 minutes, until puffy. Meanwhile, heat the oven to 475°F with a baking steel and a sturdy metal pan on the rack below."
         },
         {
-          "lead": "Score and bake.",
-          "text": "Roll the loaves seam side down onto parchment. Make 4 long, shallow, overlapping slashes with a razor, slide onto the steel, pour the boiling water into the pan and bake for 22–25 minutes, until deep golden."
+          "lead": "Score and load the loaves.",
+          "text": "Turn the loaves seam-side down onto a peel dusted with rice flour or semolina. Use a bread lame or sharp knife to cut four shallow, overlapping slashes along each loaf. Slide the loaves onto the hot steel."
+        },
+        {
+          "lead": "Add steam and bake.",
+          "text": "Plan on {{batches}}. For each batch, use oven mitts to carefully pour 1 cup boiling water into the hot metal pan from a long-spouted kettle. Keep your face clear of the steam and shut the oven. Start checking for a deep golden crust after {{smallBatch|16 minutes|22 minutes}}.",
+          "batchServes": 6,
+          "batchCookSeconds": 1440,
+          "smallBatchServes": 1
         },
         {
           "lead": "Cool.",
@@ -481,25 +544,29 @@
       "description": "Golden chicken thighs, tender long-grain rice and a squeeze of lemon, all from the same skillet.",
       "prepMin": 10,
       "cookMin": 35,
+      "prepVariableMin": 5,
+      "cookVariableMin": 3,
       "serves": 4,
       "difficulty": "Easy",
+      "cookware": ["Skillet with lid", "Strainer", "Thermometer"],
       "ingredients": [
-        "4 boneless, skinless chicken thighs (about 1¼ lb)",
+        "{{4|boneless, skinless chicken thigh|boneless, skinless chicken thighs}} (about {{1¼ lb}})",
         "¾ tsp kosher salt",
         "½ tsp black pepper",
         "1 Tbsp olive oil",
-        "1 small yellow onion, diced",
+        "{{1|small yellow onion|small yellow onions}}, diced",
         "2 cloves garlic, minced",
         "1 cup long-grain white rice, rinsed and drained",
         "1¾ cups low-sodium chicken broth",
-        "1 lemon, zested and juiced",
+        "{{1 lemon}}, zested and juiced",
         "2 Tbsp chopped parsley"
       ],
       "steps": [
-        {"lead": "Brown the chicken.", "text": "Pat the thighs dry and season with salt and pepper. Heat the oil in a deep, lidded skillet over medium-high heat. Brown the chicken for 3–4 minutes per side, then transfer it to a plate."},
-        {"lead": "Toast the rice.", "text": "Lower the heat to medium. Stir the onion in the drippings for 4 minutes. Add the garlic and drained rice and stir for 1 minute."},
-        {"lead": "Cover and simmer.", "text": "Stir in the broth and lemon zest, scraping the bottom of the skillet. Bring to a simmer. Nestle in the thighs and any juices, cover, and simmer on low for 18–22 minutes until the rice is tender and the chicken reaches 165°F."},
-        {"lead": "Rest and serve.", "text": "Take the covered skillet off the heat for 5 minutes. Fluff the rice and finish with lemon juice and parsley."}
+        {"lead": "Prep the lemon and rice.", "text": "Zest {{1 lemon}} before squeezing. Keep the zest and juice separate. Rinse {{1 cup}} rice in a sieve under cold water, then drain thoroughly."},
+        {"lead": "Brown the chicken.", "text": "Pat {{4|chicken thigh|chicken thighs}} dry and season with {{¾ tsp}} salt and {{½ tsp}} pepper. Heat {{1 Tbsp}} oil in a deep skillet over medium-high heat. Brown in {{batches}} for 3–4 minutes per side. Transfer to a plate.", "batchServes": 4, "batchCookSeconds": 420},
+        {"lead": "Toast the rice.", "text": "Lower the heat to medium. Stir {{1|diced onion|diced onions}} in the drippings for 4 minutes. Add {{2 cloves}} minced garlic and the drained rice and stir for 1 minute."},
+        {"lead": "Cover and simmer.", "text": "Stir in {{1¾ cups}} broth and the zest. Scrape the skillet. Bring to a simmer, then add the thighs and juices. Cover and cook on low for 18–22 minutes. Use two pans if needed. Check for tender rice and 165°F in the thickest thigh."},
+        {"lead": "Rest and serve.", "text": "Take the covered skillet off the heat for 5 minutes. Move the thighs to a clean plate, fluff the rice with a fork, and stir in the lemon juice and {{2 Tbsp}} chopped parsley."}
       ],
       "kitchenNote": "A tight-fitting lid helps the rice cook evenly. Keep it closed until the first check.",
       "accent": {"garnish": "lemon", "color": "#E9B824"},
@@ -515,13 +582,16 @@
       "description": "A cozy Minnesota-style soup with chicken, wild rice and vegetables in a light cream broth.",
       "prepMin": 15,
       "cookMin": 55,
+      "prepVariableMin": 10,
+      "cookVariableMin": 5,
       "serves": 6,
       "difficulty": "Easy",
+      "cookware": ["Soup pot with lid", "Strainer", "Thermometer"],
       "ingredients": [
         "1 Tbsp butter",
-        "1 yellow onion, diced",
+        "{{1|yellow onion|yellow onions}}, diced",
         "2 carrots, diced",
-        "2 celery ribs, diced",
+        "{{2|celery rib|celery ribs}}, diced",
         "1 tsp dried thyme",
         "¾ cup whole wild rice, rinsed",
         "6 cups low-sodium chicken broth",
@@ -530,10 +600,11 @@
         "Salt and pepper to taste"
       ],
       "steps": [
-        {"lead": "Soften the vegetables.", "text": "In a soup pot, melt the butter over medium heat. Add the onion, carrots and celery and cook for 6 minutes, stirring occasionally. Stir in the thyme."},
-        {"lead": "Simmer the rice.", "text": "Stir in the wild rice and broth. Bring to a boil, then lower the heat and simmer partially covered for 30 minutes."},
-        {"lead": "Poach the chicken.", "text": "Slip the thighs into the soup and simmer for 15–20 minutes, until the rice is tender and the chicken reaches 165°F. Transfer the thighs to a board and shred. Keep simmering the rice if it needs longer."},
-        {"lead": "Finish with cream.", "text": "Return the chicken to the pot and stir in the half-and-half. Warm gently over low heat and season with salt and pepper."}
+        {"lead": "Soften the vegetables.", "text": "Melt {{1 Tbsp}} butter over medium heat. Add {{1|diced onion|diced onions}}, {{2|diced carrot|diced carrots}} and {{2|diced celery rib|diced celery ribs}}. Cook for 6 minutes, stirring occasionally, then add {{1 tsp}} thyme."},
+        {"lead": "Simmer the rice.", "text": "Stir in {{¾ cup}} wild rice and {{6 cups}} broth. Choose a pot with room to stir. Bring to a boil, then lower the heat and simmer partially covered for 30 minutes."},
+        {"lead": "Poach the chicken.", "text": "Lower {{1 lb}} chicken thighs into the soup. Cook for 15–20 minutes, until the thickest thigh reaches 165°F. Transfer the chicken to a clean board. Keep simmering if the rice is still firm."},
+        {"lead": "Shred the chicken.", "text": "Use two forks to pull the cooked thighs into bite-size pieces. Return the chicken and any juices to the pot before adding the cream."},
+        {"lead": "Finish with cream.", "text": "Stir in {{¾ cup}} half-and-half and warm gently over low heat. Keep the soup below a boil and taste for salt and pepper before serving."}
       ],
       "kitchenNote": "Whole wild rice gives this soup its chewy texture. A wild rice blend will cook faster, so check the package.",
       "accent": {"garnish": "herbs", "color": "#8B9D61"},
@@ -549,8 +620,11 @@
       "description": "Chicken, broccoli and cooked rice baked in a cheddar sauce with a crisp cracker topping.",
       "prepMin": 15,
       "cookMin": 30,
+      "prepVariableMin": 8,
+      "cookVariableMin": 3,
       "serves": 6,
       "difficulty": "Easy",
+      "cookware": ["Baking dish", "Saucepan", "Microwave-safe bowl", "Thermometer"],
       "ingredients": [
         "3 cups cooked long-grain white rice",
         "2 cups shredded cooked chicken",
@@ -565,10 +639,13 @@
         "½ cup crushed buttery crackers"
       ],
       "steps": [
-        {"lead": "Prep the baking dish.", "text": "Heat the oven to 375°F and grease a 9-by-13-inch baking dish. Microwave the broccoli with a splash of water for 2 minutes, then drain well."},
-        {"lead": "Make the cheddar sauce.", "text": "Melt the butter in a saucepan over medium heat. Whisk in the flour for 1 minute. Slowly whisk in the milk, broth, salt and pepper. Simmer for 3 minutes while whisking, then remove from the heat and stir in the cheese."},
-        {"lead": "Assemble the bake.", "text": "Mix the rice, cooked chicken and broccoli with the sauce. Spread in the baking dish and sprinkle the cracker crumbs evenly over the top."},
-        {"lead": "Bake until bubbly.", "text": "Bake for 22–25 minutes, until the center reaches 165°F and the edges bubble. Let the dish stand briefly before serving."}
+        {"lead": "Measure and preheat.", "text": "Set out {{3 cups}} cooked rice, {{2 cups}} shredded cooked chicken, {{1½ cups}} milk and {{½ cup}} chicken broth. Heat the oven to 375°F. {{smallBatch|Grease a baking dish that fits the filling in an even layer.|Grease two baking dishes to split the filling into even layers.}}", "smallBatchServes": 6},
+        {"lead": "Steam the broccoli.", "text": "Microwave {{3 cups}} broccoli florets in {{batches}}, loosely covered, with a splash of water. Check each batch after {{smallBatch|1 minute|2 minutes}}. Drain once the broccoli is bright green and just tender.", "batchServes": 6, "batchCookSeconds": 120, "smallBatchServes": 3},
+        {"lead": "Start the sauce.", "text": "Melt {{2 Tbsp}} butter in a saucepan over medium heat. Whisk in {{2 Tbsp}} flour and cook for 1 minute, whisking constantly."},
+        {"lead": "Finish the cheddar sauce.", "text": "Slowly whisk in {{1½ cups}} milk and {{½ cup}} chicken broth. Add {{½ tsp}} kosher salt and {{¼ tsp}} black pepper. Simmer for 3 minutes, then take off the heat and stir in {{1½ cups}} sharp cheddar."},
+        {"lead": "Assemble the bake.", "text": "Mix {{3 cups}} cooked rice, {{2 cups}} shredded cooked chicken and the drained broccoli with the sauce. Spread it in the prepared bakeware and sprinkle {{½ cup}} crushed crackers over the top."},
+        {"lead": "Bake until bubbly.", "text": "Start checking after {{smallBatch|17 minutes|22 minutes}} of baking. The center should reach 165°F and the edges should bubble. Check each dish individually if you split the filling.", "smallBatchServes": 3},
+        {"lead": "Let the bake set.", "text": "Remove the bake from the oven and let it stand for 5 minutes before scooping into portions."}
       ],
       "kitchenNote": "Rotisserie chicken and leftover rice make this a quick dinner.",
       "accent": {"garnish": "wheat", "color": "#C2904D"},
@@ -584,12 +661,15 @@
       "description": "Penne coated in a silky tomato and cream sauce with Parmesan and a little red pepper.",
       "prepMin": 10,
       "cookMin": 25,
+      "prepVariableMin": 5,
+      "cookVariableMin": 4,
       "serves": 4,
       "difficulty": "Easy",
+      "cookware": ["Pot", "Skillet", "Colander"],
       "ingredients": [
         "12 oz penne",
         "2 Tbsp olive oil",
-        "1 shallot, finely chopped",
+        "{{1 shallot}}, finely chopped",
         "2 cloves garlic, minced",
         "¼ tsp crushed red pepper flakes",
         "¼ cup tomato paste",
@@ -599,10 +679,10 @@
         "Salt to taste"
       ],
       "steps": [
-        {"lead": "Boil the penne.", "text": "Cook the penne in salted water until just shy of al dente, following the package timing. Save 1 cup of the cooking water before draining."},
-        {"lead": "Cook the tomato paste.", "text": "Heat the oil in a wide skillet over medium heat. Soften the shallot for 3 minutes. Stir in the garlic, red pepper and tomato paste and cook for 3–4 minutes, until the paste darkens."},
-        {"lead": "Make the sauce.", "text": "Take the pan off the heat to add the vodka, then return it to the stove. Simmer for 2 minutes, stirring. Stir in the cream and ¼ cup of pasta water over low heat."},
-        {"lead": "Toss and serve.", "text": "Add the penne and simmer for 1 minute, tossing until evenly coated. Remove from the heat and stir in the Parmesan. Add pasta water a splash at a time to loosen the sauce, and salt to taste."}
+        {"lead": "Boil the penne.", "text": "Boil {{12 oz}} penne in salted water. Start checking just before the package time so it stays a little firm. Scoop out {{1 cup}} pasta water before draining."},
+        {"lead": "Cook the tomato paste.", "text": "Heat {{2 Tbsp}} oil in a skillet over medium heat. Soften {{1 shallot}} for 3 minutes. Stir in {{2 cloves}} garlic, {{¼ tsp}} red pepper flakes and {{¼ cup}} tomato paste. Cook 3–4 minutes, until the paste darkens."},
+        {"lead": "Make the sauce.", "text": "Measure {{¼ cup}} vodka. Take the skillet off the burner before pouring it in. Return to medium-low heat and simmer for 2 minutes. Stir in {{¾ cup}} cream and {{¼ cup}} reserved pasta water."},
+        {"lead": "Toss and serve.", "text": "Add the penne and simmer for 1 minute, tossing to coat. Remove from the heat and stir in {{½ cup}} Parmesan. Add pasta water a splash at a time to loosen the sauce, and salt to taste."}
       ],
       "kitchenNote": "Cook the tomato paste until it turns brick red. That extra time gives the sauce a deeper flavor.",
       "accent": {"garnish": "tomato", "color": "#C66A42"},
@@ -618,18 +698,40 @@
       "description": "Creamy Arborio rice with browned mushrooms, Parmesan and a spoonful of butter.",
       "prepMin": 15,
       "cookMin": 35,
+      "prepVariableMin": 9,
+      "cookVariableMin": 2,
       "serves": 4,
       "difficulty": "Medium",
+      "cookware": ["Saucepan", "Skillet", "Ladle"],
       "ingredients": [
-        {"group": "Mushrooms", "items": ["1 Tbsp olive oil", "12 oz cremini mushrooms, sliced", "¼ tsp kosher salt"]},
-        {"group": "Risotto", "items": ["5 cups low-sodium vegetable broth", "2 Tbsp unsalted butter, divided", "1 small yellow onion, finely diced", "1½ cups Arborio rice", "½ cup dry white wine", "¾ cup finely grated Parmesan", "Black pepper to taste"]}
+        {
+          "group": "Mushrooms",
+          "items": [
+            "1 Tbsp olive oil",
+            "12 oz cremini mushrooms, sliced",
+            "¼ tsp kosher salt"
+          ]
+        },
+        {
+          "group": "Risotto",
+          "items": [
+            "5 cups low-sodium vegetable broth",
+            "2 Tbsp unsalted butter, divided",
+            "{{1|small yellow onion|small yellow onions}}, finely diced",
+            "1½ cups Arborio rice",
+            "½ cup dry white wine",
+            "¾ cup finely grated Parmesan",
+            "Black pepper to taste"
+          ]
+        }
       ],
       "steps": [
-        {"lead": "Warm the broth.", "text": "Bring the broth to a gentle simmer in a saucepan, then keep it warm over low heat."},
-        {"lead": "Brown the mushrooms.", "text": "Heat the oil in a wide pan over medium-high heat. Add the mushrooms in a single layer and cook for 7–9 minutes, stirring occasionally, until browned. Season with salt and set aside."},
-        {"lead": "Toast the rice.", "text": "Reduce the heat to medium and melt 1 tablespoon of the butter in the pan. Soften the onion for 4 minutes, then stir in the rice for 1 minute. Add the wine and stir until mostly absorbed."},
-        {"lead": "Add broth gradually.", "text": "Add warm broth a ladle at a time, stirring often and waiting until most of each ladle is absorbed before adding more. Cook for 18–22 minutes, until the rice is creamy and tender with a slight bite."},
-        {"lead": "Finish off the heat.", "text": "Fold in the mushrooms, remaining butter and Parmesan. Loosen with a splash of warm broth if needed and season with pepper. Serve right away."}
+        {"lead": "Warm the broth.", "text": "Bring {{5 cups}} broth to a gentle simmer in a saucepan, then keep it warm over low heat."},
+        {"lead": "Brown the mushrooms.", "text": "Heat {{1 Tbsp}} oil over medium-high heat. Cook {{12 oz}} mushrooms in {{batches}} in a single layer, dividing the oil if needed. Cook each batch for 7–9 minutes, stirring occasionally, until browned. Season with {{¼ tsp}} salt and set aside.", "batchServes": 4, "batchCookSeconds": 480},
+        {"lead": "Soften the onion.", "text": "Reduce the heat to medium and melt {{1 Tbsp}} butter in the pan. Cook {{1|diced onion|diced onions}} for 4 minutes, stirring, until soft."},
+        {"lead": "Toast the rice and add wine.", "text": "Stir in {{1½ cups}} Arborio rice and cook for 1 minute. Pour in {{½ cup}} white wine and stir until most of it is absorbed."},
+        {"lead": "Add broth gradually.", "text": "Add warm broth about ½ cup at a time. Stir often and wait until most of each addition is absorbed before adding more. After 18–22 minutes, the rice should be creamy with a slight bite. Use only as much broth as needed."},
+        {"lead": "Finish off the heat.", "text": "Fold in the mushrooms, the remaining {{1 Tbsp}} butter and {{¾ cup}} Parmesan. Add a splash of warm broth if needed and season with pepper. Serve right away."}
       ],
       "kitchenNote": "The risotto should settle into the bowl when you spoon it in. Keep a little warm broth handy for the last stir.",
       "accent": {"garnish": "butter", "color": "#C6A16A"},
@@ -645,8 +747,10 @@
       "description": "Salmon baked with lemon, garlic butter and parsley. Good with rice or roast potatoes.",
       "prepMin": 10,
       "cookMin": 15,
+      "prepVariableMin": 6,
       "serves": 4,
       "difficulty": "Easy",
+      "cookware": ["Sheet pan", "Mixing bowl", "Thermometer"],
       "ingredients": [
         "4 salmon fillets (about 6 oz each)",
         "3 Tbsp unsalted butter, melted",
@@ -657,9 +761,9 @@
         "2 Tbsp chopped parsley"
       ],
       "steps": [
-        {"lead": "Set up the pan.", "text": "Heat the oven to 400°F. Line a sheet pan with parchment. Zest half the lemon, then cut half into slices and save the rest for squeezing."},
-        {"lead": "Season the salmon.", "text": "Pat the fish dry and set it skin-side down on the pan. Stir together the melted butter, garlic, zest, salt and pepper. Brush it over the fish and lay a lemon slice on each fillet."},
-        {"lead": "Bake and serve.", "text": "Bake for 12–15 minutes, until the thickest part reaches 145°F. Finish with a squeeze of lemon juice and the chopped parsley."}
+        {"lead": "Set up the pan.", "text": "Heat the oven to 400°F and line a sheet pan with parchment. Measure {{1 lemon}} and zest half of that amount. Cut one thin slice per fillet and save the rest for squeezing. Use two pans if needed."},
+        {"lead": "Season the salmon.", "text": "Pat {{4 salmon fillets}} dry and arrange skin-side down. Mix {{3 Tbsp}} melted butter, {{3 cloves}} minced garlic, the lemon zest, {{¾ tsp}} salt and {{¼ tsp}} pepper. Brush over the fish and top each piece with a lemon slice."},
+        {"lead": "Bake and serve.", "text": "Bake for 12–15 minutes. Check from the side with a thermometer and take each fillet out when its thickest part reaches 145°F. Finish with the reserved lemon juice and {{2 Tbsp}} parsley."}
       ],
       "kitchenNote": "Start checking thin tail pieces early. Pieces of similar thickness will finish together.",
       "accent": {"garnish": "lemon", "color": "#E7B650"},
@@ -675,8 +779,10 @@
       "description": "Flaky cod baked over blistered cherry tomatoes, briny olives and garlic.",
       "prepMin": 10,
       "cookMin": 25,
+      "prepVariableMin": 6,
       "serves": 4,
       "difficulty": "Easy",
+      "cookware": ["Baking dish", "Thermometer"],
       "ingredients": [
         "4 cod fillets (about 6 oz each)",
         "2 cups cherry tomatoes",
@@ -690,9 +796,10 @@
         "2 Tbsp torn fresh basil"
       ],
       "steps": [
-        {"lead": "Roast the tomatoes.", "text": "Heat the oven to 425°F. Toss the tomatoes, olives, garlic and oregano in a baking dish with 1 tablespoon of the oil. Roast for 12 minutes, until the tomatoes start to collapse."},
-        {"lead": "Add the cod.", "text": "Pat the fillets dry. Rub with the remaining oil and season with salt and pepper. Nestle them between the tomatoes and olives."},
-        {"lead": "Bake and finish.", "text": "Bake for 10–14 minutes, until the thickest part of the cod reaches 145°F. Spoon the juices over the fish and finish with lemon and basil."}
+        {"lead": "Roast the tomatoes.", "text": "Heat the oven to 425°F. Toss {{2 cups}} tomatoes, {{½ cup}} olives, {{3 cloves}} sliced garlic and {{½ tsp}} oregano with {{1 Tbsp}} oil in a baking dish. Roast for 12 minutes, until the tomatoes start to collapse."},
+        {"lead": "Add the cod.", "text": "Check {{4 cod fillets}} for pin bones and remove any. Pat dry and rub with {{1 Tbsp}} oil, {{½ tsp}} salt and {{¼ tsp}} pepper. Set the fillets between the tomatoes in one layer. Split between dishes if crowded."},
+        {"lead": "Bake the cod.", "text": "Bake for 10–14 minutes, until a thermometer inserted into the thickest part of the cod reads 145°F."},
+        {"lead": "Finish and serve.", "text": "Spoon the tomatoes and pan juices over the cod. Measure {{1 lemon}}, then squeeze half of that amount over the dish. Scatter {{2 Tbsp}} torn basil. Cut any remaining lemon into wedges."}
       ],
       "kitchenNote": "Serve with bread or a scoop of rice to catch the tomato juices.",
       "accent": {"garnish": "olive", "color": "#8F9D53"},
@@ -708,10 +815,12 @@
       "description": "Crisp-skinned trout with toasted almonds, browned butter and lemon.",
       "prepMin": 10,
       "cookMin": 15,
+      "prepVariableMin": 6,
       "serves": 4,
       "difficulty": "Easy",
+      "cookware": ["Skillet", "Spatula", "Thermometer"],
       "ingredients": [
-        "4 skin-on trout fillets (4–6 oz each)",
+        "{{4|skin-on trout fillet|skin-on trout fillets}} (4–6 oz each)",
         "½ tsp kosher salt",
         "¼ tsp black pepper",
         "1 Tbsp neutral oil",
@@ -721,15 +830,412 @@
         "2 Tbsp chopped parsley"
       ],
       "steps": [
-        {"lead": "Sear the trout.", "text": "Pat the trout dry and season with salt and pepper. Heat the oil in a large skillet over medium-high heat. Sear the fillets skin-side down for 3–4 minutes, working in batches if needed."},
-        {"lead": "Finish the fish.", "text": "Flip each fillet and cook for 1–2 minutes, until the thickest part reaches 145°F. Transfer the trout to warm plates, skin-side up."},
-        {"lead": "Make the almond butter.", "text": "Lower the heat to medium. Add the butter and almonds and stir for 2–3 minutes, until golden. Take the skillet off the heat, stir in the lemon juice and parsley, and spoon the sauce around the trout."}
+        {"lead": "Prepare the fillets.", "text": "Check {{4|trout fillet|trout fillets}} for pin bones and pull out any with tweezers. Pat both sides dry and sprinkle the fillets evenly with {{½ tsp}} salt and {{¼ tsp}} pepper."},
+        {"lead": "Sear the trout.", "text": "Heat {{1 Tbsp}} oil in a skillet over medium-high heat, dividing it among {{batches}}. Sear skin-side down for 3–4 minutes per batch. Press lightly if the skin curls. Finish the other side before starting the next batch.", "batchServes": 2, "batchCookSeconds": 210},
+        {"lead": "Finish the fish.", "text": "Flip the fillets in the skillet and cook for 1–2 minutes per batch, until the thickest part reaches 145°F. Transfer to warm plates, skin-side up, and repeat both sides with any remaining fillets.", "batchServes": 2, "batchCookSeconds": 90},
+        {"lead": "Make the almond butter.", "text": "Lower the heat to medium. Stir {{3 Tbsp}} butter and {{1/3 cup}} almonds for 2–3 minutes, until golden and nutty. Take off the heat and stir in {{1 Tbsp}} lemon juice and {{2 Tbsp}} parsley."},
+        {"lead": "Spoon on the sauce.", "text": "Spoon the almond butter around the fillets and serve immediately. Keep the trout skin-side up so it stays crisp."}
       ],
       "kitchenNote": "Keep the fillets skin-side up after cooking so the skin stays crisp.",
       "accent": {"garnish": "butter", "color": "#CAA367"},
       "image": "images/dishes/pan-seared-trout-almondine.jpg",
       "photo": "images/photos/seaside.png",
       "tags": ["fish", "trout", "quick", "gluten-free"]
+    },
+    {
+      "id": "strawberry-lemonade",
+      "title": "Strawberry Lemonade",
+      "category": "Drinks",
+      "cuisine": "American",
+      "description": "Pink lemonade with blended strawberries and fresh lemon juice. Eight servings fill a two-quart pitcher.",
+      "prepMin": 18,
+      "cookMin": 0,
+      "prepVariableMin": 13,
+      "serves": 8,
+      "difficulty": "Easy",
+      "cookware": ["Mixing bowl", "Blender", "Strainer", "Pitcher"],
+      "ingredients": [
+        "3 cups strawberries, hulled and halved",
+        "¾ cup granulated sugar",
+        "1 cup warm water",
+        "1 cup fresh lemon juice (about {{5–7 lemons}})",
+        "3½ cups cold water, plus more to make {{8 cups}}",
+        "Ice and lemon slices, for serving"
+      ],
+      "steps": [
+        {
+          "lead": "Prepare the strawberries.",
+          "text": "Rinse the strawberries under cold water. Drain, remove the leafy tops, and halve the berries. Measure {{3 cups}} of the halved berries."
+        },
+        {
+          "lead": "Dissolve the sugar.",
+          "text": "Whisk {{¾ cup}} sugar into {{1 cup}} warm water until you can no longer see sugar crystals. Let the mixture cool slightly before blending."
+        },
+        {
+          "lead": "Blend the berries.",
+          "text": "Add the strawberries and sugar water to a blender. Blend for 30–45 seconds, until no large pieces remain. Split the mixture into batches if it exceeds the blender's fill line."
+        },
+        {
+          "lead": "Strain into the pitcher.",
+          "text": "Set a fine-mesh strainer over a pitcher large enough for the batch. Pour in the berry mixture and press it through with the back of a spoon. Discard the seeds left in the strainer."
+        },
+        {
+          "lead": "Measure the lemon juice.",
+          "text": "Roll the lemons on the counter, halve them and squeeze. Strain out the seeds and measure exactly {{1 cup}} of juice. Stir it into the strawberry mixture along with {{3½ cups}} of cold water."
+        },
+        {
+          "lead": "Fill the pitcher.",
+          "text": "Add more cold water a little at a time until the lemonade measures {{8 cups}}. Stir well and chill. Pour over ice in {{8 glasses}} and add a lemon slice to each."
+        }
+      ],
+      "kitchenNote": "If the pitcher has no markings, first measure in the total volume of water specified in the final step and mark the level. Empty it before mixing.",
+      "accent": {
+        "garnish": "berries",
+        "color": "#C14D62"
+      },
+      "image": "images/dishes/strawberry-lemonade.jpg",
+      "photo": "images/photos/farmhouse.png",
+      "tags": [
+        "lemonade",
+        "strawberry",
+        "pitcher",
+        "no-cook"
+      ]
+    },
+    {
+      "id": "midwest-lemonade-shake-up",
+      "title": "Midwest Lemonade Shake-Up",
+      "category": "Drinks",
+      "cuisine": "American",
+      "description": "State fair-style lemonade shaken with squeezed lemon wedges and ice. Eight servings fill a two-quart pitcher.",
+      "prepMin": 20,
+      "cookMin": 0,
+      "prepVariableMin": 15,
+      "serves": 8,
+      "difficulty": "Easy",
+      "cookware": ["Mixing bowls", "Strainer", "Jar with lid", "Pitcher"],
+      "ingredients": [
+        "1½ cups fresh lemon juice (about {{6–8 lemons}})",
+        "{{8|squeezed lemon wedge|squeezed lemon wedges}}, saved from juicing",
+        "1 cup granulated sugar",
+        "5 cups cold water, plus more to make {{8 cups}}",
+        "2 cups ice for shaking, plus extra ice for serving"
+      ],
+      "steps": [
+        {
+          "lead": "Squeeze the lemons.",
+          "text": "Scrub the lemons before cutting them into quarters. Squeeze {{1½ cups}} juice through a strainer into a large bowl. Set aside {{8|squeezed wedge|squeezed wedges}} and discard the seeds."
+        },
+        {
+          "lead": "Mix the lemonade base.",
+          "text": "Whisk {{1 cup}} sugar into {{1 cup}} cold water until dissolved. Add to the lemon juice, then stir in the remaining {{4 cups}} measured water."
+        },
+        {
+          "lead": "Load the shaker.",
+          "text": "Divide the lemonade base, squeezed wedges and {{2 cups}} ice into {{batches}}. Load one batch into a quart jar with a tight lid. Keep it below two-thirds full so the ice can move.",
+          "batchServes": 2
+        },
+        {
+          "lead": "Shake and repeat.",
+          "text": "Shake each batch for 20 seconds. Strain it into a pitcher large enough for the batch, then empty the jar. Repeat until all of the lemonade base, wedges and ice have been used."
+        },
+        {
+          "lead": "Fill and serve.",
+          "text": "Discard the strained ice and wedges. Add cold water to bring the pitcher to {{8 cups}} and stir. Divide the lemonade among {{8 glasses}} filled with fresh ice."
+        }
+      ],
+      "kitchenNote": "Use a quart jar and leave room for the ice to move. Shaking the squeezed wedges releases lemon oil from the peel.",
+      "accent": {
+        "garnish": "lemon",
+        "color": "#DFC254"
+      },
+      "image": "images/dishes/midwest-lemonade-shake-up.jpg",
+      "photo": "images/photos/farmhouse.png",
+      "tags": [
+        "lemonade",
+        "midwest",
+        "fair-style",
+        "no-cook"
+      ]
+    },
+    {
+      "id": "bitters-heavy-lemonade",
+      "title": "Bitters-Heavy Lemonade",
+      "category": "Drinks",
+      "cuisine": "American",
+      "description": "Tart lemonade with aromatic bitters and lemon peel. Eight servings fill a two-quart pitcher.",
+      "prepMin": 12,
+      "cookMin": 0,
+      "prepVariableMin": 7,
+      "serves": 8,
+      "difficulty": "Easy",
+      "cookware": ["Mixing bowl", "Strainer", "Pitcher"],
+      "ingredients": [
+        "1¼ cups fresh lemon juice (about {{6–8 lemons}})",
+        "¾ cup simple syrup",
+        "48–64 dashes aromatic bitters, alcohol-free if desired",
+        "About 6 cups cold still water",
+        "8 strips lemon peel and ice, for serving"
+      ],
+      "steps": [
+        {
+          "lead": "Prepare the simple syrup.",
+          "text": "If making syrup, stir {{½ cup}} sugar into {{½ cup}} hot water until dissolved. Let it cool and measure {{¾ cup}}. If using prepared syrup, measure {{¾ cup}} straight from the bottle."
+        },
+        {
+          "lead": "Mix the lemon base.",
+          "text": "Strain the seeds from the lemon juice. Measure {{1¼ cups}} of juice and {{¾ cup}} of simple syrup into a pitcher large enough for the batch. Stir in {{48 dashes}} of aromatic bitters, which gives about 6 dashes per serving."
+        },
+        {
+          "lead": "Dilute and adjust the bitters.",
+          "text": "Stir in {{5½ cups}} cold still water. Taste a small sip. For a stronger flavor, add bitters a dash at a time, up to {{64 dashes}} total."
+        },
+        {
+          "lead": "Fill the pitcher and serve.",
+          "text": "Top up with cold water until the pitcher holds {{8 cups}}. Stir, then divide among {{8|ice-filled glass|ice-filled glasses}}. Twist a strip of lemon peel over each glass and drop it in."
+        }
+      ],
+      "kitchenNote": "Use chilled still water and ice. Bitters vary in strength, so taste after the first addition before adding more.",
+      "accent": {
+        "garnish": "lemon",
+        "color": "#B7693A"
+      },
+      "image": "images/dishes/bitters-heavy-lemonade.jpg",
+      "photo": "images/photos/farmhouse.png",
+      "tags": [
+        "lemonade",
+        "bitters",
+        "no-cook"
+      ]
+    },
+    {
+      "id": "vanilla-cream-cheese-cupcakes",
+      "title": "Vanilla Cream Cheese Cupcakes",
+      "category": "Desserts",
+      "cuisine": "American",
+      "description": "Vanilla cupcakes made with Pillsbury white cake mix and topped with Pillsbury cream cheese frosting.",
+      "prepMin": 45,
+      "cookMin": 22,
+      "prepVariableMin": 12,
+      "serves": 12,
+      "difficulty": "Easy",
+      "cookware": ["Mixing bowl", "Mixer", "Muffin pans", "Cooling rack"],
+      "ingredients": [
+        "½ box Pillsbury Moist Supreme White Cake Mix",
+        "{{½}} of the box amounts for water, vegetable oil and eggs",
+        "1 tsp vanilla extract",
+        "1 tub (16 oz) Pillsbury Creamy Supreme Cream Cheese Frosting",
+        "Sprinkles, optional"
+      ],
+      "steps": [
+        {
+          "lead": "Prepare the pans.",
+          "text": "Set a rack in the middle of the oven. Heat the oven to the cupcake temperature on the cake mix box. Put paper liners in {{12 standard muffin cups}}."
+        },
+        {
+          "lead": "Mix the batter.",
+          "text": "Weigh out {{½}} of the dry mix. Measure {{½}} of the water, oil and eggs listed on the box. Beat the eggs before measuring a fraction of them. Mix these with the dry mix and {{1 teaspoon}} vanilla for the time shown on the box."
+        },
+        {
+          "lead": "Fill the liners.",
+          "text": "Divide the batter evenly among the paper liners. Fill each cup about two-thirds full so the tops have room to rise."
+        },
+        {
+          "lead": "Bake and test for doneness.",
+          "text": "Bake on the middle rack for the cupcake time on the cake mix box. Start checking at the low end of the range. The cupcakes are ready when a toothpick inserted in the center comes out clean."
+        },
+        {
+          "lead": "Rest in the pans.",
+          "text": "Let the cupcakes sit in the pans for 5 minutes. Lift them out carefully and transfer them to a wire rack."
+        },
+        {
+          "lead": "Cool before frosting.",
+          "text": "Cool on the rack for about 30 minutes, or until the sides and tops feel cool."
+        },
+        {
+          "lead": "Frost the cupcakes.",
+          "text": "Set out {{1|16-oz tub|16-oz tubs}} of frosting and stir until smooth. Spread about 1½ tablespoons on each fully cooled cupcake or pipe a swirl. Add sprinkles if you like."
+        }
+      ],
+      "kitchenNote": "For fractional eggs or egg whites, whisk them first and measure the indicated portion by weight or volume. Check the box for ingredient amounts.",
+      "accent": {
+        "garnish": "butter",
+        "color": "#E2BB76"
+      },
+      "image": "images/dishes/vanilla-cream-cheese-cupcakes.jpg",
+      "photo": "images/photos/boulangerie.png",
+      "tags": [
+        "cupcakes",
+        "vanilla",
+        "cream-cheese",
+        "boxed-mix"
+      ]
+    },
+    {
+      "id": "steak-seasoned-skillet-pork-chops",
+      "title": "Steak-Seasoned Skillet Pork Chops",
+      "category": "Mains",
+      "cuisine": "American",
+      "description": "Worcestershire-marinated pork chops with steak seasoning, mashed potatoes and garlic green beans.",
+      "prepMin": 25,
+      "cookMin": 35,
+      "prepVariableMin": 9,
+      "cookVariableMin": 4,
+      "serves": 4,
+      "difficulty": "Easy",
+      "cookware": ["Shallow dish", "Pot", "Skillet with lid", "Thermometer"],
+      "ingredients": [
+        {
+          "group": "Mashed potatoes",
+          "items": [
+            "1½ lb Yukon Gold potatoes",
+            "1 tsp kosher salt, for the potato water",
+            "2 Tbsp unsalted butter",
+            "¼ cup milk, plus more as needed"
+          ]
+        },
+        {
+          "group": "Pork chops and beans",
+          "items": [
+            "{{4|boneless pork loin chop|boneless pork loin chops}}, about 1 inch thick",
+            "2 tsp steak seasoning",
+            "1 Tbsp neutral cooking oil, for the skillet",
+            "12 oz green beans, ends trimmed",
+            "¼ cup water",
+            "1 Tbsp unsalted butter",
+            "2 cloves garlic, minced"
+          ]
+        },
+        {
+          "group": "For the marinade",
+          "items": [
+            "2 Tbsp Worcestershire sauce",
+            "½ tsp garlic powder"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "lead": "Coat the chops.",
+          "text": "Pat {{4|pork chop|pork chops}} dry. Stir {{2 tablespoons}} Worcestershire sauce, {{2 teaspoons}} steak seasoning and {{½ teaspoon}} garlic powder in a shallow dish. Turn each chop in the mixture to coat both sides."
+        },
+        {
+          "lead": "Marinate in the fridge.",
+          "text": "Cover and refrigerate for 15–30 minutes. Start the potatoes while the chops marinate."
+        },
+        {
+          "lead": "Simmer the potatoes.",
+          "text": "Cut {{1½ lb}} potatoes into 1-inch chunks. Cover with cold water by 1 inch and add {{1 tsp}} salt. Bring to a boil, then simmer for 14–17 minutes, until fork-tender."
+        },
+        {
+          "lead": "Mash and cover.",
+          "text": "Drain the potatoes and return them to the warm pot. Mash in {{2 tablespoons}} butter and {{¼ cup}} milk. If needed, add milk 1 tablespoon at a time. Cover to keep warm."
+        },
+        {
+          "lead": "Drain and sear the chops.",
+          "text": "Lift the chops from the marinade, blot dry and discard the marinade. Plan on {{batches}}. Divide {{1 tablespoon}} oil among batches. Heat the skillet over medium-high heat. Sear for 3–4 minutes per batch, then cook the other side before starting the next.",
+          "batchServes": 4,
+          "batchCookSeconds": 210
+        },
+        {
+          "lead": "Flip and check doneness.",
+          "text": "Flip the chops in the skillet and reduce to medium. Cook each batch for 3–5 minutes more, until a thermometer inserted from the side reads 145°F at the thickest part. Transfer to a clean plate and repeat both sides with any remaining chops.",
+          "batchServes": 4,
+          "batchCookSeconds": 240
+        },
+        {
+          "lead": "Rest the chops.",
+          "text": "Rest each batch on a clean plate for at least 3 minutes before serving. When the last chops leave the skillet, cook the green beans in the same pan."
+        },
+        {
+          "lead": "Steam the green beans.",
+          "text": "Add {{12 oz}} green beans and {{¼ cup}} water to the same skillet over medium heat. Cover and cook for 4–5 minutes, until crisp-tender. Uncover and let any remaining water cook off."
+        },
+        {
+          "lead": "Finish and serve.",
+          "text": "Stir {{1 tablespoon}} butter and {{2 cloves}} minced garlic into the beans. Cook for 30 seconds, until fragrant. Serve with the pork chops and mashed potatoes."
+        }
+      ],
+      "kitchenNote": "Steak seasoning blends vary in saltiness. Taste the beans and potatoes before adding extra salt, and use a clean plate for the cooked chops.",
+      "accent": {
+        "garnish": "pepper",
+        "color": "#AD743B"
+      },
+      "image": "images/dishes/steak-seasoned-skillet-pork-chops.jpg",
+      "photo": "images/photos/farmhouse.png",
+      "tags": [
+        "pork",
+        "stovetop",
+        "steak-seasoning",
+        "weeknight"
+      ]
+    },
+    {
+      "id": "italian-beef-rigatoni-skillet",
+      "title": "Italian Beef Rigatoni Skillet",
+      "category": "Italian",
+      "cuisine": "Italian-American",
+      "description": "Rigatoni with browned ground beef, garlic and crushed tomatoes, finished with Parmesan.",
+      "prepMin": 10,
+      "cookMin": 25,
+      "prepVariableMin": 6,
+      "cookVariableMin": 4,
+      "serves": 5,
+      "difficulty": "Easy",
+      "cookware": ["Pot", "Skillet", "Colander", "Thermometer"],
+      "ingredients": [
+        "12 oz dry rigatoni",
+        "1 Tbsp olive oil",
+        "{{1|small yellow onion|small yellow onions}}, diced",
+        "1 lb lean ground beef",
+        "3 cloves garlic, minced",
+        "1 tsp Italian seasoning",
+        "½ tsp kosher salt, plus more to taste",
+        "1 can (28 oz) crushed tomatoes",
+        "½ cup grated Parmesan, plus more for serving",
+        "2 Tbsp chopped fresh basil, optional"
+      ],
+      "steps": [
+        {
+          "lead": "Start the pasta water.",
+          "text": "Set a large pot of salted water over high heat. Dice {{1|onion|onions}} and mince {{3 cloves}} garlic. Wait to add the pasta until the sauce is simmering."
+        },
+        {
+          "lead": "Soften the onion.",
+          "text": "Heat {{1 Tbsp}} oil in a deep skillet over medium heat. Add the diced onion and cook for 4 minutes, stirring occasionally, until softened."
+        },
+        {
+          "lead": "Brown the beef.",
+          "text": "Brown {{1 lb}} beef in {{batches}}. Break each batch into crumbles and cook for 6–8 minutes, until it reaches 160°F. Combine the browned beef and spoon off excess grease.",
+          "batchServes": 5,
+          "batchCookSeconds": 420
+        },
+        {
+          "lead": "Simmer the tomato sauce.",
+          "text": "Stir the garlic, {{1 tsp}} Italian seasoning and {{½ tsp}} salt into the beef for 30 seconds. Stir in {{1|28-oz can|28-oz cans}} crushed tomatoes and simmer uncovered for 8–10 minutes."
+        },
+        {
+          "lead": "Boil and drain the rigatoni.",
+          "text": "While the sauce simmers, add {{12 oz}} rigatoni to the boiling water. Cook until al dente using the package timing. Scoop out {{½ cup}} pasta water, then drain."
+        },
+        {
+          "lead": "Toss the pasta and serve.",
+          "text": "Combine the rigatoni and sauce in the skillet or pasta pot. Toss over low heat for 1 minute, adding pasta water 1 tablespoon at a time if needed. Turn off the heat, stir in {{½ cup}} Parmesan and finish with {{2 Tbsp}} basil if using."
+        }
+      ],
+      "kitchenNote": "Save the pasta water before draining. A splash helps the sauce coat the tubes of rigatoni.",
+      "accent": {
+        "garnish": "tomato",
+        "color": "#C06541"
+      },
+      "image": "images/dishes/italian-beef-rigatoni-skillet.jpg",
+      "photo": "images/photos/villa.png",
+      "tags": [
+        "beef",
+        "pasta",
+        "italian",
+        "weeknight"
+      ]
     }
   ]
 }

@@ -1,4 +1,4 @@
-' The Heirloom Table: channel entry point.
+' Culinote: channel entry point.
 sub Main()
     screen = CreateObject("roSGScreen")
     port = CreateObject("roMessagePort")

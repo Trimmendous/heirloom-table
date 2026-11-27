@@ -90,12 +90,13 @@ function focusVisible(label) {
   const m = M();
   if (m.menuOpen) {
     const lv = m.mstack[m.mstack.length - 1];
-    ok(lv.sel >= lv.top && lv.sel < lv.top + m.L.menu.list.visible, label + ': menu focus off-list');
+    ok(lv.sel === -1 ? m.mBackFocus.visible && !m.mFocus.visible : lv.sel >= 0 && lv.sel < lv.items.length,
+      label + ': menu focus off-list');
     return;
   }
   if (m.screen === 'recipe') {
     const rs = m.rs;
-    const node = rs.zone === 'ing' ? m.ingNodes[rs.ing] : m.stepNodes[rs.sIdx];
+    const node = rs.zone === 'steps' ? m.stepNodes[rs.sIdx] : rs.zone === 'ing' ? m.ingNodes[rs.ing] : m.rFocus;
     ok(node && node.visible, label + ': focused recipe item hidden');
     ok(rs.zone !== 'ing' || !m.rec.ingredients[rs.ing].header, label + ': focus on a group heading');
     ok(onStage(m.rFocus), label + ': focus ring off screen ' + JSON.stringify(m.rFocus.translation));
@@ -103,6 +104,10 @@ function focusVisible(label) {
     ok(!m.rec.ingredients[vis[vis.length - 1]].header, label + ': group heading orphaned at the bottom');
   } else if (m.screen === 'home') {
     const hs = m.hs;
+    if (hs.filter) {
+      ok(m.homeFilterFocus.visible, label + ': filter focus is visible');
+      return;
+    }
     ok(hs.row >= hs.top && hs.row < hs.top + 2, label + ': focused row not visible');
     ok(hs.cols[hs.row] < m.rows[hs.row].items.length, label + ': focused column past row end');
   } else if (m.screen === 'cook') {
@@ -114,7 +119,90 @@ function focusVisible(label) {
 let m = M();
 const n = m.D.recipes.length;
 ok(m.screen === 'home', 'starts on Home');
-ok(m.rows.length === m.D.categories.length + 1, 'one row per category + Every Recipe');
+ok(JSON.stringify(m.rows.map((row) => row.title)) === JSON.stringify(m.D.categories), 'Home has one row per category');
+press('up');
+ok(M().hs.filter && M().homeFilterFocus.visible, 'Up from the first row focuses Filter');
+press('OK');
+ok(M().mTitle.text === 'Filter Recipes' && M().mstack[0].items[0].label === 'All Categories', 'Filter opens from the remote');
+press('up', 'up');
+ok(M().mstack[0].sel === -1 && M().mBackFocus.visible && !M().mFocus.visible, 'Up selects the visible Back button');
+press('OK');
+ok(!M().menuOpen && M().screen === 'home', 'selecting visible Back closes the filter menu');
+press('OK', 'up', 'down');
+ok(M().mstack[0].sel === 0 && !M().mBackFocus.visible, 'Down from Back returns to the first filter choice');
+press('fastforward');
+ok(M().mstack[0].items[M().mstack[0].sel].label === 'Drinks', 'Drinks is available in the category filter');
+press('OK');
+ok(M().rows.length === 1 && M().rows[0].title === 'Drinks' && M().rows[0].items.length === 3,
+  'Drinks filter shows exactly the three lemonade recipes');
+ok(M().rows[0].items.every((index) => {
+  const drink = M().D.recipes[index];
+  return drink.serves === 8 && drink.steps.some((step) => step.text.includes('8 cups'));
+}), 'all lemonade recipes give directions for a full eight-cup pitcher');
+press('OK', 'rewind');
+ok(M().screen === 'recipe' && M().rec.id === 'strawberry-lemonade', 'rewind wraps within the selected category');
+press('fastforward');
+ok(M().rec.id === 'bitters-heavy-lemonade', 'fast-forward wraps within the selected category');
+press('back', 'up', 'OK', 'back');
+ok(!M().menuOpen && M().homeCategory === 'Drinks' && M().hs.filter, 'Back closes Filter and keeps the selection');
+press('OK', 'rewind', 'OK');
+ok(M().rows.length === m.D.categories.length && !M().homeCategory && !M().hs.filter,
+  'All Categories restores the category rows and focuses a card');
+
+function selectMenuItem(label) {
+  const level = M().mstack[M().mstack.length - 1];
+  const target = level.items.findIndex((item) => item.label === label);
+  if (target < 0) throw new Error('Missing menu item: ' + label);
+  const distance = target - level.sel;
+  for (let i = 0; i < Math.abs(distance); i++) press(distance < 0 ? 'up' : 'down');
+  press('OK');
+}
+press('up', 'OK');
+selectMenuItem('Ingredients to Avoid');
+ok(M().mTitle.text === 'Ingredients to Avoid' && M().mNote.text.includes('cross-contact'),
+  'ingredient picker shows its scope for allergies');
+ok(!M().mstack[1].items.some(item => item.label === 'Apply Exclusions'), 'ingredient picker has no Apply button');
+selectMenuItem('Milk & Dairy');
+ok(M().menuOpen && M().homeAvoid['Milk & Dairy'] && M().homeMatches.length < n,
+  'selecting an exclusion filters immediately while the picker stays open');
+selectMenuItem('Eggs');
+press('back');
+ok(!M().menuOpen && M().homeAvoid['Milk & Dairy'] && M().homeAvoid.Eggs && M().homeFilterNote.visible,
+  'Back closes the picker with both exclusions still active');
+ok(M().homeFilterLabel.text === 'Filter · Active' && M().homeFilterTint.visible &&
+  M().homeFilterNote.text === 'Avoiding Milk & Dairy, Eggs', 'Home visibly names the exclusions');
+ok(M().homeMatches.every((index) => M().D.recipes[index].ingredientFilters
+  .every((ingredient) => ingredient !== 'Milk & Dairy' && ingredient !== 'Eggs')),
+  'matching recipes are excluded');
+ok(run('loadIngredientExclusions().Eggs'), 'exclusions are persisted');
+press('OK');
+selectMenuItem('Ingredients to Avoid (2)');
+selectMenuItem('Eggs');
+ok(!M().homeAvoid.Eggs && !run('loadIngredientExclusions().Eggs'), 'selecting a checked ingredient removes it immediately');
+selectMenuItem('Fish');
+ok(M().homeAvoid.Fish, 'fish can be excluded independently');
+ok(!M().homeMatches.some((index) => M().D.recipes[index].id === 'steak-seasoned-skillet-pork-chops'),
+  'the fish exclusion accounts for Worcestershire sauce');
+press('back', 'OK');
+selectMenuItem('Fish');
+ok(M().rows.length === 0 && M().homeEmpty.visible && M().hs.filter &&
+  M().homeFilterCategory.text === 'Fish · 0 recipes' && M().homeFilterNote.text.includes('Fish'),
+  'category and ingredient filters combine and are both visible when there are no matches');
+press('OK');
+selectMenuItem('All Categories');
+ok(!M().homeCategory && M().homeAvoid.Fish, 'clearing the category retains ingredient exclusions');
+press('up', 'OK');
+selectMenuItem('Ingredients to Avoid (2)');
+selectMenuItem('Clear Exclusions');
+ok(Object.keys(M().homeAvoid).length === 0 && M().homeMatches.length === n && !M().homeFilterTint.visible,
+  'Clear Exclusions restores the full catalog immediately and clears the active indicator');
+press('back', 'down');
+
+press('down');
+run('homeOpenFilter()');
+press('back', 'up');
+ok(M().hs.filter && M().hs.row === 1, 'Up stays on Filter when opened from a lower row');
+press('down', 'up');
 focusVisible('home start');
 
 press('right', 'right');
@@ -124,10 +212,11 @@ ok(M().hs.cols[0] === 1, 'left moves back');
 press('OK');
 m = M();
 ok(m.screen === 'recipe' && m.rec === m.D.recipes[1], 'OK opens the focused recipe');
+ok(m.rs.zone === 'steps' && m.rs.sIdx === 0, 'opening a recipe highlights Direction 1');
 focusVisible('recipe open');
 const rid = m.rec.id;
 const firstIng = m.rs.ing;
-press('OK');
+press('left', 'OK');
 ok(run(`isChecked(${JSON.stringify(rid)}, ${firstIng})`) === true, 'OK ticks an ingredient');
 ok(m.ingBoxes[firstIng].uri.endsWith('check_on.png'), 'tick shows the checked box');
 ok(JSON.parse(store['heirloom.checks'])[rid], 'ticks persist to storage');
@@ -156,19 +245,23 @@ ok(M().rec === M().D.recipes[(1 + n - 2) % n], 'rewind wraps to previous recipes
 // grouped ingredients: headings are never focused
 const gi = M().D.recipes.findIndex((r) => r.ingredients.some((i) => i.header));
 run(`recipeOpen(${gi})`);
+press('left');
 ok(!M().rec.ingredients[M().rs.ing].header, 'first focus skips a group heading');
 for (let i = 0; i < 30; i++) { press('down'); focusVisible('ing down ' + i); }
 for (let i = 0; i < 30; i++) { press('up'); focusVisible('ing up ' + i); }
 ok(M().rs.ingTop === 0, 'scrolling back up reveals the first heading');
+ok(M().rs.zone === 'servings', 'Up from the first ingredient reaches Serves');
+press('down');
 
-// options menu: reset, browse, jump
+// options menu: update, theme, reset
 press('OK');
 ok(run(`Object.keys(m.checks[m.rec.id] || {}).length`) === 1, 'tick before reset');
 press('options');
 ok(M().menuOpen, 'Options opens the menu');
-ok(M().mstack[0].items[0].label === 'Update Now' && M().mstack[0].items[1].label === 'Theme',
-  'update and theme are directly available from Options');
-const published = { tag_name: 'v2.0.0', assets: [{ name: 'heirloom-table-roku.zip' }, { name: 'heirloom-table-fire-tv.apk' }] };
+const settingsItems = ['Update Now', 'Theme', 'Reset Checkboxes'];
+ok(JSON.stringify(M().mstack[0].items.map((item) => item.label)) === JSON.stringify(settingsItems),
+  'recipe settings exposes exactly update, theme and reset');
+const published = { tag_name: 'v2.0.0', assets: [{ name: 'culinote-roku.zip' }, { name: 'culinote-fire-tv.apk' }] };
 press('OK');
 const latest = requests[requests.length - 1];
 ok(latest.url === M().D.app.latestRelease && downloads.length === 0, 'Update Now checks the release before downloading');
@@ -180,12 +273,12 @@ ok(!M().menuOpen && M().screen === 'recipe' && downloads.length === 0, 'Back exi
 press('options', 'OK');
 requests[requests.length - 1].respond(200, published);
 press('OK');
-ok(downloads[0] === M().D.app.releases + '/download/v2.0.0/heirloom-table-roku.zip', 'Confirm opens the versioned download directly');
+ok(downloads[0] === M().D.app.releases + '/download/v2.0.0/culinote-roku.zip', 'Confirm opens the versioned download directly');
 run('m.fireTv = true');
 press('options', 'OK');
 requests[requests.length - 1].respond(200, published);
 press('OK');
-ok(downloads[1] === M().D.app.releases + '/download/v2.0.0/heirloom-table-fire-tv.apk', 'Fire TV selects the APK');
+ok(downloads[1] === M().D.app.releases + '/download/v2.0.0/culinote-fire-tv.apk', 'Fire TV selects the APK');
 run('m.fireTv = false');
 press('options', 'OK');
 requests[requests.length - 1].respond(404, {});
@@ -206,19 +299,17 @@ ok(M().themeName === 'classic' && run('loadTheme()') === 'classic', 'Classic res
 press('options', 'down', 'down', 'OK');
 ok(!M().menuOpen && run(`Object.keys(m.checks[m.rec.id] || {}).length`) === 0, 'Reset checkboxes clears this recipe');
 ok(M().toast.visible, 'toast confirms the reset');
-press('options', 'down', 'down', 'down', 'OK');
-ok(M().mstack.length === 2 && M().mstack[1].title === 'All Recipes', 'Browse all recipes opens the list');
-const titles = M().mstack[1].items.map((i) => i.label);
-ok(JSON.stringify(titles) === JSON.stringify([...titles].sort()), 'recipe list is alphabetical');
-press('back');
-ok(!M().menuOpen && M().screen === 'recipe', 'Back closes the entire Browse menu');
-press('options', 'down', 'down', 'down', 'OK', 'down', 'OK');
-ok(!M().menuOpen && M().screen === 'recipe' && M().rec.title === titles[1], 'choosing a recipe opens it');
-press('options');
-const cats = M().D.categories;
-for (let i = 0; i < 5; i++) press('down');      // updates, theme, reset, browse, jump to cats[0], cats[1]
+press('OK', 'play', 'options');
+ok(M().screen === 'cook' && JSON.stringify(M().mstack[0].items.map((item) => item.label)) === JSON.stringify(settingsItems),
+  'cook mode exposes the same three settings');
+press('back', 'back', 'back', 'options');
+ok(M().screen === 'home' && JSON.stringify(M().mstack[0].items.map((item) => item.label)) === JSON.stringify(settingsItems),
+  'home exposes the same three settings');
+press('down', 'down', 'down');
+ok(M().mstack[0].sel === 2, 'menu selection stops at Reset Checkboxes');
 press('OK');
-ok(M().screen === 'home' && M().rows[M().hs.row].title === cats[1], 'Jump to category lands on that row');
+ok(!M().menuOpen && Object.keys(JSON.parse(store['heirloom.checks'])).length === 0,
+  'Reset Checkboxes from home clears all checklists');
 press('options', 'options');
 ok(!M().menuOpen, 'Options again closes the menu');
 press('options', 'back');
@@ -230,11 +321,192 @@ ok(M().top.exitApp === true && ids.exit.hidden === false, 'Back on Home exits th
 press('OK');
 ok(M().top.exitApp === false && ids.exit.hidden === true, 'web: a key reopens after exit');
 
+// Check all 12 serving sizes for every recipe across the recipe card and cook mode.
+run('m.serveCounts = Object.create(null)');
+{
+  const pork = M().D.recipes.findIndex((recipe) => recipe.id === 'steak-seasoned-skillet-pork-chops');
+  run(`recipeOpen(${pork})`);
+  const ri = 'm.rs.ing';
+  press('left', 'OK', 'up', 'up');
+  ok(M().rs.zone === 'servings' && M().rServes === 4 && M().rServingsInput.readOnly && M().rServingsUp.disabled,
+    'highlighting Serves leaves it locked and Up does not change the count');
+  press('OK');
+  for (let i = 4; i < 8; i++) press('up');
+  ok(M().rs.zone === 'servingsEdit' && M().rServingsInput.value === '8' && M().rServes === 4 &&
+    run('recipeStepText(0)').includes('2 tablespoons Worcestershire'),
+    'remote changes the draft while directions keep the confirmed quantity');
+  press('OK');
+  ok(M().rServes === 8 && run('recipeStepText(0)').includes('4 tablespoons Worcestershire'),
+    'OK confirms the count and scales the marinade');
+  ok(M().rs.zone === 'ing' && run(`isChecked(m.rec.id, ${ri})`), 'confirming servings preserves checks and restores ingredient focus');
+  press('OK', 'right', 'up', 'OK');
+  ok(M().rs.zone === 'servingsEdit', 'Up from first direction reaches Serves and OK unlocks it');
+  run('m.rServingsDown.listeners.click[0]()');
+  ok(M().rServingsInput.value === '7' && M().rServes === 8, 'serving arrow click decreases only the draft');
+  press('back');
+  ok(M().screen === 'recipe' && M().rs.zone === 'servings' && M().rServingsInput.value === '8',
+    'Back cancels editing and restores the confirmed count');
+  press('OK');
+  M().rServingsInput.value = '99';
+  press('OK');
+  ok(M().rServes === 12 && M().rs.zone === 'steps' && M().rs.sIdx === 0, 'typed confirmation caps at 12 and restores directions');
+  press('up', 'OK');
+  M().rServingsInput.value = '0';
+  press('OK');
+  ok(M().rServes === 1 && M().rServingsDown.disabled, 'typed confirmation stops at 1');
+  press('back');
+  run(`recipeOpen(${pork})`);
+  ok(M().rServes === 1 && M().rs.zone === 'steps' && M().rs.sIdx === 0, 'reopening returns to Direction 1 with the saved serving count');
+  run('delete m.serveCounts[m.rec.id]');
+}
+const portionDirections = {
+  'argentine-beef-empanadas': [2, '1/6 lb beef', '2 lb beef'],
+  'baked-cod-with-tomatoes': [1, '1 cod fillet', '12 cod fillets'],
+  'bitters-heavy-lemonade': [3, 'holds 1 cup', 'holds 12 cups'],
+  'blueberry-buttermilk-pancakes': [1, '½ cup buttermilk, ½ egg', '6 cups buttermilk, 6 eggs'],
+  'chicken-broccoli-rice-bake': [4, '½ cup cooked rice, 1/3 cup shredded cooked chicken', '6 cups cooked rice, 4 cups shredded cooked chicken'],
+  'creamy-chicken-and-wild-rice': [1, '1/8 cup wild rice and 1 cup broth', '1½ cups wild rice and 12 cups broth'],
+  'crusty-french-baguettes': [0, '2/3 cup bread flour', '8 cups bread flour'],
+  'garlic-butter-baked-salmon': [1, '¾ Tbsp melted butter', '9 Tbsp melted butter'],
+  'grandmas-apple-crumble': [1, '5/12 lb apples', '5 lb apples'],
+  'huevos-rancheros': [4, '2 eggs across 1 batch', '24 eggs across 6 batches'],
+  'irish-soda-bread': [1, '½ cup flour', '6 cups flour'],
+  'italian-beef-rigatoni-skillet': [2, '1/5 lb beef', '2 2/5 lb beef'],
+  'jamaican-rice-and-peas': [0, '¼ cup rice', '3 cups rice'],
+  'lemon-chicken-and-rice': [3, '7/16 cup broth', '5¼ cups broth'],
+  'midwest-lemonade-shake-up': [4, 'pitcher to 1 cup', 'pitcher to 12 cups'],
+  'pan-seared-trout-almondine': [0, '1 trout fillet', '12 trout fillets'],
+  'parmesan-mushroom-risotto': [3, '3/8 cup Arborio rice', '4½ cups Arborio rice'],
+  'penne-alla-vodka': [0, '3 oz penne', '36 oz penne'],
+  'provencal-ratatouille': [0, '1/6 lb cubed eggplant', '2 lb cubed eggplant'],
+  'steak-seasoned-skillet-pork-chops': [0, '½ tablespoon Worcestershire sauce', '6 tablespoons Worcestershire sauce'],
+  'strawberry-lemonade': [5, 'measures 1 cup', 'measures 12 cups'],
+  'tuscan-lemon-chicken-piccata': [0, 'make 2 thin cutlets', 'make 24 thin cutlets'],
+  'vanilla-cream-cheese-cupcakes': [0, '1 standard muffin cup', '12 standard muffin cups'],
+};
+for (let r = 0; r < n; r++) {
+  run(`recipeOpen(${r})`);
+  const rec = M().rec;
+  ok(M().rServes === rec.serves && rec.serves <= 12 && rec.servingVariants.length === 12, rec.id + ': recipe starts at its default and supports 12');
+  const portionExample = portionDirections[rec.id];
+  const renderedPortions = new Set();
+  for (let count = 1; count <= 12; count++) {
+    run(`recipeSetServings(${count})`);
+    const variant = rec.servingVariants[count - 1];
+    ok(M().rServingsInput.value === String(count), rec.id + ': serving count ' + count);
+    ok(M().rMeta[0].text === variant.prepText && M().rMeta[1].text === variant.cookText,
+      rec.id + ': time estimates at ' + count);
+    if (portionExample) {
+      const [stepIndex, single, dozen] = portionExample;
+      const directions = run(`recipeStepText(${stepIndex})`);
+      if (count === 1) ok(directions.includes(single), rec.id + ': directions give the quantity for one serving');
+      if (count === 12) ok(directions.includes(dozen), rec.id + ': directions give the quantity for twelve servings');
+      renderedPortions.add(directions);
+    }
+    rec.ingredients.forEach((item, i) => {
+      const label = M().ingNodes[i].kids.find((node) => node.type === 'Label');
+      ok(label.text === (variant.ingredients[i] || item.text), rec.id + ': ingredient ' + i + ' at ' + count);
+    });
+    rec.steps.forEach((step, i) => {
+      const label = M().stepNodes[i].kids.find((node) => node.type === 'MultiStyleLabel');
+      const expected = variant.steps[i] || step.text;
+      ok(label.text === step.lead + ' ' + expected, rec.id + ': direction ' + i + ' at ' + count);
+      run(`m.cs = { sIdx: ${i} }; cookRender()`);
+      ok(M().cText.text === expected && M().cText.boundingRect().height <= M().L.cook.text.h, rec.id + ': cook text ' + i + ' at ' + count);
+      const timing = variant.timers[i] || step;
+      ok(M().cTimerLabel.text === (timing.timer > 0 ? 'OK: start a ' + timing.timerText + ' timer' : ''),
+        rec.id + ': timer offer matches the selected size for step ' + i + ' at ' + count);
+    });
+  }
+  if (portionExample) ok(renderedPortions.size === 12, rec.id + ': directions change for all 12 serving sizes');
+  run('delete m.serveCounts[m.rec.id]');
+}
+
+{
+  const open = (id) => run(`recipeOpen(m.D.recipes.findIndex((r) => r.id === '${id}'))`);
+  open('chicken-broccoli-rice-bake');
+  ok(run('recipeStepText(0)').includes('2 cups shredded cooked chicken, 1½ cups milk and ½ cup chicken broth'),
+    'six servings show chicken, milk and broth in the opening direction');
+  ok(run('recipeStepText(3)').includes('1½ cups milk and ½ cup chicken broth'), 'six servings give the default sauce amounts');
+  run('recipeSetServings(12)');
+  ok(run('recipeStepText(0)').includes('two baking dishes') &&
+    run('recipeStepText(0)').includes('4 cups shredded cooked chicken, 3 cups milk and 1 cup chicken broth') &&
+    run('recipeStepText(1)').includes('6 cups broccoli florets in 2 batches') &&
+    run('recipeStepText(2)').includes('4 Tbsp flour') &&
+    run('recipeStepText(3)').includes('3 cups milk and 1 cup chicken broth') &&
+    run('recipeStepText(4)').includes('1 cup crushed crackers'), 'double rice bake scales each cooking stage');
+  run('recipeSetServings(1); cookOpen(5)');
+  ok(M().cText.text.includes('17 minutes') && M().cText.text.includes('165°F'), 'small rice bake checks earlier at the same doneness temperature');
+  open('steak-seasoned-skillet-pork-chops');
+  ok(M().rMeta[0].text === '25 min' && M().rMeta[1].text === '35 min', 'pork keeps its default time estimates');
+  run('recipeSetServings(12); cookOpen(4)');
+  ok(M().rMeta[0].text === '43 min' && M().rMeta[1].text === '58 min' && M().cText.text.includes('3 batches'),
+    '12 pork servings add prep work and two skillet batches to the estimate');
+  ok(M().cTimerLabel.text === 'OK: start a 3 min timer', 'pork searing timer covers one batch');
+  open('irish-soda-bread');
+  run('recipeSetServings(4); cookOpen(5)');
+  ok(M().cText.text.includes('20 minutes') && M().cTimerLabel.text === 'OK: start a 20 min timer',
+    'a smaller soda bread has an earlier check-in in directions and cook mode');
+  press('OK');
+  ok(M().timer.left === 1200, 'a smaller loaf starts a 20-minute countdown');
+  press('OK');
+  run('recipeSetServings(8); cookOpen(5)');
+  ok(M().cText.text.includes('35 minutes') && M().cTimerLabel.text === 'OK: start a 35 min timer',
+    'the default soda bread retains the original check-in');
+  open('midwest-lemonade-shake-up');
+  run('recipeSetServings(12)');
+  ok(M().rMeta[1].text === 'None' && run('recipeStepText(2)').includes('6 batches'),
+    '12 servings of lemonade change shaking batches while keeping cook time at None');
+  run('m.serveCounts = Object.create(null); m.toast.visible = false');
+}
+
+// Nutrition is based on one serving and separately totals the selected batch.
+{
+  run("recipeOpen(m.D.recipes.findIndex((r) => r.id === 'chicken-broccoli-rice-bake')); recipeSetServings(1)");
+  press('left', 'left', 'OK');
+  const one = M().mstack[0].nutrition;
+  ok(M().mTitle.text === 'Nutrition Estimate' && one.includes('Per serving') && one.includes('Batch total · 1 serving') && M().mNutrition.kids[0].text === 'Per serving',
+    'remote opens the nutrition estimate for the selected serving count');
+  press('back');
+  run('recipeSetServings(12)');
+  press('OK');
+  const twelve = M().mstack[0].nutrition;
+  const perServing = one.split('\n\n')[0];
+  const kcal = Number(perServing.match(/(\d+) kcal/)[1]);
+  const batchKcal = Number(twelve.split('Batch total · 12 servings\n')[1].match(/^(\d+) kcal/)[1]);
+  ok(twelve.startsWith(perServing) && kcal > 250 && kcal < 600 && Math.abs(batchKcal - kcal * 12) <= 6,
+    'the per-serving estimate is constant and the batch estimate scales without compounded rounding');
+  press('back');
+  run('m.serveCounts = Object.create(null)');
+}
+ok(M().D.recipes.every(recipe => recipe.servingVariants.every(v => /protein.*carbs/.test(v.nutritionText))),
+  'all 23 recipes have nutrition estimates at every serving size');
+
+{
+  run("recipeOpen(m.D.recipes.findIndex((r) => r.id === 'steak-seasoned-skillet-pork-chops'))");
+  ok(M().rStepCount.text === 'Step 1 of 9', 'recipe highlights the first direction');
+  const visibleSteps = M().stepNodes.filter(node => node.visible).length;
+  ok(M().rStepMore.visible && M().rStepMoreLabel.text === 'Scroll down for more' &&
+    visibleSteps >= 3 && M().rStepRange.text === 'Showing 1–' + visibleSteps + ' of 9 steps',
+    'long recipe shows more steps and names the hidden remainder');
+  press('right');
+  for (let i = 0; i < M().rec.steps.length; i++) press('down');
+  ok(M().stepNodes[M().rec.steps.length - 1].visible && M().rStepMoreLabel.text === 'Scroll up for earlier steps',
+    'the final step is reachable by remote and the cue points back up');
+  run("recipeOpen(m.D.recipes.findIndex((r) => r.id === 'garlic-butter-baked-salmon'))");
+  ok(!M().rStepMore.visible && M().rStepRange.text === 'Showing 1–3 of 3 steps',
+    'the scroll cue stays hidden when every step fits');
+}
+
 // exhaustive walk: every recipe, every ingredient and step, cook mode to the end
 for (let r = 0; r < n; r++) {
   run(`recipeOpen(${r})`);
   const rec = M().rec;
+  ok(M().rCookware.visible && M().rCookwareLabel.text === 'Cookware · ' + rec.cookwareText,
+    rec.id + ': cookware is visible on the recipe card');
   focusVisible(rec.id + ' open');
+  ok(M().rs.zone === 'steps' && M().rs.sIdx === 0, rec.id + ': opens on the first direction');
+  press('left');
   for (let i = 0; i < rec.ingredients.length + 2; i++) { press('down'); focusVisible(rec.id + ' ing'); }
   press('right');
   for (let i = 0; i < rec.steps.length + 2; i++) { press('down'); focusVisible(rec.id + ' step'); }
@@ -248,6 +520,7 @@ for (let r = 0; r < n; r++) {
     press(hasTimer ? 'right' : 'OK');
     focusVisible(rec.id + ' cook');
     const now = M().rec.steps[M().cs.sIdx];
+    ok(M().cText.boundingRect().height <= M().L.cook.text.h, rec.id + ': full cook directions fit above the timer');
     ok(M().cTimerG.visible === (now.timer > 0 || M().timer.on || M().timer.done), rec.id + ': timer line shown only for timed steps');
   }
   if (rec.steps[rec.steps.length - 1].timer === 0) press('OK');
@@ -269,6 +542,8 @@ for (const k of ['down', 'down', 'down', 'right', 'right', 'down', 'down', 'down
   const rowCards = (r) => M().homeRows.kids.filter((k) => k.type === 'Group' && k.translation[1] === (r - M().hs.top) * hl.rows.rowH + hl.rows.labelH);
   const fades = () => M().homeRows.kids.filter((k) => k.type === 'Poster' && k.uri === 'pkg:/' + hl.peek.fade);
   run('m.hs.row = 0; m.hs.top = 0; m.hs.cols[0] = 0; m.hs.lefts[0] = 0; homeRender()');
+  // Give the first category a longer row to exercise peeking even with a small catalog.
+  run('m.rows = m.homeCategories.slice(); m.rows[0] = { title: m.rows[0].title, items: [0, 1, 2, 3, 4, 5] }; m.hs.filter = false; homeRender()');
   const clip = M().homeRows.clippingRect;
   ok(hl.rows.x + clip[0] + clip[2] === L.screen.safe[2], 'home rows clip at the right title-safe edge');
   ok(hl.rows.x + clip[0] >= 0 && hl.rows.y + clip[1] + clip[3] <= 1080, 'home clip stays on screen');
@@ -292,7 +567,7 @@ for (const k of ['down', 'down', 'down', 'right', 'right', 'down', 'down', 'down
   const rowsShown = [M().hs.top, M().hs.top + 1].filter((r) => r < M().rows.length);
   const longShown = rowsShown.filter((r) => M().rows[r].items.length - M().hs.lefts[r] > hl.card.visible).length;
   ok(fades().length === longShown, 'one fade per row that continues off-screen');
-  run('m.hs.row = 0; m.hs.top = 0; homeRender()');
+  run('homeApplyFilter("")');
 }
 // home Play goes straight to cook mode
 press('play');
@@ -346,6 +621,14 @@ ok(run(`onKeyEvent('OK', false)`) === false, 'key releases are ignored');
   press('OK');
   ok(!M().timer.on, 'and OK stops it');
 }
+
+// Longer directions can shrink without affecting the font size of the following step.
+run(`m.cText.width = 950; m.cText.text = 'Check the thicker pieces before removing them from the skillet. '.repeat(4);
+  cookFitText();`);
+ok(parseFloat(M().cText.el.style.fontSize) < M().L.cook.text.size
+  && M().cText.boundingRect().height <= M().L.cook.text.h, 'cook text shrinks when necessary to fit');
+run(`m.cText.width = m.L.cook.text.w; m.cText.text = 'Stir and serve.'; cookFitText();`);
+ok(parseFloat(M().cText.el.style.fontSize) === M().L.cook.text.size, 'short directions use the normal type size again');
 
 if (fails.length) {
   console.log(`web test FAILED: ${fails.length} of ${passed + fails.length} assertions`);

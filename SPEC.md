@@ -1,4 +1,4 @@
-# The Heirloom Table: build brief
+# Culinote: build brief
 
 A cookbook app for a **Roku stick**, used only with the Roku remote, plus a **browser clone** that looks and behaves the same (keyboard or an on-screen remote). This file is the source of truth for the scheduled build job. Read it at the start of every run.
 
@@ -36,7 +36,7 @@ Open the reference image and study it before doing any visual work. Every recipe
 
 - Use SceneGraph + BrightScript, with a `manifest` that includes the title, version, FHD `ui_resolutions` and splash/focus icons.
 - Screens:
-  1. **Home**: the script title "The Heirloom Table" with its tagline, and a browsable grid or rows of recipe cards grouped by category (Breakfast, Mains, Soups, Sides, Desserts, Breads, Drinks…).
+  1. **Home**: the script title "Culinote" with its tagline, and a browsable grid or rows of recipe cards grouped by category (Breakfast, Mains, Soups, Sides, Desserts, Breads, Drinks…).
   2. **Recipe**: the card layout described above.
   3. **Cook mode**: big, full-screen, one-step-at-a-time directions, for following along while cooking.
 - Remote mapping. Everything works with the remote alone:
@@ -48,7 +48,7 @@ Open the reference image and study it before doing any visual work. Every recipe
   - ✱ (Options): a menu to reset checkboxes, show the recipe list, and jump to a category.
   - Focus must always be visible (a gold glow or outline) and must never get lost.
 - Recipes come from `roku/data/recipes.json` (generated, see below).
-- Package with `scripts/package.sh` → `dist/heirloom-table-roku.zip`, which sideloads at `http://<roku-ip>` in developer mode.
+- Package with `scripts/package.sh` → `dist/culinote-roku.zip`, which sideloads at `http://<roku-ip>` in developer mode.
 
 ## Browser clone (`web/`)
 

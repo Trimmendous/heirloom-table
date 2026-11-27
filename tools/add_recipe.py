@@ -46,8 +46,10 @@ def collect(categories):
     description = ask("Short description")
     prep = number("Prep minutes", 15, 1, 600)
     cook = number("Cook minutes", 30, 0, 720)
-    serves = number("Servings", 4, 1, 24)
+    serves = number("Servings", 4, 1, build_data.MAX_SERVINGS)
     note = ask("Kitchen note (optional)", optional=True)
+    tools = ask("Cookware, separated by commas (optional)", optional=True)
+    cookware = [item.strip() for item in tools.split(",") if item.strip()]
 
     print("\nEnter one ingredient per line. Leave a line blank to finish.")
     ingredients = []
@@ -72,6 +74,7 @@ def collect(categories):
         "cookMin": cook,
         "serves": serves,
         "difficulty": "Easy",
+        "cookware": cookware,
         "ingredients": ingredients,
         "steps": steps,
         "kitchenNote": note,

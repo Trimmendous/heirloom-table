@@ -32,9 +32,9 @@ import java.util.regex.Pattern;
 
 public final class CookbookActivity extends Activity {
     private static final String ASSET_HOST = "cookbook.heirloom.invalid";
-    private static final String RELEASE_API = "https://api.github.com/repos/Trimmendous/heirloom-table/releases/latest";
+    private static final String RELEASE_API = "https://api.github.com/repos/Trimmendous/culinote/releases/latest";
     private static final Pattern APK_URL = Pattern.compile(
-        "https://github[.]com/Trimmendous/heirloom-table/releases/download/v?([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,3})/heirloom-table-fire-tv[.]apk");
+        "https://github[.]com/Trimmendous/culinote/releases/download/v?([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,3})/culinote-fire-tv[.]apk");
     private static final String APK_MIME = "application/vnd.android.package-archive";
     private WebView cookbook;
     private DownloadManager downloads;
@@ -60,7 +60,7 @@ public final class CookbookActivity extends Activity {
         updateCode = pending.getInt("updateCode", 0);
         registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         cookbook = new WebView(this);
-        cookbook.setBackgroundColor(0xff160f0a);
+        cookbook.setBackgroundColor(0x00000000);
         cookbook.setKeepScreenOn(true);
         WebSettings settings = cookbook.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -124,7 +124,7 @@ public final class CookbookActivity extends Activity {
             File target = new File(folder, apkFilename(code));
             if (target.exists() && !target.delete()) throw new IllegalStateException("Cannot replace old download");
             DownloadManager.Request request = new DownloadManager.Request(uri)
-                .setTitle("The Heirloom Table v" + release.group(1) + "." + release.group(2) + "." + release.group(3))
+                .setTitle("Culinote v" + release.group(1) + "." + release.group(2) + "." + release.group(3))
                 .setMimeType(APK_MIME)
                 .setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, target.getName())
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
@@ -139,7 +139,7 @@ public final class CookbookActivity extends Activity {
     }
 
     private static String apkFilename(int code) {
-        return "heirloom-table-fire-tv-" + code + ".apk";
+        return "culinote-fire-tv-" + code + ".apk";
     }
 
     private void completeDownload() {

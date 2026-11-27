@@ -11,7 +11,9 @@ function cookBuild() {
   mkPoster(m.cookG, 'images/ui/ring_lg.png', kl.ring.x, kl.ring.y, kl.ring.s, kl.ring.s);
   m.cNum = mkLabel(m.cookG, '', 'serifBold', kl.ring.size, cc.goldLight, kl.ring.x, kl.ring.y + 14, kl.ring.s, 'center', 0);
   m.cLead = mkLabel(m.cookG, '', 'serifBold', kl.lead.size, cc.ink, kl.lead.x, kl.lead.y, kl.lead.w, 'center', 0);
-  m.cText = mkLabel(m.cookG, '', 'serif', kl.text.size, cc.ink, kl.text.x, kl.text.y, kl.text.w, 'center', kl.text.maxLines);
+  m.cText = mkLabel(m.cookG, '', 'serif', kl.text.size, cc.ink, kl.text.x, kl.text.y, kl.text.w, 'center', 0);
+  m.cText.wrap = true;
+  m.cText.el.style.overflowWrap = 'break-word';
   m.cTimerG = mkGroup(m.cookG, 0, kl.timer.y);
   m.cTimerIcon = mkPoster(m.cTimerG, 'images/ui/icon_clock.png', 0, 0, kl.timer.icon, kl.timer.icon);
   m.cTimerLabel = mkLabel(m.cTimerG, '', 'serifBold', kl.timer.size, cc.rust, 0, -4, 0, 'left', 0);
@@ -40,10 +42,12 @@ function cookRender() {
   m.cCounter.text = 'Step ' + (i + 1) + ' of ' + n;
   m.cNum.text = String(i + 1);
   m.cLead.text = s.lead;
-  m.cText.text = s.text;
-  if (s.timer > 0 && i === n - 1) {
+  m.cText.text = recipeStepText(i);
+  cookFitText();
+  var timed = recipeStepTiming(i).timer > 0;
+  if (timed && i === n - 1) {
     m.cHint.text = 'Last step   ·   OK: start or stop the timer   ·   Left: previous   ·   Play or Back: recipe';
-  } else if (s.timer > 0) {
+  } else if (timed) {
     m.cHint.text = 'OK: start or stop the timer   ·   Right: next step   ·   Left: previous   ·   Play or Back: recipe';
   } else if (i === n - 1) {
     m.cHint.text = 'Last step. Enjoy your meal!   ·   Left: previous   ·   Play or Back: return to the recipe';
@@ -61,9 +65,20 @@ function cookRender() {
   cookTimerRender();
 }
 
+function cookFitText() {
+  var layout = m.L.cook.text;
+  var size = layout.size;
+  var length = m.cText.text.length;
+  m.cText.font = uiFont('serif', size);
+  while (size > layout.minSize && textHeight(m.cText, size, length, layout.w) > layout.h) {
+    size -= 2;
+    m.cText.font = uiFont('serif', size);
+  }
+}
+
 /* The clock line above the progress dots: an offer, a live countdown, or "time's up". */
 function cookTimerRender() {
-  var kl = m.L.cook.timer, s = m.rec.steps[m.cs.sIdx], t = m.timer, txt = '';
+  var kl = m.L.cook.timer, s = recipeStepTiming(m.cs.sIdx), t = m.timer, txt = '';
   if (t.on && t.rid === m.rec.id && t.step === m.cs.sIdx) {
     txt = cookClock(t.left) + ' left   ·   OK: stop the timer';
   } else if (t.on) {
@@ -96,14 +111,14 @@ function cookClock(sec) {
 }
 
 function cookTimerToggle() {
-  var s = m.rec.steps[m.cs.sIdx], t = m.timer;
+  var s = recipeStepTiming(m.cs.sIdx), t = m.timer;
   if (s.timer === 0) {
     t.done = false;
   } else if (t.on && t.rid === m.rec.id && t.step === m.cs.sIdx) {
     t.on = false;
     showToast('Timer stopped');
   } else {
-    var lead = s.lead;
+    var lead = m.rec.steps[m.cs.sIdx].lead;
     if (lead.slice(-1) === '.') lead = lead.slice(0, -1);
     m.timer = { on: true, done: false, endMs: nowMs() + s.timer * 1000, left: s.timer, rid: m.rec.id, step: m.cs.sIdx, lead: lead };
     m.cTick.control = 'start';
@@ -150,7 +165,7 @@ function cookKey(key) {
   var n = m.rec.steps.length;
   if (key === 'left' || key === 'rewind' || key === 'up') {
     if (m.cs.sIdx > 0) m.cs.sIdx = m.cs.sIdx - 1;
-  } else if (key === 'OK' && (m.rec.steps[m.cs.sIdx].timer > 0 || m.timer.done)) {
+  } else if (key === 'OK' && (recipeStepTiming(m.cs.sIdx).timer > 0 || m.timer.done)) {
     cookTimerToggle();
   } else if (key === 'right' || key === 'fastforward' || key === 'down' || key === 'OK') {
     if (m.cs.sIdx < n - 1) {

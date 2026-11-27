@@ -8,32 +8,87 @@ function menuBuild() {
   mkRect(m.menuG, cc.dim, 0, 0, 1920, 1080);
   m.mPanel = mkPoster(m.menuG, 'images/ui/parchment.9.png', ml.panel.x, ml.panel.y, ml.panel.w, ml.panel.h);
   m.mTitle = mkLabel(m.menuG, '', 'script', ml.title.size, cc.ink, ml.title.x, ml.title.y, ml.title.w, 'center', 0);
+  var b = ml.back;
+  var back = mkGroup(m.menuG, b.x, b.y);
+  mkRect(back, '0xB8862E26', 0, 0, b.w, b.h);
+  m.mBackFocus = mkPoster(back, 'images/ui/focus.9.png', -9, -9, b.w + 18, b.h + 18);
+  mkLabel(back, '‹ Back', 'serifBold', b.size, cc.ink, 0, 5, b.w, 'center', 0);
+  var button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'hit menu-back-hit';
+  button.style.width = b.w + 'px';
+  button.style.height = b.h + 'px';
+  button.setAttribute('aria-label', 'Back');
+  button.addEventListener('click', menuClose);
+  back.el.appendChild(button);
   m.mHi = mkRect(m.menuG, '0xB8862E40', ml.list.x, ml.list.y, ml.list.w, ml.list.itemH);
   m.mFocus = mkPoster(m.menuG, 'images/ui/focus.9.png', 0, 0, 10, 10);
   m.mList = mkGroup(m.menuG, ml.list.x, ml.list.y);
-  m.mUp = mkPoster(m.menuG, 'images/ui/chev_up_ink.png', ml.list.x + ml.list.w / 2 - 15, ml.list.y - 26, 30, 20);
-  m.mDown = mkPoster(m.menuG, 'images/ui/chev_down_ink.png', ml.list.x + ml.list.w / 2 - 15, ml.list.y + ml.list.visible * ml.list.itemH + 4, 30, 20);
   m.mNote = mkLabel(m.menuG, '', 'serif', ml.note.size, cc.inkSoft, ml.note.x, 0, ml.note.w, 'left', 7);
   m.mNote.el.style.whiteSpace = 'pre-line';
   m.mNote.el.style.overflowWrap = 'break-word';
+  m.mNutrition = mkGroup(m.menuG, ml.note.x, ml.list.y);
+  m.mUp = mkPoster(m.menuG, 'images/ui/chev_up_ink.png', 945, ml.list.y - 25, 30, 20);
+  m.mDown = mkPoster(m.menuG, 'images/ui/chev_down_ink.png', 945, ml.list.y + ml.filterVisible * ml.list.itemH + 8, 30, 20);
   m.menuOpen = false;
   m.mstack = [];
 }
 
 function menuShow() {
+  var reset = m.screen === 'home' ? 'resetAll' : 'reset';
   var items = [
     { label: 'Update Now', act: 'updates' },
-    { label: 'Theme', act: 'themes' }
+    { label: 'Theme', act: 'themes' },
+    { label: 'Reset Checkboxes', act: reset }
   ];
-  if (m.screen === 'home') {
-    items.push({ label: 'Reset all checkboxes', act: 'resetAll', arg: '' });
-  } else {
-    items.push({ label: 'Reset checkboxes', act: 'reset', arg: '' });
+  menuOpenLevel({ title: 'Options', items: items, sel: 0 });
+}
+
+function menuShowFilter() {
+  var excluded = Object.keys(m.homeAvoid).length;
+  var items = [
+    { label: 'All Categories', act: 'filter', arg: '' },
+    { label: 'Ingredients to Avoid' + (excluded ? ' (' + excluded + ')' : ''), act: 'avoid' }
+  ];
+  m.D.categories.forEach(function (category) {
+    items.push({ label: category, act: 'filter', arg: category });
+  });
+  var category = m.D.categories.indexOf(m.homeCategory);
+  menuOpenLevel({ title: 'Filter Recipes', items: items, sel: category < 0 ? 0 : category + 2, top: 0 });
+}
+
+function menuShowIngredients() {
+  var items = [{ label: 'Clear Exclusions', act: 'avoidClear' }];
+  m.D.ingredientFilters.forEach(function (ingredient) {
+    items.push({ label: ingredient, act: 'avoidToggle', arg: ingredient });
+  });
+  m.mstack.push({ title: 'Ingredients to Avoid', items: items, sel: 1, top: 0, ingredientPicker: true,
+    note: 'Selections apply immediately. For allergies, check package labels and cross-contact.' });
+  menuRender();
+}
+
+function menuShowNutrition() {
+  menuOpenLevel({ title: 'Nutrition Estimate', items: [], sel: -1,
+    nutrition: m.servingVariant.nutritionText });
+}
+
+function menuRenderNutrition(content) {
+  var ml = m.L.menu, cc = m.L.colors;
+  removeKids(m.mNutrition);
+  var sections = content.split('\n\n');
+  for (var section = 0; section < 2; section++) {
+    var lines = sections[section].split('\n');
+    var y = section * 162;
+    mkLabel(m.mNutrition, lines[0], 'serifBold', 33, cc.rust, 0, y, ml.note.w, 'left', 0);
+    for (var line = 1; line < lines.length; line++) {
+      mkLabel(m.mNutrition, lines[line], 'serif', 29, cc.ink, 0, y + 6 + line * 35, ml.note.w, 'left', 0);
+    }
   }
-  items.push({ label: 'Browse all recipes', act: 'list', arg: '' });
-  m.D.categories.forEach(function (c) { items.push({ label: 'Jump to ' + c, act: 'cat', arg: c }); });
-  if (m.screen !== 'home') items.push({ label: 'Back to home', act: 'home', arg: '' });
-  m.mstack = [{ title: 'Options', note: '', items: items, sel: 0, top: 0 }];
+  mkLabel(m.mNutrition, sections[2], 'serif', 25, cc.inkSoft, 0, 334, ml.note.w, 'left', 2);
+}
+
+function menuOpenLevel(level) {
+  m.mstack = [level];
   m.menuOpen = true;
   m.menuG.visible = true;
   menuRender();
@@ -47,41 +102,60 @@ function menuClose() {
 
 function menuRender() {
   var ml = m.L.menu, cc = m.L.colors, lv = m.mstack[m.mstack.length - 1];
-  var n = lv.items.length, vis = ml.list.visible;
-  if (lv.sel < lv.top) lv.top = lv.sel;
-  if (lv.sel >= lv.top + vis) lv.top = lv.sel - vis + 1;
+  var n = lv.items.length;
+  var start = 0, end = n;
   m.mTitle.text = lv.title;
   m.mNote.text = lv.note || '';
   m.mNote.visible = Boolean(lv.note);
   m.mPanel.height = lv.note ? ml.note.panelH : ml.panel.h;
-  if (lv.note) m.mNote.translation = [ml.note.x, ml.list.y + n * ml.list.itemH + ml.note.gap];
-  removeKids(m.mList);
-  for (var i = lv.top; i <= lv.top + vis - 1; i++) {
-    if (i >= n) break;
-    var lb = mkLabel(m.mList, lv.items[i].label, 'serif', ml.list.size, cc.ink, 24, (i - lv.top) * ml.list.itemH + 10, ml.list.w - 48, 'left', 0);
-    webHit(lb, ml.list.w - 48, ml.list.itemH, menuClick.bind(null, i));
+  m.mNutrition.visible = Boolean(lv.nutrition);
+  if (lv.nutrition) {
+    m.mPanel.height = ml.nutritionPanelH;
+    menuRenderNutrition(lv.nutrition);
   }
-  var y = ml.list.y + (lv.sel - lv.top) * ml.list.itemH;
+  if (lv.top !== undefined) {
+    var shown = Math.min(n, lv.ingredientPicker ? ml.ingredientVisible : ml.filterVisible);
+    lv.top = Math.max(0, Math.min(lv.top, lv.sel), lv.sel - shown + 1);
+    start = lv.top;
+    end = start + shown;
+    m.mPanel.height = ml.list.y - ml.panel.y + shown * ml.list.itemH + (lv.note ? 132 : 46);
+    m.mDown.translation = [945, ml.list.y + shown * ml.list.itemH + 8];
+  }
+  m.mUp.visible = start > 0;
+  m.mDown.visible = end < n;
+  if (lv.note) m.mNote.translation = [ml.note.x, ml.list.y + (end - start) * ml.list.itemH + ml.note.gap];
+  removeKids(m.mList);
+  for (var i = start; i < end; i++) {
+    var it = lv.items[i], labelX = 24;
+    var row = mkGroup(m.mList, 0, (i - start) * ml.list.itemH);
+    if (it.act === 'avoidToggle') {
+      mkPoster(row, 'images/ui/' + (m.homeAvoid[it.arg] ? 'check_on.png' : 'check_off.png'), 24, 15, 28, 28);
+      labelX = 68;
+    }
+    mkLabel(row, it.label, 'serif', ml.list.size, cc.ink, labelX, 10, ml.list.w - labelX - 24, 'left', 0);
+    webHit(row, ml.list.w, ml.list.itemH, menuClick.bind(null, i));
+  }
+  var y = ml.list.y + (lv.sel - start) * ml.list.itemH;
+  m.mBackFocus.visible = lv.sel < 0;
+  m.mHi.visible = lv.sel >= 0;
+  m.mFocus.visible = lv.sel >= 0;
   m.mHi.translation = [ml.list.x, y];
   m.mFocus.setFields({ translation: [ml.list.x - 14, y - 14], width: ml.list.w + 28, height: ml.list.itemH + 28 });
-  m.mUp.visible = lv.top > 0;
-  m.mDown.visible = lv.top + vis < n;
 }
 
 function menuKey(key) {
   var lv = m.mstack[m.mstack.length - 1];
   if (key === 'up') {
-    if (lv.sel > 0) lv.sel = lv.sel - 1;
+    if (lv.sel >= 0) lv.sel = lv.sel - 1;
   } else if (key === 'down') {
     if (lv.sel < lv.items.length - 1) lv.sel = lv.sel + 1;
   } else if (key === 'rewind') {
-    lv.sel = lv.sel - m.L.menu.list.visible;
-    if (lv.sel < 0) lv.sel = 0;
+    lv.sel = 0;
   } else if (key === 'fastforward') {
-    lv.sel = lv.sel + m.L.menu.list.visible;
-    if (lv.sel > lv.items.length - 1) lv.sel = lv.items.length - 1;
+    lv.sel = lv.items.length - 1;
   } else if (key === 'OK') {
-    menuActivate(lv.items[lv.sel]);
+    if (lv.sel < 0) menuClose();
+    else menuActivate(lv.items[lv.sel]);
     return true;
   } else if (key === 'back' || key === 'options' || key === 'left') {
     menuClose();
@@ -92,7 +166,19 @@ function menuKey(key) {
 }
 
 function menuActivate(it) {
-  if (it.act === 'updates') {
+  if (it.act === 'filter') {
+    menuClose();
+    homeApplyFilter(it.arg);
+  } else if (it.act === 'avoid') {
+    menuShowIngredients();
+  } else if (it.act === 'avoidToggle' || it.act === 'avoidClear') {
+    if (it.act === 'avoidClear') m.homeAvoid = {};
+    else if (m.homeAvoid[it.arg]) delete m.homeAvoid[it.arg];
+    else m.homeAvoid[it.arg] = true;
+    saveIngredientExclusions(m.homeAvoid);
+    homeApplyFilter(m.homeCategory);
+    menuRender();
+  } else if (it.act === 'updates') {
     menuCheckRelease();
   } else if (it.act === 'download') {
     menuClose();
@@ -104,7 +190,7 @@ function menuActivate(it) {
   } else if (it.act === 'close') {
     menuClose();
   } else if (it.act === 'themes') {
-    m.mstack.push({ title: 'Theme', note: 'Choose the background for the cookbook.', top: 0,
+    m.mstack.push({ title: 'Theme', note: 'Choose the background for the cookbook.',
       sel: m.themeName === 'midnight' ? 1 : 0, items: [
         { label: 'Classic', act: 'theme', arg: 'classic' },
         { label: 'Midnight', act: 'theme', arg: 'midnight' }
@@ -126,26 +212,11 @@ function menuActivate(it) {
     saveChecks();
     menuClose();
     showToast('All checkboxes cleared');
-  } else if (it.act === 'list') {
-    var items = [];
-    for (var i = 0; i < m.D.recipes.length; i++) items.push({ label: m.D.recipes[i].title, act: 'open', arg: i });
-    items.sort(function (a, b) { return a.label < b.label ? -1 : a.label > b.label ? 1 : 0; });
-    m.mstack.push({ title: 'All Recipes', items: items, sel: 0, top: 0 });
-    menuRender();
-  } else if (it.act === 'open') {
-    menuClose();
-    recipeOpen(it.arg);
-  } else if (it.act === 'cat') {
-    menuClose();
-    homeJump(it.arg);
-  } else if (it.act === 'home') {
-    menuClose();
-    showScreen('home');
   }
 }
 
 function menuCheckRelease() {
-  var level = { title: 'App Update', note: 'Checking GitHub for a newer release...', sel: 0, top: 0,
+  var level = { title: 'App Update', note: 'Checking GitHub for a newer release...', sel: 0,
     items: [{ label: 'Cancel', act: 'close' }] };
   m.mstack.push(level);
   menuRender();
@@ -167,7 +238,7 @@ function menuReleaseResult(level, status, release) {
 
   var app = m.D.app;
   var version = release && /^v?([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,3})$/.exec(release.tag_name);
-  var assetName = m.fireTv ? 'heirloom-table-fire-tv.apk' : 'heirloom-table-roku.zip';
+  var assetName = m.fireTv ? 'culinote-fire-tv.apk' : 'culinote-roku.zip';
   level.items = [{ label: 'Close', act: 'close' }];
   if (status === 404) {
     level.note = 'GitHub has no public release available. Installed version v' + app.version + '.';

@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-feature android:name="android.software.leanback" android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-    <application android:label="The Heirloom Table" android:icon="@drawable/tile"
-        android:banner="@drawable/tile" android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen"
+    <application android:label="Culinote" android:icon="@drawable/mark"
+        android:banner="@drawable/tile" android:theme="@style/CulinoteTheme"
         android:allowBackup="false" android:usesCleartextTraffic="false">
         <activity android:name=".CookbookActivity" android:exported="true"
             android:screenOrientation="landscape" android:configChanges="orientation|screenSize|keyboardHidden">

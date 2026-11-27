@@ -1,4 +1,4 @@
-/* The Heirloom Table — web clone. Everything inside #stage is laid out in 1920x1080 "TV pixels"
+/* Culinote — web clone. Everything inside #stage is laid out in 1920x1080 "TV pixels"
    and scaled to the window, exactly like the Roku FHD canvas. */
 @font-face { font-family: "HT Script"; src: url("../assets/fonts/PinyonScript-Regular.ttf"); }
 @font-face { font-family: "HT Serif"; src: url("../assets/fonts/CrimsonText-Regular.ttf"); }
@@ -20,6 +20,24 @@ body { display: flex; flex-direction: column; overflow: hidden; }
 .sg-Label, .sg-MultiStyleLabel { line-height: 1.22; -webkit-font-smoothing: antialiased; }
 .sg-MultiStyleLabel span { font-weight: normal; }
 .hit { position: absolute; left: 0; top: 0; cursor: pointer; }
+.home-filter-hit, .menu-back-hit { background: transparent; border: 0; border-radius: 8px; padding: 0; }
+.home-filter-hit:focus-visible, .menu-back-hit:focus-visible { outline: 3px solid #d6a44d; outline-offset: 4px; }
+.menu-back-hit:hover { background: #b8862e24; }
+.servings-input {
+  position: absolute; inset: 2px auto 2px 2px; width: 69px; box-sizing: border-box;
+  color: #2d1b13; background: transparent; border: 0; padding: 0; text-align: center;
+  font-family: "HT Serif", Georgia, serif; appearance: textfield;
+}
+.servings-input::-webkit-inner-spin-button { appearance: none; }
+.servings-arrow {
+  position: absolute; right: 2px; width: 42px; height: 17px; border: 0; padding: 0;
+  background: transparent center / 22px 13px no-repeat; cursor: pointer;
+}
+.servings-up { top: 2px; background-image: url("../assets/images/ui/chev_up_ink.png"); }
+.servings-down { bottom: 2px; background-image: url("../assets/images/ui/chev_down_ink.png"); }
+.servings-arrow:hover { background-color: #b8862e38; }
+.servings-arrow:disabled { opacity: .35; cursor: default; }
+.servings-arrow:focus-visible, .servings-input:focus-visible { outline: 2px solid #80542c; outline-offset: -2px; }
 
 /* exit overlay (Back on Home) */
 #exit { position: absolute; inset: 0; background: rgba(10,6,4,.92); color: #f2d592; display: flex;

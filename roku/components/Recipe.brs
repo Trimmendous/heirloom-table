@@ -1,5 +1,5 @@
 ' Recipe.brs: the recipe card (dish, title parchment + meta strip, ingredients with checkboxes,
-' numbered directions, "From My Kitchen" note + vintage photo). Mirrors web/js/recipe.js.
+' and scrollable numbered directions). Mirrors web/js/recipe.js.
 
 sub recipeBuild()
     rl = m.L.recipe
@@ -8,7 +8,11 @@ sub recipeBuild()
     m.recG.visible = false
     m.recipeBg = mkPoster(m.recG, rl.bg, 0, 0, 1920, 1080)
     m.rDish = mkPoster(m.recG, "", rl.dish.x, rl.dish.y, rl.dish.w, rl.dish.h)
-    mkLabel(m.recG, "The Heirloom Table", "script", rl.header.size, cc.gold, rl.header.x, rl.header.y, rl.header.w, "center", 0)
+    cw = rl.cookware
+    m.rCookware = mkGroup(m.recG, cw.x, cw.y)
+    mkRect(m.rCookware, "0x160F0AEC", 0, 0, cw.w, cw.h)
+    m.rCookwareLabel = mkLabel(m.rCookware, "", "serif", cw.size, cc.goldLight, 14, 3, cw.w - 28, "center", 2)
+    mkLabel(m.recG, "Culinote", "script", rl.header.size, cc.gold, rl.header.x, rl.header.y, rl.header.w, "center", 0)
 
     ' title parchment
     m.rTitle = mkLabel(m.recG, "", "script", rl.title.size, cc.ink, rl.title.x, rl.title.y, rl.title.w, "center", 0)
@@ -23,7 +27,9 @@ sub recipeBuild()
         cx = mt.x + k * mt.colW
         mkPoster(m.recG, "images/ui/icon_" + icons[k] + ".png", cx + (mt.colW - 12 - mt.icon) / 2, mt.y, mt.icon, mt.icon)
         mkLabel(m.recG, names[k], "serifBold", mt.size, cc.ink, cx, mt.y + mt.icon, mt.colW - 12, "center", 0)
-        m.rMeta.Push(mkLabel(m.recG, "", "serif", mt.size, cc.ink, cx, mt.y + mt.icon + 30, mt.colW - 12, "center", 0))
+        valueLabel = invalid
+        if k <> 2 then valueLabel = mkLabel(m.recG, "", "serif", mt.size, cc.ink, cx, mt.y + mt.icon + 30, mt.colW - 12, "center", 0)
+        m.rMeta.Push(valueLabel)
     end for
     m.rGarnish = mkPoster(m.recG, "", rl.garnish.x, rl.garnish.y, rl.garnish.s, rl.garnish.s)
 
@@ -33,17 +39,23 @@ sub recipeBuild()
     mkLabel(m.recG, "Directions", "script", rl.dirHeader.size, cc.gold, rl.dirHeader.x, rl.dirHeader.y, rl.dirHeader.w, "left", 0)
     m.rStepCount = mkLabel(m.recG, "", "serif", 26, cc.goldLight, rl.steps.x + rl.steps.w - 420, rl.dirHeader.y + 28, 400, "right", 0)
 
-    ' kitchen note + photo
-    nh = mkLabel(m.recG, "From My Kitchen", "script", rl.noteHeader.size, cc.ink, rl.noteHeader.x, rl.noteHeader.y, 0, "left", 0)
-    hw = nh.boundingRect().width
-    if hw < 50 then hw = 300
-    mkPoster(m.recG, "images/ui/icon_heart.png", rl.noteHeader.x + hw + 12, rl.noteHeader.y + 14, 34, 34)
-    m.rNote = mkLabel(m.recG, "", "hand", rl.note.size, cc.ink, rl.note.x, rl.note.y, rl.note.w, "left", rl.note.maxLines)
-    m.rPhoto = mkPoster(m.recG, "", rl.photo.x, rl.photo.y, rl.photo.w, rl.photo.h)
-
     ' focus layer sits under the lists
     m.rHi = mkRect(m.recG, "0xB8862E33", 0, 0, 10, 10)
     m.rFocus = mkPoster(m.recG, "images/ui/focus.9.png", 0, 0, 10, 10)
+    nv = rl.nutrition
+    m.rNutrition = mkGroup(m.recG, nv.x, nv.y)
+    mkPoster(m.rNutrition, "images/ui/parchment.9.png", 0, 0, nv.w, nv.h)
+    mkLabel(m.rNutrition, "Nutrition", "serifBold", nv.size, cc.ink, 0, 6, nv.w, "center", 0)
+    sv = rl.servings
+    spinner = mkGroup(m.recG, sv.x, sv.y)
+    mkRect(spinner, "0x9B714CFF", 0, 0, sv.w, sv.h)
+    mkRect(spinner, "0xF3DFC0FF", 2, 2, sv.w - 4, sv.h - 4)
+    m.rServingsLabel = mkLabel(spinner, "", "serif", sv.size, cc.ink, 2, 0, 69, "center", 0)
+    m.rServingsLabel.height = sv.h
+    m.rServingsLabel.vertAlign = "center"
+    m.rServingsUp = mkPoster(spinner, "images/ui/chev_up_ink.png", sv.w - 34, 4, 22, 13)
+    m.rServingsDown = mkPoster(spinner, "images/ui/chev_down_ink.png", sv.w - 34, sv.h - 17, 22, 13)
+    m.serveCounts = {}
     m.rIngG = mkGroup(m.recG, rl.ingList.x, rl.ingList.y)
     m.rStepG = mkGroup(m.recG, rl.steps.x, rl.steps.y)
     il = rl.ingList
@@ -51,8 +63,16 @@ sub recipeBuild()
     m.rIngUp = mkPoster(m.recG, "images/ui/chev_up_ink.png", il.x + il.w - 30, il.y + 2, 30, 20)
     m.rIngDown = mkPoster(m.recG, "images/ui/chev_down_ink.png", il.x + il.w - 30, il.y + il.h - 20, 30, 20)
     m.rStepUp = mkPoster(m.recG, "images/ui/chev_up.png", st.x + st.w - 30, st.y + 2, 30, 20)
-    m.rStepDown = mkPoster(m.recG, "images/ui/chev_down.png", st.x + st.w - 30, st.y + st.h - 20, 30, 20)
-    m.rs = { rpos: 0, zone: "ing", ing: 0, ingTop: 0, sIdx: 0, stepTop: 0 }
+    ft = rl.stepFooter
+    footer = mkGroup(m.recG, st.x, ft.y)
+    mkRect(footer, "0x140D09DD", 0, 0, st.w, ft.h)
+    mkRect(footer, "0xB8862E80", 0, 0, st.w, 2)
+    m.rStepRange = mkLabel(footer, "", "serif", ft.size, cc.goldLight, 16, 4, st.w - ft.actionW - 30, "left", 0)
+    m.rStepMore = mkGroup(footer, st.w - ft.actionW, 0)
+    mkRect(m.rStepMore, "0xB8862E4D", 0, 2, ft.actionW, ft.h - 2)
+    m.rStepMoreArrow = mkPoster(m.rStepMore, "", 18, 11, 31, 22)
+    m.rStepMoreLabel = mkLabel(m.rStepMore, "", "serifBold", ft.size, cc.goldLight, 62, 4, ft.actionW - 76, "left", 0)
+    m.rs = { rpos: 0, zone: "steps", ing: 0, ingTop: 0, sIdx: 0, stepTop: 0 }
 end sub
 
 sub recipeOpen(rpos as integer)
@@ -60,26 +80,29 @@ sub recipeOpen(rpos as integer)
     recipeShow(rpos)
 end sub
 
-sub recipeShow(rpos as integer)
+sub recipeShow(rpos as integer, previous = invalid as dynamic)
     rl = m.L.recipe
     cc = m.L.colors
     r = recipeAt(rpos)
     m.rec = r
-    m.rs = { rpos: rpos, zone: "ing", ing: 0, ingTop: 0, sIdx: 0, stepTop: 0 }
+    m.rs = { rpos: rpos, zone: "steps", ing: 0, ingTop: 0, sIdx: 0, stepTop: 0 }
+    m.rServes = m.serveCounts[r.id]
+    if m.rServes = invalid then m.rServes = r.serves
+    m.servingVariant = r.servingVariants[m.rServes - 1]
+    m.rNutrition.visible = m.servingVariant.DoesExist("nutritionText")
     m.rDish.uri = "pkg:/" + r.image
+    m.rCookware.visible = r.cookwareText <> ""
+    if m.rCookware.visible then m.rCookwareLabel.text = "Cookware · " + r.cookwareText
     size = rl.title.size
     if Len(r.title) > rl.title.longAt then size = rl.title.sizeLong
     m.rTitle.font = uiFont("script", size)
     m.rTitle.text = r.title
     m.rDesc.text = r.description
-    m.rMeta[0].text = r.prepText
-    m.rMeta[1].text = r.cookText
-    m.rMeta[2].text = r.serves.ToStr()
+    m.rMeta[0].text = m.servingVariant.prepText
+    m.rMeta[1].text = m.servingVariant.cookText
     m.rMeta[3].text = r.difficulty
     m.rGarnish.uri = "pkg:/" + r.garnish
     m.rGarnishSmall.uri = "pkg:/" + r.garnish
-    m.rPhoto.uri = "pkg:/" + r.photo
-    m.rNote.text = r.kitchenNote
 
     ' ingredients: build every row once, measure, then window them
     il = rl.ingList
@@ -98,11 +121,12 @@ sub recipeShow(rpos as integer)
             h = textHeight(lb, il.size, Len(it.text), il.w - 40) + 2
         else
             if first < 0 then first = i
-            cb = mkPoster(g, checkUri(r.id, i), 0, 5, il.cb, il.cb)
+            cb = mkPoster(g, checkUri(r.id, i), 0, 5, il["box"], il["box"])
             m.ingBoxes.Push(cb)
-            lb = mkLabel(g, it.text, "serif", il.size, cc.ink, il.textX, 0, tw, "left", 3)
-            h = textHeight(lb, il.size, Len(it.text), tw)
-            if h < il.cb + 6 then h = il.cb + 6
+            ingredient = recipeScaledText("ingredients", i, it.text)
+            lb = mkLabel(g, ingredient, "serif", il.size, cc.ink, il.textX, 0, tw, "left", 3)
+            h = textHeight(lb, il.size, Len(ingredient), tw)
+            if h < il["box"] + 6 then h = il["box"] + 6
         end if
         m.ingNodes.Push(g)
         m.ingH.Push(h)
@@ -121,13 +145,47 @@ sub recipeShow(rpos as integer)
         g = m.rStepG.createChild("Group")
         mkPoster(g, "images/ui/ring.png", 0, 0, st.ring, st.ring)
         mkLabel(g, (i + 1).ToStr(), "serifBold", 32, cc.goldLight, 0, 6, st.ring, "center", 0)
-        lb = mkRich(g, "<b>" + s.lead + "</b> " + s.text, st.size, "0xF0E2C4FF", cc.goldLight, st.textX, 2, sw)
-        h = textHeight(lb, st.size, Len(s.lead) + Len(s.text) + 1, sw) + 4
+        stepText = recipeStepText(i)
+        lb = mkRich(g, "<b>" + s.lead + "</b> " + stepText, st.size, "0xF0E2C4FF", cc.goldLight, st.textX, 2, sw)
+        h = textHeight(lb, st.size, Len(s.lead) + Len(stepText) + 1, sw) + 4
         if h < st.ring then h = st.ring
         m.stepNodes.Push(g)
         m.stepH.Push(h)
     end for
+    if previous <> invalid then m.rs = previous
     recipeLayout()
+end sub
+
+function recipeScaledText(section as string, index as integer, fallback as string) as string
+    value = m.servingVariant[section][index.ToStr()]
+    if value = invalid then return fallback
+    return value
+end function
+
+function recipeStepTiming(index as integer) as object
+    timing = m.servingVariant.timers[index.ToStr()]
+    if timing = invalid then return m.rec.steps[index]
+    return timing
+end function
+
+function recipeStepText(index as integer) as string
+    return recipeScaledText("steps", index, m.rec.steps[index].text)
+end function
+
+sub recipeFocusServings()
+    m.rs.returnZone = m.rs.zone
+    m.rs.zone = "servings"
+end sub
+
+sub recipeSetServings(count as integer)
+    if count < 1 then count = 1
+    if count > m.D.maxServings then count = m.D.maxServings
+    if count = m.rServes
+        recipeLayout()
+        return
+    end if
+    m.serveCounts[m.rec.id] = count
+    recipeShow(m.rs.rpos, m.rs)
 end sub
 
 function checkUri(rid as string, i as integer) as string
@@ -147,6 +205,14 @@ sub recipeLayout()
     il = rl.ingList
     st = rl.steps
     ings = m.rec.ingredients
+    editing = rs.zone = "servingsEdit"
+    shownServes = m.rServes
+    if editing then shownServes = rs.draftServes
+    m.rServingsLabel.text = shownServes.ToStr()
+    m.rServingsUp.opacity = 0.35
+    m.rServingsDown.opacity = 0.35
+    if editing and shownServes < m.D.maxServings then m.rServingsUp.opacity = 1
+    if editing and shownServes > 1 then m.rServingsDown.opacity = 1
     rs.ingTop = fitTop(m.ingH, il.gap, il.h, rs.ingTop, rs.ing)
     ' keep a group heading visible together with its first ingredient
     if rs.ingTop > 0 and rs.ingTop = rs.ing
@@ -163,9 +229,19 @@ sub recipeLayout()
     rs.stepTop = fitTop(m.stepH, st.gap, st.h, rs.stepTop, rs.sIdx)
     lastS = placeItems(m.stepNodes, m.stepH, st.gap, st.h, rs.stepTop)
     m.rStepUp.visible = rs.stepTop > 0
-    m.rStepDown.visible = lastS < m.stepNodes.Count() - 1
-
     n = m.stepNodes.Count()
+    moreBelow = lastS < n - 1
+    m.rStepMore.visible = moreBelow or rs.stepTop > 0
+    if moreBelow
+        m.rStepMoreLabel.text = "Scroll down for more"
+        m.rStepMoreArrow.uri = "pkg:/images/ui/chev_down.png"
+    else
+        m.rStepMoreLabel.text = "Scroll up for earlier steps"
+        m.rStepMoreArrow.uri = "pkg:/images/ui/chev_up.png"
+    end if
+    shown = (rs.stepTop + 1).ToStr()
+    if lastS > rs.stepTop then shown = shown + "–" + (lastS + 1).ToStr()
+    m.rStepRange.text = "Showing " + shown + " of " + n.ToStr() + " steps"
     if rs.zone = "ing"
         node = m.ingNodes[rs.ing]
         x = il.x - 12
@@ -173,7 +249,24 @@ sub recipeLayout()
         w = il.w - 22
         h = m.ingH[rs.ing] + 12
         m.rHi.color = "0xB8862E38"
-        m.rStepCount.text = n.ToStr() + " steps"
+        m.rStepCount.text = "Right to select directions"
+    else if rs.zone = "servings" or editing
+        sv = rl.servings
+        x = sv.x - 3
+        y = sv.y - 3
+        w = sv.w + 6
+        h = sv.h + 6
+        m.rHi.color = "0xB8862E38"
+        m.rStepCount.text = "OK to edit servings"
+        if editing then m.rStepCount.text = "Up / Down · OK to confirm"
+    else if rs.zone = "nutrition"
+        nv = rl.nutrition
+        x = nv.x
+        y = nv.y
+        w = nv.w
+        h = nv.h
+        m.rHi.color = "0xB8862E38"
+        m.rStepCount.text = "OK to view nutrition"
     else
         node = m.stepNodes[rs.sIdx]
         x = st.x - 10
@@ -190,16 +283,51 @@ end sub
 function recipeKey(key as string) as boolean
     rs = m.rs
     ings = m.rec.ingredients
-    count = m.D.recipes.Count()
+    if rs.zone = "servingsEdit"
+        if key = "up"
+            if rs.draftServes < m.D.maxServings then rs.draftServes = rs.draftServes + 1
+        else if key = "down"
+            if rs.draftServes > 1 then rs.draftServes = rs.draftServes - 1
+        else if key = "OK"
+            rs.zone = rs.returnZone
+            recipeSetServings(rs.draftServes)
+            return true
+        else if key = "back"
+            rs.zone = "servings"
+        end if
+        recipeLayout()
+        return true
+    end if
+    if rs.zone = "nutrition"
+        if key = "OK"
+            menuShowNutrition()
+            return true
+        else if key = "up" or key = "down" or key = "left" or key = "right"
+            rs.zone = "ing"
+            recipeLayout()
+            return true
+        end if
+    end if
+    if rs.zone = "servings" and (key = "up" or key = "down")
+        if key = "down" then rs.zone = rs.returnZone
+        recipeLayout()
+        return true
+    end if
     if key = "up"
         if rs.zone = "ing"
             i = rs.ing - 1
             while i >= 0 and ings[i].header
                 i = i - 1
             end while
-            if i >= 0 then rs.ing = i
+            if i >= 0
+                rs.ing = i
+            else
+                recipeFocusServings()
+            end if
         else if rs.sIdx > 0
             rs.sIdx = rs.sIdx - 1
+        else
+            recipeFocusServings()
         end if
     else if key = "down"
         if rs.zone = "ing"
@@ -214,9 +342,16 @@ function recipeKey(key as string) as boolean
     else if key = "right"
         rs.zone = "steps"
     else if key = "left"
-        rs.zone = "ing"
+        if rs.zone = "ing" and m.rNutrition.visible
+            rs.zone = "nutrition"
+        else
+            rs.zone = "ing"
+        end if
     else if key = "OK"
-        if rs.zone = "ing"
+        if rs.zone = "servings"
+            rs.draftServes = m.rServes
+            rs.zone = "servingsEdit"
+        else if rs.zone = "ing"
             setChecked(m.rec.id, rs.ing, not isChecked(m.rec.id, rs.ing))
             recipeRefreshChecks()
         else
@@ -231,10 +366,10 @@ function recipeKey(key as string) as boolean
         end if
         return true
     else if key = "rewind"
-        recipeShow((rs.rpos + count - 1) mod count)
+        recipeShow(homeAdjacentRecipe(rs.rpos, -1))
         return true
     else if key = "fastforward"
-        recipeShow((rs.rpos + 1) mod count)
+        recipeShow(homeAdjacentRecipe(rs.rpos, 1))
         return true
     else if key = "back"
         homeFocusRecipe(rs.rpos)

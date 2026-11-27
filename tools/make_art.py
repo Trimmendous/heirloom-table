@@ -21,6 +21,7 @@ L = json.load(open(os.path.join(ROOT, "data", "layout.json")))
 GARNISHES = ["lemon", "berries", "chili", "herbs", "apple", "wheat", "spice", "scallion", "lime", "olive", "mango", "peanut", "cucumber", "mint", "pepper", "tofu", "bonnet", "tomato", "butter"]
 PHOTOS = ["villa", "farmhouse", "cottage", "bazaar", "teahouse", "hacienda", "village", "seaside", "boulangerie"]
 DISH_W, DISH_H = L["recipe"]["dish"]["w"], L["recipe"]["dish"]["h"]
+PHOTO_W, PHOTO_H = 224, 190
 TABLE = "#160f0a"
 GS = L["recipe"]["garnish"]["s"]  # garnish art is drawn on a 256 grid and rendered at its largest on-screen size  # colour the dish images fade into; baked under the dish slot too
 
@@ -247,19 +248,18 @@ def ui_jobs(night=False):
     slot = (f'<filter id="feather" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="22"/></filter>'
             f'<rect x="{dish["x"]-34}" y="{dish["y"]-30}" width="{dish["w"]+68}" height="{dish["h"]+60}" rx="60" fill="{TABLE}" filter="url(#feather)"/>'
             f'<rect x="{dish["x"]-4}" y="{dish["y"]-4}" width="{dish["w"]+8}" height="{dish["h"]+8}" rx="20" fill="{TABLE}" filter="url(#soft)"/>')
-    tc, ic, nc = R["titleCard"], R["ingCard"], R["noteCard"]
+    tc, ic = R["titleCard"], R["ingCard"]
     meta = R["meta"]
     divs = "".join(f'<line x1="{meta["x"]+meta["colW"]*k-6}" y1="{meta["y"]+6}" x2="{meta["x"]+meta["colW"]*k-6}" '
                    f'y2="{meta["y"]+96}" stroke="#8c5f2c" stroke-opacity=".5" stroke-width="1.5"/>' for k in (1, 2, 3))
     st = R["steps"]
     body = b + slot + frame(W, H) + parchment(tc["x"], tc["y"], tc["w"], tc["h"], 21) \
-        + parchment(ic["x"], ic["y"], ic["w"], ic["h"], 22) + parchment(nc["x"], nc["y"], nc["w"], nc["h"], 23) \
+        + parchment(ic["x"], ic["y"], ic["w"], ic["h"], 22) \
         + ornament_rule(tc["x"] + 140, tc["x"] + tc["w"] - 140, meta["y"] - 10, "#9c6f37", "#9c6f37", 1.4) \
         + divs \
         + ornament_rule(R["ingHeader"]["x"] - 10, ic["x"] + ic["w"] - 34, R["ingList"]["y"] - 14, "#9c6f37", "#9c6f37", 1.4) \
         + ornament_rule(st["x"] + 4, st["x"] + st["w"] - 20, st["y"] - 14) \
-        + ornament_rule(R["noteHeader"]["x"], nc["x"] + nc["w"] - 40, R["note"]["y"] - 4, "#9c6f37", "#9c6f37", 1.2) \
-        + crest(W / 2) + vine(1858, tc["y"] + tc["h"] - 40, R["photo"]["y"] - 6)
+        + crest(W / 2) + vine(1858, tc["y"] + tc["h"] - 40, R["stepFooter"]["y"] - 16)
     jobs.append((f"ui/recipe_{suffix}.jpg", svg(W, H, body, d), W, H, 66))
 
     d, b = background(W, H, 5, night)
@@ -598,7 +598,7 @@ def garnish_svg(name):
 
 # ------------------------------------------------------------------ vintage photos
 def photo_svg(name):
-    W, H = L["recipe"]["photo"]["w"], L["recipe"]["photo"]["h"]
+    W, H = PHOTO_W, PHOTO_H
     rnd = random.Random(name)
     iw, ih = 170, 128
     sky = (f'<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9d4a6"/><stop offset="1" stop-color="#c9a46c"/></linearGradient>'
@@ -1394,16 +1394,24 @@ def rice_plate(rnd, style):
     return b + flecks(cx, cy, 114, 109, 46, rnd)
 
 
-def dish_penne(rnd):
+def dish_penne(rnd, beef=False):
     b = plate(304, 205, 183, rnd)
     b += '<ellipse cx="304" cy="205" rx="132" ry="129" fill="#a7502d"/>'
     for _ in range(170):
         a, d = rnd.uniform(0, math.tau), math.sqrt(rnd.random())
         x, y = 304 + 115*d*math.cos(a), 205 + 113*d*math.sin(a)
         shade = rnd.choice(("#de884d", "#e89b5e", "#ca6c3f", "#edaa6d"))
-        b += (f'<g transform="translate({x:.1f} {y:.1f}) rotate({rnd.randrange(360)})">'
-              f'<path d="M-15 -6 L12 -6 L18 6 L-11 6Z" fill="{shade}" stroke="#a65531"/>'
-              '<path d="M-11 -2 H12 M-9 1 H13" stroke="#f1ad72" fill="none"/></g>')
+        b += f'<g transform="translate({x:.1f} {y:.1f}) rotate({rnd.randrange(360)})">'
+        if beef:
+            b += (f'<rect x="-13" y="-8" width="28" height="16" rx="3" fill="{shade}" stroke="#a65531"/>'
+                  '<path d="M-10 -4 H10 M-10 0 H10 M-10 4 H10" stroke="#f1ad72"/>'
+                  '<ellipse cx="12" rx="3" ry="6" fill="#963f24"/>')
+        else:
+            b += (f'<path d="M-15 -6 L12 -6 L18 6 L-11 6Z" fill="{shade}" stroke="#a65531"/>'
+                  '<path d="M-11 -2 H12 M-9 1 H13" stroke="#f1ad72" fill="none"/>')
+        b += '</g>'
+    if beef:
+        b += flecks(304, 205, 115, 107, 90, rnd, ("#622f1d", "#89432a", "#a75832"), (2.5, 5.0))
     b += flecks(304, 205, 117, 115, 65, rnd, ("#f8e4b1", "#fbecce"), (1, 2.5))
     return b + '<path d="M305 223 Q257 196 276 176 Q303 176 305 223 Q324 175 352 187 Q344 215 305 223Z" fill="#40713c"/>'
 
@@ -1427,7 +1435,81 @@ def fish_plate(rnd, style):
     return b + (lemon_slice(377, 150, 31) if style != "cod" else "")
 
 
+def dish_lemonade(rnd, style):
+    bright, dark = {
+        "strawberry": ("#e98288", "#ac394d"),
+        "shake-up": ("#f8dd7d", "#c99332"),
+        "bitters": ("#dc9a50", "#9b492b"),
+    }[style]
+    body = (f'<linearGradient id="drink" x1="0" x2="1"><stop offset="0" stop-color="{dark}"/>'
+            f'<stop offset=".36" stop-color="{bright}"/><stop offset="1" stop-color="{dark}"/></linearGradient>'
+            '<ellipse cx="310" cy="330" rx="116" ry="23" fill="#110a06" filter="url(#soft)"/>'
+            '<path d="M201 105 L224 313 Q304 349 384 313 L407 105Z" fill="#e2d9bd" fill-opacity=".3" stroke="#eed9ac" stroke-width="3"/>'
+            '<path d="M207 146 L229 310 Q304 339 379 310 L401 146Z" fill="url(#drink)"/>'
+            f'<ellipse cx="304" cy="146" rx="97" ry="23" fill="{bright}"/>')
+    for x, y in ((246, 143), (293, 131), (343, 142), (371, 166), (269, 180), (320, 171), (298, 217)):
+        body += (f'<rect x="{x-19}" y="{y-13}" width="38" height="26" rx="6" transform="rotate({rnd.randrange(-33, 34)} {x} {y})" '
+                 'fill="#fffbec" fill-opacity=".56" stroke="#fff8e7" stroke-width="2"/>')
+    body += ('<path d="M215 129 L235 303 M394 129 L376 301" fill="none" stroke="#fff4d2" stroke-width="5" stroke-opacity=".42"/>'
+             '<ellipse cx="304" cy="105" rx="103" ry="30" fill="none" stroke="#fff4d2" stroke-width="4" stroke-opacity=".8"/>'
+             '<path d="M233 312 Q304 337 375 312" fill="none" stroke="#fff4d2" stroke-opacity=".55" stroke-width="3"/>')
+    if style == "bitters":
+        body += '<path d="M311 154 C329 116 373 146 355 170 C340 190 311 168 333 150" fill="none" stroke="#f4cc46" stroke-width="9" stroke-linecap="round"/>'
+    else:
+        body += lemon_slice(373, 112, 38)
+        body += lemon_slice(163, 291, 34)
+    if style == "strawberry":
+        for x, y, angle in ((426, 291, 25), (460, 315, -19), (152, 238, -29)):
+            body += (f'<g transform="translate({x} {y}) rotate({angle})">'
+                     '<path d="M-24 -9 Q0 -27 24 -9 Q22 10 0 30 Q-22 10 -24 -9Z" fill="#bd3746" stroke="#853035" stroke-width="2"/>'
+                     '<path d="M-22 -10 L-12 -20 L-3 -15 L2 -26 L10 -16 L19 -19 L22 -8 L4 -10 L-9 -4Z" fill="#53803a"/>'
+                     + flecks(0, 8, 16, 12, 19, rnd, ("#e98c6a", "#eeac77"), (1, 2)) + '</g>')
+    return body
+
+
+def dish_cupcakes(rnd):
+    b = plate(304, 204, 175, rnd, 162, rim="#eadbd1")
+    b += ('<radialGradient id="frost"><stop offset="0" stop-color="#fff8e7"/>'
+          '<stop offset="1" stop-color="#d8c7a6"/></radialGradient>')
+    for x, y, scale, liner in ((352, 151, .77, "#8f594e"), (252, 226, 1, "#724b69"), (370, 260, .65, "#9a734f")):
+        b += (f'<g transform="translate({x} {y}) scale({scale})">'
+              '<path d="M-61 -19 L-44 50 Q0 68 44 50 L61 -19Z" fill="' + liner + '" stroke="#795041" stroke-width="3"/>')
+        for line in range(-45, 51, 11):
+            b += f'<path d="M{line} -20 L{line*.72:.1f} 51" stroke="#f1c7a2" stroke-width="2" opacity=".48"/>'
+        b += ('<ellipse cy="-18" rx="63" ry="24" fill="#d9a454" stroke="#b7803c" stroke-width="3"/>'
+              '<path d="M-62 -24 Q-64 -45 -30 -50 Q-37 -67 -13 -71 Q-9 -85 8 -87 Q11 -75 24 -72 Q38 -64 29 -49 Q60 -46 62 -26 Q32 2 -62 -24Z" '
+              'fill="url(#frost)" stroke="#c9b694" stroke-width="2"/>'
+              '<path d="M-48 -32 Q-1 -15 46 -33 M-26 -51 Q1 -40 28 -56 M-17 -67 Q1 -60 15 -70" '
+              'fill="none" stroke="#fff8e6" stroke-width="5" stroke-linecap="round"/>')
+        b += flecks(0, -37, 42, 8, 15, rnd, ("#ba6f64", "#cfa751", "#85647c"), (1.2, 2.7)) + '</g>'
+    return b
+
+
+def dish_pork_chops(rnd):
+    b = plate(304, 204, 179, rnd, rim="#e8dfca")
+    b += ('<radialGradient id="mash"><stop offset="0" stop-color="#f6e8bd"/><stop offset="1" stop-color="#caa96b"/></radialGradient>'
+          '<ellipse cx="358" cy="128" rx="68" ry="48" fill="url(#mash)"/>'
+          '<path d="M320 135 Q352 97 384 122 Q398 140 357 144 Q341 139 356 127" fill="none" stroke="#fff1cc" stroke-width="6" stroke-linecap="round"/>')
+    for i in range(16):
+        x, y = 196 + rnd.uniform(-24, 38), 160 + i * 7
+        b += (f'<path d="M{x:.1f} {y} q26 15 62 3" fill="none" stroke="{rnd.choice(("#4c7336", "#648748", "#76934c"))}" '
+              'stroke-width="9" stroke-linecap="round"/>')
+    b += ('<radialGradient id="sear"><stop offset="0" stop-color="#e0a968"/><stop offset=".72" stop-color="#b6743f"/>'
+          '<stop offset="1" stop-color="#743818"/></radialGradient>'
+          '<g transform="translate(324 238) rotate(-16)">'
+          '<path d="M-80 -21 Q-65 -69 3 -60 Q68 -59 84 -15 Q105 33 52 52 Q11 74 -62 44 Q-96 24 -80 -21Z" '
+          'fill="url(#sear)" stroke="#794121" stroke-width="4" filter="url(#shadow)"/>')
+    b += flecks(2, -2, 69, 44, 175, rnd, ("#663b26", "#92522e", "#e5b477", "#c08049"), (1.3, 3.6))
+    return b + '</g>'
+
+
 DISHES = {
+    "vanilla-cream-cheese-cupcakes": dish_cupcakes,
+    "steak-seasoned-skillet-pork-chops": dish_pork_chops,
+    "italian-beef-rigatoni-skillet": lambda rnd: dish_penne(rnd, beef=True),
+    "strawberry-lemonade": lambda rnd: dish_lemonade(rnd, "strawberry"),
+    "midwest-lemonade-shake-up": lambda rnd: dish_lemonade(rnd, "shake-up"),
+    "bitters-heavy-lemonade": lambda rnd: dish_lemonade(rnd, "bitters"),
     "lemon-chicken-and-rice": lambda rnd: rice_plate(rnd, "lemon"),
     "creamy-chicken-and-wild-rice": lambda rnd: rice_plate(rnd, "soup"),
     "chicken-broccoli-rice-bake": lambda rnd: rice_plate(rnd, "bake"),
@@ -1473,20 +1555,34 @@ def recipe_card_svg():
 
 
 # ------------------------------------------------------------------ channel art
+def culinote_mark(x, y, size):
+    cream = "#f8edda"
+    return (f'<g transform="translate({x} {y}) scale({size / 128})">'
+            '<rect width="128" height="128" rx="34" fill="#103c30"/>'
+            f'<path d="M93 37 A41 41 0 1 0 94 91" fill="none" stroke="{cream}" '
+            'stroke-width="8" stroke-linecap="round"/>'
+            f'<path d="M60 33 Q59 33 59 35 L58 52 Q58 57 62 60 Q64 62 63.5 67 '
+            'L62.3 86 Q62.3 92 65.5 92 Q68.7 92 68.7 86 L67.5 67 '
+            'Q67 62 69 60 Q73 57 73 52 L72 35 Q72 33 71 33 Q70 33 70 35 '
+            'V49 Q70 50 69 50 Q68 50 68 49 V35 Q68 33 67 33 Q66 33 66 35 '
+            'V49 Q66 50 65 50 Q64 50 64 49 V35 Q64 33 63 33 Q62 33 62 35 '
+            f'V49 Q62 50 61 50 Q60 50 60 49 V35 Q60 33 60 33 Z" fill="{cream}"/></g>')
+
+
 def channel_jobs():
-    jobs = []
-    d = '<radialGradient id="ibg" cx=".5" cy=".5" r=".7"><stop offset="0" stop-color="#36241a"/><stop offset="1" stop-color="#110a06"/></radialGradient>'
-    b = '<rect width="1920" height="1080" fill="url(#ibg)"/>'
-    title = ('<text x="960" y="560" text-anchor="middle" font-family="Script" font-size="170" fill="url(#gold)" filter="url(#glow)">The Heirloom Table</text>'
-             '<text x="960" y="650" text-anchor="middle" font-family="Serif" font-size="34" letter-spacing="6" fill="#e9cf8e">FAMILY RECIPES · KITCHEN FAVORITES · NEW TRADITIONS</text>')
-    jobs.append(("channel/splash_fhd.jpg", svg(1920, 1080, b + frame(1920, 1080) + title, d), 1920, 1080, 70))
-    for name, w, h, fs in (("channel/icon_focus_fhd.png", 540, 405, 74), ("channel/icon_focus_hd.png", 290, 218, 40)):
-        d = ""
-        b = f'<rect width="{w}" height="{h}" fill="#1e140d"/>'
-        t = (f'<text x="{w/2}" y="{h*.47}" text-anchor="middle" font-family="Script" font-size="{fs}" fill="url(#gold)">The Heirloom</text>'
-             f'<text x="{w/2}" y="{h*.47+fs*.95}" text-anchor="middle" font-family="Script" font-size="{fs}" fill="url(#gold)">Table</text>')
-        fr = (f'<rect x="{w*.04}" y="{w*.04}" width="{w*.92}" height="{h-w*.08}" fill="none" stroke="url(#gold)" stroke-width="{max(2, w/140):.1f}" rx="6"/>')
-        jobs.append((name, svg(w, h, b + fr + t, d), w, h, None))
+    jobs = [("channel/culinote_mark.png", svg(256, 256, culinote_mark(0, 0, 256)), 256, 256, None)]
+    for name, w, h, quality in (
+        ("splash_fhd.jpg", 1920, 1080, 78),
+        ("icon_focus_fhd.png", 540, 405, None),
+        ("icon_focus_hd.png", 290, 218, None),
+        ("fire_tv_banner.png", 320, 180, None),
+    ):
+        size = h * .49
+        body = f'<rect width="{w}" height="{h}" fill="#09291f"/>'
+        body += culinote_mark((w - size) / 2, h * .12, size)
+        body += (f'<text x="{w/2}" y="{h*.82}" text-anchor="middle" font-family="SerifBold" '
+                 f'font-size="{h*.18}" fill="#f8edda">Culinote</text>')
+        jobs.append((f"channel/{name}", svg(w, h, body), w, h, quality))
     return jobs
 
 
@@ -1631,7 +1727,7 @@ def main():
     if want("garnish"):
         jobs += [("garnish/%s.png" % g, garnish_svg(g), GS, GS, None) for g in GARNISHES]
     if want("photos"):
-        jobs += [("photos/%s.png" % p, photo_svg(p), L["recipe"]["photo"]["w"], L["recipe"]["photo"]["h"], None) for p in PHOTOS]
+        jobs += [("photos/%s.png" % p, photo_svg(p), PHOTO_W, PHOTO_H, None) for p in PHOTOS]
     if want("dishes"):
         jobs.append(("dishes/recipe-card.jpg", recipe_card_svg(), DISH_W, DISH_H, 80))
         for r in data["recipes"]:

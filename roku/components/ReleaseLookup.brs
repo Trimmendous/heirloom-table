@@ -7,7 +7,7 @@ sub fetchRelease()
     transfer = CreateObject("roUrlTransfer")
     transfer.SetMessagePort(port)
     transfer.SetCertificatesFile("common:/certs/ca-bundle.crt")
-    transfer.AddHeader("User-Agent", "The-Heirloom-Table")
+    transfer.AddHeader("User-Agent", "Culinote")
     transfer.AddHeader("Accept", "application/vnd.github+json")
     transfer.SetUrl(m.top.endpoint)
     result = { status: 0 }

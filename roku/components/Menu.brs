@@ -1,5 +1,4 @@
-' Menu.brs: the Options (*) overlay: reset checkboxes, browse all recipes, jump to a category.
-' Levels stack, so "Browse all recipes" opens a list and Back returns to the options. Mirrors web/js/menu.js.
+' Menu.brs: updates, theme and checklist reset. Mirrors web/js/menu.js.
 
 sub menuBuild()
     ml = m.L.menu
@@ -9,12 +8,18 @@ sub menuBuild()
     mkRect(m.menuG, cc.dim, 0, 0, 1920, 1080)
     m.mPanel = mkPoster(m.menuG, "images/ui/parchment.9.png", ml.panel.x, ml.panel.y, ml.panel.w, ml.panel.h)
     m.mTitle = mkLabel(m.menuG, "", "script", ml.title.size, cc.ink, ml.title.x, ml.title.y, ml.title.w, "center", 0)
+    b = ml.back
+    backGroup = mkGroup(m.menuG, b.x, b.y)
+    mkRect(backGroup, "0xB8862E26", 0, 0, b.w, b.h)
+    m.mBackFocus = mkPoster(backGroup, "images/ui/focus.9.png", -9, -9, b.w + 18, b.h + 18)
+    mkLabel(backGroup, "‹ Back", "serifBold", b.size, cc.ink, 0, 5, b.w, "center", 0)
     m.mHi = mkRect(m.menuG, "0xB8862E40", ml.list.x, ml.list.y, ml.list.w, ml.list.itemH)
     m.mFocus = mkPoster(m.menuG, "images/ui/focus.9.png", 0, 0, 10, 10)
     m.mList = mkGroup(m.menuG, ml.list.x, ml.list.y)
-    m.mUp = mkPoster(m.menuG, "images/ui/chev_up_ink.png", ml.list.x + ml.list.w / 2 - 15, ml.list.y - 26, 30, 20)
-    m.mDown = mkPoster(m.menuG, "images/ui/chev_down_ink.png", ml.list.x + ml.list.w / 2 - 15, ml.list.y + ml.list.visible * ml.list.itemH + 4, 30, 20)
     m.mNote = mkLabel(m.menuG, "", "serif", ml.note.size, cc.inkSoft, ml.note.x, 0, ml.note.w, "left", 7)
+    m.mNutrition = mkGroup(m.menuG, ml.note.x, ml.list.y)
+    m.mUp = mkPoster(m.menuG, "images/ui/chev_up_ink.png", 945, ml.list.y - 25, 30, 20)
+    m.mDown = mkPoster(m.menuG, "images/ui/chev_down_ink.png", 945, ml.list.y + ml.filterVisible * ml.list.itemH + 8, 30, 20)
     m.mQR = m.menuG.createChild("QRCode")
     m.mQR.setFields({ translation: [825, 524], width: 270, height: 270, visible: false })
     m.menuOpen = false
@@ -22,21 +27,65 @@ sub menuBuild()
 end sub
 
 sub menuShow()
+    reset = "reset"
+    if m.screen = "home" then reset = "resetAll"
     items = [
         { label: "Update Now", act: "updates" },
-        { label: "Theme", act: "themes" }
+        { label: "Theme", act: "themes" },
+        { label: "Reset Checkboxes", act: reset }
     ]
-    if m.screen = "home"
-        items.Push({ label: "Reset all checkboxes", act: "resetAll", arg: "" })
-    else
-        items.Push({ label: "Reset checkboxes", act: "reset", arg: "" })
-    end if
-    items.Push({ label: "Browse all recipes", act: "list", arg: "" })
-    for each c in m.D.categories
-        items.Push({ label: "Jump to " + c, act: "cat", arg: c })
+    menuOpenLevel({ title: "Options", items: items, sel: 0 })
+end sub
+
+sub menuShowFilter()
+    label = "Ingredients to Avoid"
+    excluded = m.homeAvoid.Count()
+    if excluded > 0 then label = label + " (" + excluded.ToStr() + ")"
+    items = [
+        { label: "All Categories", act: "filter", arg: "" },
+        { label: label, act: "avoid" }
+    ]
+    selected = 0
+    for each category in m.D.categories
+        if category = m.homeCategory then selected = items.Count()
+        items.Push({ label: category, act: "filter", arg: category })
     end for
-    if m.screen <> "home" then items.Push({ label: "Back to home", act: "home", arg: "" })
-    m.mstack = [{ title: "Options", items: items, sel: 0, top: 0 }]
+    menuOpenLevel({ title: "Filter Recipes", items: items, sel: selected, top: 0 })
+end sub
+
+sub menuShowIngredients()
+    items = [{ label: "Clear Exclusions", act: "avoidClear" }]
+    for each ingredient in m.D.ingredientFilters
+        items.Push({ label: ingredient, act: "avoidToggle", arg: ingredient })
+    end for
+    m.mstack.Push({ title: "Ingredients to Avoid", items: items, sel: 1, top: 0, ingredientPicker: true,
+        note: "Selections apply immediately. For allergies, check package labels and cross-contact." })
+    menuRender()
+end sub
+
+sub menuShowNutrition()
+    menuOpenLevel({ title: "Nutrition Estimate", items: [], sel: -1, nutrition: m.servingVariant.nutritionText })
+end sub
+
+sub menuRenderNutrition(content as string)
+    ml = m.L.menu
+    cc = m.L.colors
+    removeKids(m.mNutrition)
+    newline = Chr(10)
+    sections = content.Split(newline + newline)
+    for section = 0 to 1
+        lines = sections[section].Split(newline)
+        y = section * 162
+        mkLabel(m.mNutrition, lines[0], "serifBold", 33, cc.rust, 0, y, ml.note.w, "left", 0)
+        for line = 1 to lines.Count() - 1
+            mkLabel(m.mNutrition, lines[line], "serif", 29, cc.ink, 0, y + 6 + line * 35, ml.note.w, "left", 0)
+        end for
+    end for
+    mkLabel(m.mNutrition, sections[2], "serif", 25, cc.inkSoft, 0, 334, ml.note.w, "left", 2)
+end sub
+
+sub menuOpenLevel(level as object)
+    m.mstack = [level]
     m.menuOpen = true
     m.menuG.visible = true
     menuRender()
@@ -54,47 +103,83 @@ sub menuRender()
     cc = m.L.colors
     lv = m.mstack.Peek()
     n = lv.items.Count()
-    vis = ml.list.visible
-    if lv.sel < lv.top then lv.top = lv.sel
-    if lv.sel >= lv.top + vis then lv.top = lv.sel - vis + 1
+    firstItem = 0
+    endItem = n
     m.mTitle.text = lv.title
     m.mQR.visible = lv.DoesExist("qr")
     if m.mQR.visible then m.mQR.text = lv.qr
     m.mNote.visible = lv.DoesExist("note")
     if m.mNote.visible
         m.mNote.text = lv.note
-        m.mNote.translation = [ml.note.x, ml.list.y + n * ml.list.itemH + ml.note.gap]
         m.mPanel.height = ml.note.panelH
     else
         m.mPanel.height = ml.panel.h
     end if
-    if m.mQR.visible then m.mPanel.height = ml.panel.h
+    m.mNutrition.visible = lv.DoesExist("nutrition")
+    if m.mNutrition.visible
+        m.mPanel.height = ml.nutritionPanelH
+        menuRenderNutrition(lv.nutrition)
+    end if
+    if lv.DoesExist("top")
+        shown = n
+        limit = ml.filterVisible
+        if lv.DoesExist("ingredientPicker") then limit = ml.ingredientVisible
+        if shown > limit then shown = limit
+        if lv.sel < 0
+            lv.top = 0
+        else if lv.sel < lv.top
+            lv.top = lv.sel
+        else if lv.sel >= lv.top + shown
+            lv.top = lv.sel - shown + 1
+        end if
+        firstItem = lv.top
+        endItem = firstItem + shown
+        bottomSpace = 46
+        if m.mNote.visible then bottomSpace = 132
+        m.mPanel.height = ml.list.y - ml.panel.y + shown * ml.list.itemH + bottomSpace
+        m.mDown.translation = [945, ml.list.y + shown * ml.list.itemH + 8]
+    end if
+    if m.mNote.visible then m.mNote.translation = [ml.note.x, ml.list.y + (endItem - firstItem) * ml.list.itemH + ml.note.gap]
+    m.mUp.visible = firstItem > 0
+    m.mDown.visible = endItem < n
+    if m.mQR.visible then m.mPanel.height = ml.qrPanelH
     removeKids(m.mList)
-    for i = lv.top to lv.top + vis - 1
-        if i >= n then exit for
-        mkLabel(m.mList, lv.items[i].label, "serif", ml.list.size, cc.ink, 24, (i - lv.top) * ml.list.itemH + 10, ml.list.w - 48, "left", 0)
+    for i = firstItem to endItem - 1
+        it = lv.items[i]
+        row = mkGroup(m.mList, 0, (i - firstItem) * ml.list.itemH)
+        labelX = 24
+        if it.act = "avoidToggle"
+            uri = "images/ui/check_off.png"
+            if m.homeAvoid.DoesExist(it.arg) then uri = "images/ui/check_on.png"
+            mkPoster(row, uri, 24, 15, 28, 28)
+            labelX = 68
+        end if
+        mkLabel(row, it.label, "serif", ml.list.size, cc.ink, labelX, 10, ml.list.w - labelX - 24, "left", 0)
     end for
-    y = ml.list.y + (lv.sel - lv.top) * ml.list.itemH
+    y = ml.list.y + (lv.sel - firstItem) * ml.list.itemH
+    m.mBackFocus.visible = lv.sel < 0
+    m.mHi.visible = lv.sel >= 0
+    m.mFocus.visible = lv.sel >= 0
     m.mHi.translation = [ml.list.x, y]
     m.mFocus.setFields({ translation: [ml.list.x - 14, y - 14], width: ml.list.w + 28, height: ml.list.itemH + 28 })
-    m.mUp.visible = lv.top > 0
-    m.mDown.visible = lv.top + vis < n
 end sub
 
 function menuKey(key as string) as boolean
     lv = m.mstack.Peek()
     if key = "up"
-        if lv.sel > 0 then lv.sel = lv.sel - 1
+        if lv.sel >= 0 then lv.sel = lv.sel - 1
     else if key = "down"
         if lv.sel < lv.items.Count() - 1 then lv.sel = lv.sel + 1
     else if key = "rewind"
-        lv.sel = lv.sel - m.L.menu.list.visible
-        if lv.sel < 0 then lv.sel = 0
+        lv.sel = 0
     else if key = "fastforward"
-        lv.sel = lv.sel + m.L.menu.list.visible
-        if lv.sel > lv.items.Count() - 1 then lv.sel = lv.items.Count() - 1
+        lv.sel = lv.items.Count() - 1
     else if key = "OK"
-        menuActivate(lv.items[lv.sel])
+        if lv.sel < 0
+            menuClose()
+        else
+            menuActivate(lv.items[lv.sel])
+        end if
         return true
     else if key = "back" or key = "options" or key = "left"
         menuClose()
@@ -106,11 +191,27 @@ function menuKey(key as string) as boolean
 end function
 
 sub menuActivate(it as object)
-    if it.act = "updates"
+    if it.act = "filter"
+        menuClose()
+        homeApplyFilter(it.arg)
+    else if it.act = "avoid"
+        menuShowIngredients()
+    else if it.act = "avoidToggle" or it.act = "avoidClear"
+        if it.act = "avoidClear"
+            m.homeAvoid = {}
+        else if m.homeAvoid.DoesExist(it.arg)
+            m.homeAvoid.Delete(it.arg)
+        else
+            m.homeAvoid[it.arg] = true
+        end if
+        saveIngredientExclusions(m.homeAvoid)
+        homeApplyFilter(m.homeCategory)
+        menuRender()
+    else if it.act = "updates"
         menuCheckRelease()
     else if it.act = "download"
         note = "Scan to download the Roku ZIP. On a computer, upload it with Replace in Roku Development Application Installer."
-        m.mstack.Push({ title: "Download " + it.version, sel: 0, top: 0, note: note, qr: it.arg,
+        m.mstack.Push({ title: "Download " + it.version, sel: 0, note: note, qr: it.arg,
             items: [{ label: "Close", act: "close" }] })
         menuRender()
     else if it.act = "close"
@@ -122,7 +223,7 @@ sub menuActivate(it as object)
         ]
         selected = 0
         if m.themeName = "midnight" then selected = 1
-        m.mstack.Push({ title: "Theme", sel: selected, top: 0, items: items, note: "Choose the background for the cookbook." })
+        m.mstack.Push({ title: "Theme", sel: selected, items: items, note: "Choose the background for the cookbook." })
         menuRender()
     else if it.act = "theme"
         applyTheme(it.arg)
@@ -144,29 +245,12 @@ sub menuActivate(it as object)
         saveChecks()
         menuClose()
         showToast("All checkboxes cleared")
-    else if it.act = "list"
-        items = []
-        for i = 0 to m.D.recipes.Count() - 1
-            items.Push({ label: m.D.recipes[i].title, act: "open", arg: i })
-        end for
-        items.SortBy("label")
-        m.mstack.Push({ title: "All Recipes", items: items, sel: 0, top: 0 })
-        menuRender()
-    else if it.act = "open"
-        menuClose()
-        recipeOpen(it.arg)
-    else if it.act = "cat"
-        menuClose()
-        homeJump(it.arg)
-    else if it.act = "home"
-        menuClose()
-        showScreen("home")
     end if
 end sub
 
 sub menuCheckRelease()
     items = [{ label: "Cancel", act: "close" }]
-    m.mstack.Push({ title: "App Update", sel: 0, top: 0, items: items, checking: true,
+    m.mstack.Push({ title: "App Update", sel: 0, items: items, checking: true,
         note: "Checking GitHub for a newer release..." })
     menuRender()
     if m.updateTask <> invalid then return
@@ -202,7 +286,7 @@ sub menuReleaseResult()
                 hasZip = false
                 if release.assets <> invalid
                     for each asset in release.assets
-                        if asset.name = "heirloom-table-roku.zip" then hasZip = true
+                        if asset.name = "culinote-roku.zip" then hasZip = true
                     end for
                 end if
                 if publishedCode <= app.versionCode
@@ -211,7 +295,7 @@ sub menuReleaseResult()
                     lv.note = "GitHub release " + release.tag_name + " is missing the Roku ZIP."
                 else
                     versionLabel = "v" + matches[1] + "." + matches[2] + "." + matches[3]
-                    url = app.releases + "/download/" + release.tag_name + "/heirloom-table-roku.zip"
+                    url = app.releases + "/download/" + release.tag_name + "/culinote-roku.zip"
                     lv.title = "Confirm Update"
                     lv.note = "Installed v" + app.version + Chr(10) + "GitHub release " + versionLabel + Chr(10) + Chr(10) + "Confirm to show the direct download QR code."
                     lv.items = [

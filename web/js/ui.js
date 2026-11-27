@@ -221,8 +221,8 @@ var TYPES = { Group: Group, Rectangle: Rectangle, Poster: Poster, Label: Label, 
 
 /* ---------------------------------------------------------------- Ui.brs mirror */
 function uiInit() {
-  m.L = window.HEIRLOOM.layout;
-  m.D = window.HEIRLOOM.data;
+  m.L = window.CULINOTE.layout;
+  m.D = window.CULINOTE.data;
   m.fonts = {};
 }
 
@@ -383,4 +383,17 @@ function applyTheme(themeName) {
 
 function saveTheme(themeName) {
   try { localStorage.setItem('heirloom.theme', themeName); } catch (e) { /* keep the current selection */ }
+}
+
+function loadIngredientExclusions() {
+  var avoid = {};
+  try {
+    var saved = JSON.parse(localStorage.getItem('heirloom.ingredientExclusions'));
+    if (saved) m.D.ingredientFilters.forEach(function (name) { if (saved[name]) avoid[name] = true; });
+  } catch (e) { /* default to no exclusions if storage is unavailable */ }
+  return avoid;
+}
+
+function saveIngredientExclusions(avoid) {
+  try { localStorage.setItem('heirloom.ingredientExclusions', JSON.stringify(avoid)); } catch (e) { /* keep the current selection */ }
 }

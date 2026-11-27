@@ -118,14 +118,12 @@ function setRemoteVisible(visible) {
 function relayout() {
   if (m.screen === 'recipe') {
     var rs = m.rs;
-    recipeShow(rs.rpos);
-    m.rs.zone = rs.zone; m.rs.ing = rs.ing; m.rs.sIdx = rs.sIdx;
-    recipeLayout();
+    recipeShow(rs.rpos, rs);
+  } else if (m.screen === 'cook') {
+    cookFitText();
   } else if (m.screen === 'home') {
     homeRender();
   }
-  var hw = m.rHeartLabel.boundingRect().width;
-  m.rHeart.translation = [m.L.recipe.noteHeader.x + (hw < 50 ? 300 : hw) + 12, m.L.recipe.noteHeader.y + 14];
 }
 
 /* ?screen=recipe&id=<id>&zone=steps&step=2&menu=1 (&timer=1 starts a cook timer) — deep links used by tools/screenshot.py */
@@ -137,12 +135,19 @@ function applyQuery() {
   if (q.get('screen') === 'recipe' || q.get('screen') === 'cook') {
     recipeOpen(rpos);
     if (q.get('zone') === 'steps') recipeFocusStep(+q.get('step') || 0);
-    if (q.get('ing')) { m.rs.ing = +q.get('ing'); recipeLayout(); }
+    if (q.get('ing')) {
+      m.rs.ing = +q.get('ing');
+      if (q.get('zone') !== 'steps') m.rs.zone = 'ing';
+      recipeLayout();
+    }
     if (q.get('screen') === 'cook') cookOpen(+q.get('step') || 0);
     if (q.get('timer')) { cookKey('OK'); m.toast.visible = false; }
   }
-  if (q.get('row')) { m.hs.row = +q.get('row'); homeRender(); }
-  if (q.get('col')) { m.hs.cols[m.hs.row] = +q.get('col'); homeRender(); }
+  var row = parseInt(q.get('row'), 10);
+  var col = parseInt(q.get('col'), 10);
+  if (row >= 0 && row < m.rows.length) m.hs.row = row;
+  if (col >= 0 && col < m.rows[m.hs.row].items.length) m.hs.cols[m.hs.row] = col;
+  if (q.has('row') || q.has('col')) homeRender();
   if (q.get('menu')) menuShow();
   if (q.get('updates') === '1') {
     menuShow();
@@ -158,6 +163,8 @@ function boot() {
   applyQuery();
   window.addEventListener('resize', fitStage);
   document.addEventListener('keydown', function (e) {
+    if (e.target === m.rServingsInput && m.rs.zone === 'servingsEdit' && !m.nativeFireTv && !m.menuOpen &&
+        !['Enter', 'Escape', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
     if ((e.key === 'Enter' || e.key === ' ') && e.target.tagName === 'BUTTON') return;
     var k = KEYMAP[e.key];
     if (!k) return;
